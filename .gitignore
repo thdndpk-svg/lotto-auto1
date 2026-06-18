@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+kakao_token.local.json
+.DS_Store
+reports/
+LottoAuto.app/

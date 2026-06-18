@@ -1,0 +1,33 @@
+name: Lotto Kakao Weekly
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Korea time Wednesday 12:00 = UTC Wednesday 03:00
+    - cron: "0 3 * * 3"
+
+jobs:
+  send-kakao:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run weekly Lotto analysis and Kakao send
+        env:
+          KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+          KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
+          KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+        run: python weekly_kakao_report.py
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotto-report
+          path: reports/*.txt
