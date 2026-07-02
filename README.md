@@ -78,6 +78,8 @@ http://127.0.0.1:8765/
 
 GitHub Actions를 이용해 매주 수요일 12:00(KST)에 분석 결과를 카카오톡 `나와의 채팅`으로 보낼 수 있습니다.
 
+추가로 매주 일요일 11:00(KST)에 수요일 추천번호와 최신 당첨번호를 비교한 결과를 카카오톡으로 받을 수 있습니다.
+
 설정 순서:
 
 ```text
@@ -94,6 +96,15 @@ python3 weekly_kakao_report.py --dry-run --skip-refresh
 
 ```text
 .github/workflows/lotto-kakao-weekly.yml
+.github/workflows/lotto-kakao-sunday-result.yml
+```
+
+수요일 워크플로는 발송한 추천번호를 `reports/latest_recommendations.json`으로 저장하고 GitHub에 커밋합니다. 일요일 워크플로는 이 파일을 읽어 최신 회차 당첨번호와 비교합니다.
+
+일요일 결과 카톡 dry-run:
+
+```bash
+python3 sunday_kakao_result.py --dry-run --skip-refresh
 ```
 
 ## 적용된 분석 항목

@@ -2,5 +2,7 @@ __pycache__/
 *.pyc
 kakao_token.local.json
 .DS_Store
-reports/
+reports/*
+!reports/.gitkeep
+!reports/latest_recommendations.json
 LottoAuto.app/

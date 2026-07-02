@@ -6,7 +6,7 @@ import json
 import os
 import urllib.parse
 import urllib.request
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +17,7 @@ from lotto_auto import LottoAnalyzer, load_draws, print_report
 APP_DIR = Path(__file__).resolve().parent
 DATA_PATH = APP_DIR / "data" / "lotto.csv"
 REPORT_DIR = APP_DIR / "reports"
+RECOMMENDATION_PATH = REPORT_DIR / "latest_recommendations.json"
 TOKEN_URL = "https://kauth.kakao.com/oauth/token"
 MEMO_SEND_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
 LOCAL_TOKEN_PATH = APP_DIR / "kakao_token.local.json"
@@ -87,7 +88,37 @@ def refresh_lotto_data() -> None:
     write_standard_csv(rows, DATA_PATH)
 
 
-def build_analysis(target_date: date, candidates: int, seed: int | None) -> tuple[str, str]:
+def save_recommendations(
+    target_date: date,
+    latest_draw_no: int,
+    latest_draw_date: date,
+    candidates: int,
+    seed: int | None,
+    combos,
+) -> Path:
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "target_date": target_date.isoformat(),
+        "latest_draw_no_at_analysis": latest_draw_no,
+        "latest_draw_date_at_analysis": latest_draw_date.isoformat(),
+        "candidates": candidates,
+        "seed": seed,
+        "combos": [
+            {
+                "rank": idx,
+                "numbers": list(combo.numbers),
+                "score": combo.score,
+                "parts": combo.parts,
+            }
+            for idx, combo in enumerate(combos, 1)
+        ],
+    }
+    RECOMMENDATION_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return RECOMMENDATION_PATH
+
+
+def build_analysis(target_date: date, candidates: int, seed: int | None) -> tuple[str, str, str]:
     draws = load_draws(DATA_PATH)
     analyzer = LottoAnalyzer(draws)
     number_factors = ["same_date", "skip", "front", "shape", "recent", "overdue", "frequency", "ending"]
@@ -117,6 +148,7 @@ def build_analysis(target_date: date, candidates: int, seed: int | None) -> tupl
         print_report(DATA_PATH, target_date, analyzer, ranked, diagnostics, combos, top_numbers=15, output=f)
 
     latest = draws[-1]
+    recommendation_path = save_recommendations(target_date, latest.draw_no, latest.draw_date, candidates, seed, combos)
     anchor_text = "없음"
     if front_anchor:
         anchor_text = f"{front_anchor.number:02d}번 ({front_anchor.reason}, {front_anchor.score:.1f}점)"
@@ -136,9 +168,10 @@ def build_analysis(target_date: date, candidates: int, seed: int | None) -> tupl
             *combo_lines,
             "",
             f"리포트: {report_path.name}",
+            f"추천저장: {recommendation_path.name}",
         ]
     )
-    return message, str(report_path)
+    return message, str(report_path), str(recommendation_path)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -156,9 +189,10 @@ def main() -> int:
     target_date = date.fromisoformat(args.target_date)
     if not args.skip_refresh:
         refresh_lotto_data()
-    message, report_path = build_analysis(target_date, args.candidates, args.seed)
+    message, report_path, recommendation_path = build_analysis(target_date, args.candidates, args.seed)
     print(message)
     print(f"\nReport saved: {report_path}")
+    print(f"Recommendations saved: {recommendation_path}")
 
     if args.dry_run:
         return 0

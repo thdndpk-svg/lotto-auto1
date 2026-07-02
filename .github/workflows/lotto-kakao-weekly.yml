@@ -6,6 +6,9 @@ on:
     # Korea time Wednesday 12:00 = UTC Wednesday 03:00
     - cron: "0 3 * * 3"
 
+permissions:
+  contents: write
+
 jobs:
   send-kakao:
     runs-on: ubuntu-latest
@@ -24,6 +27,15 @@ jobs:
           KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
         run: python weekly_kakao_report.py
+
+      - name: Commit latest recommendations
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f reports/latest_recommendations.json
+          git commit -m "Update latest lotto recommendations" || echo "No recommendation changes"
+          git push
 
       - name: Upload report artifact
         if: always()
