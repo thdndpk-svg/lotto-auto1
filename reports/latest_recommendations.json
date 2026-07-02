@@ -1,0 +1,135 @@
+{
+  "generated_at": "2026-07-03T01:08:24",
+  "target_date": "2026-07-01",
+  "latest_draw_no_at_analysis": 1230,
+  "latest_draw_date_at_analysis": "2026-06-27",
+  "candidates": 50000,
+  "seed": 18,
+  "combos": [
+    {
+      "rank": 1,
+      "numbers": [
+        1,
+        11,
+        15,
+        38,
+        42,
+        44
+      ],
+      "score": 88.3,
+      "parts": {
+        "number": 39.21,
+        "line_shape": 9.96,
+        "front": 4.9,
+        "sum": 8.88,
+        "odd_even": 7.0,
+        "low_high": 5.0,
+        "ending": 5.0,
+        "consecutive": 4.0,
+        "pair": 4.0,
+        "recent_hot": 3.0,
+        "history_penalty": -0.0
+      }
+    },
+    {
+      "rank": 2,
+      "numbers": [
+        7,
+        10,
+        15,
+        28,
+        42,
+        45
+      ],
+      "score": 88.02,
+      "parts": {
+        "number": 37.92,
+        "line_shape": 9.12,
+        "front": 6.08,
+        "sum": 9.54,
+        "odd_even": 7.0,
+        "low_high": 5.0,
+        "ending": 5.0,
+        "consecutive": 4.0,
+        "pair": 4.0,
+        "recent_hot": 3.0,
+        "history_penalty": -0.0
+      }
+    },
+    {
+      "rank": 3,
+      "numbers": [
+        7,
+        11,
+        15,
+        24,
+        42,
+        44
+      ],
+      "score": 87.76,
+      "parts": {
+        "number": 36.54,
+        "line_shape": 9.96,
+        "front": 6.08,
+        "sum": 9.81,
+        "odd_even": 7.0,
+        "low_high": 5.0,
+        "ending": 5.0,
+        "consecutive": 4.0,
+        "pair": 4.0,
+        "recent_hot": 3.0,
+        "history_penalty": -0.0
+      }
+    },
+    {
+      "rank": 4,
+      "numbers": [
+        1,
+        11,
+        18,
+        27,
+        42,
+        44
+      ],
+      "score": 87.69,
+      "parts": {
+        "number": 39.32,
+        "line_shape": 8.28,
+        "front": 4.9,
+        "sum": 9.81,
+        "odd_even": 7.0,
+        "low_high": 5.0,
+        "ending": 5.0,
+        "consecutive": 4.0,
+        "pair": 4.0,
+        "recent_hot": 3.0,
+        "history_penalty": -0.0
+      }
+    },
+    {
+      "rank": 5,
+      "numbers": [
+        7,
+        13,
+        16,
+        27,
+        28,
+        42
+      ],
+      "score": 87.25,
+      "parts": {
+        "number": 37.91,
+        "line_shape": 10.44,
+        "front": 6.08,
+        "sum": 8.18,
+        "odd_even": 7.0,
+        "low_high": 5.0,
+        "ending": 5.0,
+        "consecutive": 3.25,
+        "pair": 4.0,
+        "recent_hot": 3.0,
+        "history_penalty": -0.0
+      }
+    }
+  ]
+}
