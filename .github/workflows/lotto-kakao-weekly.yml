@@ -28,13 +28,17 @@ jobs:
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
         run: python weekly_kakao_report.py
 
-      - name: Commit latest recommendations
+      - name: Build knowledge net
+        if: success()
+        run: python lotto_knowledge_net.py
+
+      - name: Commit latest recommendations and knowledge net
         if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f reports/latest_recommendations.json
-          git commit -m "Update latest lotto recommendations" || echo "No recommendation changes"
+          git add -f data/lotto.csv reports/latest_recommendations.json knowledge
+          git commit -m "Update latest lotto recommendations and knowledge net" || echo "No recommendation changes"
           git push
 
       - name: Upload report artifact

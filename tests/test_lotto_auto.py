@@ -59,6 +59,27 @@ class LottoAutoTests(unittest.TestCase):
         )
         self.assertEqual(set(combos[0].parts), {"number", "sum", "odd_even"})
 
+    def test_knowledge_net_factor_adds_number_and_combo_scores(self):
+        ranked, diagnostics = self.analyzer.number_scores(
+            date(2026, 6, 18),
+            window=20,
+            enabled_factors=["knowledge"],
+        )
+        self.assertEqual(diagnostics["enabled_number_factors"], ("knowledge",))
+        self.assertIn("knowledge", ranked[0].factors)
+        self.assertIn("knowledge_insights", diagnostics)
+
+        combos = self.analyzer.generate_combinations(
+            ranked,
+            target=date(2026, 6, 18),
+            count=2,
+            candidates=500,
+            seed=18,
+            combo_factors=["knowledge_net"],
+        )
+        self.assertEqual(set(combos[0].parts), {"knowledge_net"})
+        self.assertGreaterEqual(combos[0].parts["knowledge_net"], 0)
+
     def test_ticket_grid_coordinates_use_real_lotto_paper_layout(self):
         self.assertEqual(self.analyzer.coord(1), (0, 0))
         self.assertEqual(self.analyzer.coord(7), (6, 0))

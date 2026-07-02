@@ -13,6 +13,12 @@ from pathlib import Path
 from statistics import mean, pstdev
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
+from lotto_knowledge_net import (
+    build_knowledge_metrics,
+    combo_knowledge_points,
+    knowledge_insights,
+)
+
 
 LOTTO_MIN = 1
 LOTTO_MAX = 45
@@ -27,6 +33,7 @@ NUMBER_FACTOR_LABELS = {
     "frequency": "전체빈도",
     "shape": "선패턴",
     "ending": "끝수",
+    "knowledge": "지식그물",
 }
 
 COMBO_FACTOR_LABELS = {
@@ -40,6 +47,7 @@ COMBO_FACTOR_LABELS = {
     "consecutive": "연속수",
     "pair": "동반출현",
     "recent_hot": "최근상위",
+    "knowledge_net": "지식그물",
     "history_penalty": "과거중복감점",
 }
 
@@ -57,6 +65,7 @@ COMBO_FACTOR_MAX_POINTS = {
     "consecutive": 4.0,
     "pair": 4.0,
     "recent_hot": 3.0,
+    "knowledge_net": 6.0,
 }
 
 
@@ -538,6 +547,7 @@ class LottoAnalyzer:
             raise ValueError("At least one number analysis factor must be enabled.")
 
         same_date, same_date_matches = self.same_date_scores(target)
+        knowledge_metrics = build_knowledge_metrics(self.draws, grid_cols=self.grid_cols, recent_window=window)
         raw_sources = {
             "same_date": same_date,
             "skip": self.skip_scores(window=window),
@@ -547,6 +557,7 @@ class LottoAnalyzer:
             "frequency": self.frequency_scores(),
             "shape": self.shape_number_scores(),
             "ending": self.ending_scores(window),
+            "knowledge": knowledge_metrics.number_scores,
         }
         weights = {
             "same_date": 1.25,
@@ -557,6 +568,7 @@ class LottoAnalyzer:
             "frequency": 0.70,
             "shape": 0.85,
             "ending": 0.45,
+            "knowledge": 1.10,
         }
 
         totals = {}
@@ -584,6 +596,7 @@ class LottoAnalyzer:
             "same_date_matches": same_date_matches,
             "top_shapes": self.shape_stats().most_common(5),
             "enabled_number_factors": enabled,
+            "knowledge_insights": knowledge_insights(knowledge_metrics),
         }
         return ranked, diagnostics
 
@@ -620,6 +633,7 @@ class LottoAnalyzer:
         distributions: Dict[str, Counter],
         recent_sum_mean: float,
         recent_sum_std: float,
+        knowledge_metrics,
         enabled_combo_factors: Optional[Sequence[str]] = None,
     ) -> ComboScore:
         enabled = tuple(enabled_combo_factors or DEFAULT_COMBO_FACTORS)
@@ -662,6 +676,8 @@ class LottoAnalyzer:
         hot_count = len(set(combo) & top_recent_numbers)
         hot_part = 3.0 * bucket_score(hot_count, 2.0, 2.0)
 
+        knowledge_part = combo_knowledge_points(combo, knowledge_metrics)
+
         history_penalty = self.history_similarity_penalty(combo)
 
         all_parts = {
@@ -675,6 +691,7 @@ class LottoAnalyzer:
             "consecutive": consecutive_part,
             "pair": pair_part,
             "recent_hot": hot_part,
+            "knowledge_net": knowledge_part,
             "history_penalty": -history_penalty,
         }
         parts = {k: v for k, v in all_parts.items() if k in enabled}
@@ -722,6 +739,7 @@ class LottoAnalyzer:
         shape_counts = self.shape_stats()
         max_shape_count = max(shape_counts.values(), default=1)
         distributions = self.historical_distribution()
+        knowledge_metrics = build_knowledge_metrics(self.draws, grid_cols=self.grid_cols, recent_window=window)
         recent = self.recent_draws(window)
         recent_sums = [d.total for d in recent]
         recent_sum_mean = mean(recent_sums)
@@ -750,6 +768,7 @@ class LottoAnalyzer:
                 distributions,
                 recent_sum_mean,
                 recent_sum_std,
+                knowledge_metrics,
                 combo_factors,
             )
         )
@@ -776,6 +795,7 @@ class LottoAnalyzer:
                     distributions,
                     recent_sum_mean,
                     recent_sum_std,
+                    knowledge_metrics,
                     combo_factors,
                 )
             )
@@ -852,6 +872,16 @@ def print_report(
     for signature, cnt in diagnostics["top_shapes"]:
         print(f"   - {cnt:>3}회: {' > '.join(signature)}", file=output)
     print(file=output)
+
+    knowledge = diagnostics.get("knowledge_insights") or {}
+    if knowledge:
+        print("2-1) 지식그물 핵심 연결", file=output)
+        top_knowledge_numbers = knowledge.get("topNumbers", [])[:6]
+        number_text = ", ".join(f"{item['number']:02d}({item['score']:.1f})" for item in top_knowledge_numbers)
+        print(f"   - 중심 번호: {number_text}", file=output)
+        for item in knowledge.get("recentPatterns", [])[:5]:
+            print(f"   - 최근 패턴: {item['label']} · 최근 {item['count']}회 / 전체 {item['allCount']}회", file=output)
+        print(file=output)
 
     print(f"3) 교차 점수 상위 번호 TOP {top_numbers}", file=output)
     enabled = diagnostics.get("enabled_number_factors", DEFAULT_NUMBER_FACTORS)

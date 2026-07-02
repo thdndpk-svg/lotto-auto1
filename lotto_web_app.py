@@ -23,6 +23,7 @@ from lotto_auto import (
     parse_date,
     print_report,
 )
+from lotto_knowledge_net import write_knowledge_vault
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -64,6 +65,14 @@ MAIN_TECHNIQUES = [
         "description": "조합의 시작 번호가 반복되는 주기와 흐름을 봅니다.",
         "numberFactors": ["front"],
         "comboFactors": ["front"],
+    },
+    {
+        "id": "knowledge",
+        "title": "지식그물",
+        "subtitle": "번호·유형·패턴 연결망",
+        "description": "번호, 동반출현, 최근 패턴, 선 모양을 연결한 지식지도 점수를 반영합니다.",
+        "numberFactors": ["knowledge"],
+        "comboFactors": ["knowledge_net"],
     },
 ]
 
@@ -165,6 +174,7 @@ def analyze_payload(request: dict[str, Any]) -> dict[str, Any]:
         "frontAnchor": front_anchor.__dict__ if front_anchor else None,
         "frontSequenceCandidates": [candidate.__dict__ for candidate in front_sequence_candidates],
         "frontCycleCandidates": [candidate.__dict__ for candidate in front_cycle_candidates],
+        "knowledgeInsights": diagnostics.get("knowledge_insights"),
         "topNumbers": [
             {
                 "rank": index + 1,
@@ -241,6 +251,7 @@ class LottoRequestHandler(BaseHTTPRequestHandler):
                     text=True,
                     capture_output=True,
                 )
+                write_knowledge_vault(load_draws(DATA_PATH), APP_DIR / "knowledge")
                 self.send_json({"ok": True, "latest": latest_payload()})
             elif self.path == "/api/save-report":
                 self.send_json(save_report(str(payload.get("report") or ""), str(payload.get("targetDate") or "latest")))
@@ -359,6 +370,7 @@ INDEX_HTML = r"""<!doctype html>
     .tech-card:nth-child(2) .tech-mark { background: var(--violet); }
     .tech-card:nth-child(3) .tech-mark { background: var(--green); }
     .tech-card:nth-child(4) .tech-mark { background: var(--amber); }
+    .tech-card:nth-child(5) .tech-mark { background: var(--red); }
     .tech-title { font-weight: 800; font-size: 15px; }
     .tech-subtitle { color: var(--muted); font-size: 12px; margin-top: 3px; }
     .tech-desc { color: #4b5563; font-size: 12px; margin-top: 7px; line-height: 1.45; }
@@ -691,6 +703,16 @@ INDEX_HTML = r"""<!doctype html>
       const anchor = result.frontAnchor
         ? `<div class="anchor-box"><strong>공통 앞번호 앵커: ${String(result.frontAnchor.number).padStart(2, "0")}번</strong><p>${result.frontAnchor.reason} · 점수 ${result.frontAnchor.score.toFixed(2)} · 신뢰도 ${(result.frontAnchor.confidence * 100).toFixed(0)}%</p></div>`
         : `<div class="anchor-box"><strong>공통 앞번호 앵커 없음</strong><p>최근 앞번호 순서와 같은 과거 패턴에서 확실한 다음 번호가 잡히지 않아 조합별 점수 방식으로 생성했습니다.</p></div>`;
+      const knowledge = result.knowledgeInsights || {};
+      const knowledgeNumbers = (knowledge.topNumbers || []).slice(0, 6).map(n => `
+        <div class="small-item"><span>${String(n.number).padStart(2, "0")}번 · 전체 ${n.count}회 · 최근 ${n.recentCount}회</span><b>${n.score.toFixed(1)}점</b></div>
+      `).join("") || `<div class="small-item"><span>지식그물 번호 없음</span><b>-</b></div>`;
+      const knowledgePatterns = (knowledge.recentPatterns || []).slice(0, 5).map(p => `
+        <div class="small-item"><span>${p.label}</span><b>${p.count}/${p.allCount}회</b></div>
+      `).join("") || `<div class="small-item"><span>최근 패턴 없음</span><b>-</b></div>`;
+      const knowledgePairs = (knowledge.topPairs || []).slice(0, 5).map(p => `
+        <div class="small-item"><span>${String(p.numbers[0]).padStart(2, "0")} + ${String(p.numbers[1]).padStart(2, "0")}</span><b>${p.count}회</b></div>
+      `).join("") || `<div class="small-item"><span>동반출현 없음</span><b>-</b></div>`;
       const sequences = result.frontSequenceCandidates.slice(0, 5).map(c => `
         <div class="small-item"><span>${c.pattern.map(n => String(n).padStart(2, "0")).join(" → ")} → ${String(c.number).padStart(2, "0")} · ${c.hit_count}/${c.support}회</span><b>${c.score.toFixed(1)}점</b></div>
       `).join("") || `<div class="small-item"><span>같은 순서 패턴 없음</span><b>-</b></div>`;
@@ -703,7 +725,7 @@ INDEX_HTML = r"""<!doctype html>
       const shapes = result.topShapes.map(s => `
         <div class="small-item"><span>${s.signature}</span><b>${s.count}회</b></div>
       `).join("");
-      $("evidence").innerHTML = `${anchor}<b>앞번호 순서 패턴 후보</b>${sequences}<b style="margin-top:10px;display:block">앞번호 간격 참고</b>${cycles}<b style="margin-top:10px;display:block">같은 날짜</b>${same}<b style="margin-top:10px;display:block">선 모양 TOP</b>${shapes}`;
+      $("evidence").innerHTML = `${anchor}<b>지식그물 중심 번호</b>${knowledgeNumbers}<b style="margin-top:10px;display:block">지식그물 최근 패턴</b>${knowledgePatterns}<b style="margin-top:10px;display:block">지식그물 동반출현</b>${knowledgePairs}<b style="margin-top:10px;display:block">앞번호 순서 패턴 후보</b>${sequences}<b style="margin-top:10px;display:block">앞번호 간격 참고</b>${cycles}<b style="margin-top:10px;display:block">같은 날짜</b>${same}<b style="margin-top:10px;display:block">선 모양 TOP</b>${shapes}`;
     }
     async function analyze() {
       const factors = selectedFactors();
