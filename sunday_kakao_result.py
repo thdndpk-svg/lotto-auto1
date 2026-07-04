@@ -6,8 +6,10 @@ import json
 import os
 from pathlib import Path
 
+from lotto_feedback import analyze_and_save_feedback, feedback_kakao_lines
 from lotto_auto import load_draws
 from weekly_kakao_report import (
+    APP_DIR,
     DATA_PATH,
     RECOMMENDATION_PATH,
     refresh_access_token,
@@ -39,8 +41,14 @@ def format_numbers(numbers: list[int], winning: set[int], bonus: int | None) -> 
     return " ".join(parts)
 
 
-def build_result_message(recommendation_path: Path = RECOMMENDATION_PATH) -> str:
+def load_recommendations(recommendation_path: Path = RECOMMENDATION_PATH) -> dict | None:
     if not recommendation_path.exists():
+        return None
+    return json.loads(recommendation_path.read_text(encoding="utf-8"))
+
+
+def build_result_message(recommendations: dict | None, feedback_result: dict | None = None) -> str:
+    if not recommendations:
         return "\n".join(
             [
                 "[로또 추천번호 결과]",
@@ -49,7 +57,6 @@ def build_result_message(recommendation_path: Path = RECOMMENDATION_PATH) -> str
             ]
         )
 
-    recommendations = json.loads(recommendation_path.read_text(encoding="utf-8"))
     draws = load_draws(DATA_PATH)
     latest = draws[-1]
     winning = set(latest.numbers)
@@ -79,6 +86,8 @@ def build_result_message(recommendation_path: Path = RECOMMENDATION_PATH) -> str
     lines.extend(
         [
             "",
+            *(feedback_kakao_lines(feedback_result) if feedback_result else []),
+            "",
             "표시: ★ 당첨번호, ☆ 보너스번호",
             "로또는 독립 시행이라 이 결과는 기록/검증용입니다.",
         ]
@@ -98,7 +107,18 @@ def main() -> int:
     if not args.skip_refresh:
         refresh_lotto_data()
 
-    message = build_result_message()
+    recommendations = load_recommendations()
+    feedback_result = None
+    if recommendations:
+        latest = load_draws(DATA_PATH)[-1]
+        feedback_result = analyze_and_save_feedback(
+            recommendations,
+            latest,
+            vault_dir=APP_DIR / "knowledge",
+        )
+        print(f"Feedback status: {feedback_result['status']}")
+
+    message = build_result_message(recommendations, feedback_result)
     print(message)
 
     if args.dry_run:

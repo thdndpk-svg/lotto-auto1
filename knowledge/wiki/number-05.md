@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-03
-updated: 2026-07-03
+created: 2026-07-04
+updated: 2026-07-04
 sources: ["data/lotto.csv"]
 aliases: ["05", "5번"]
 ---

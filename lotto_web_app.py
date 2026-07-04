@@ -74,6 +74,14 @@ MAIN_TECHNIQUES = [
         "numberFactors": ["knowledge"],
         "comboFactors": ["knowledge_net"],
     },
+    {
+        "id": "feedback",
+        "title": "피드백 보정",
+        "subtitle": "미당첨 원인 오답노트",
+        "description": "지난 추천 결과의 실패원인과 적중요인을 쌓아 다음 조합 점수에 반영합니다.",
+        "numberFactors": ["feedback"],
+        "comboFactors": ["feedback"],
+    },
 ]
 
 
@@ -175,6 +183,7 @@ def analyze_payload(request: dict[str, Any]) -> dict[str, Any]:
         "frontSequenceCandidates": [candidate.__dict__ for candidate in front_sequence_candidates],
         "frontCycleCandidates": [candidate.__dict__ for candidate in front_cycle_candidates],
         "knowledgeInsights": diagnostics.get("knowledge_insights"),
+        "feedbackSummary": diagnostics.get("feedback_summary"),
         "topNumbers": [
             {
                 "rank": index + 1,
@@ -371,6 +380,7 @@ INDEX_HTML = r"""<!doctype html>
     .tech-card:nth-child(3) .tech-mark { background: var(--green); }
     .tech-card:nth-child(4) .tech-mark { background: var(--amber); }
     .tech-card:nth-child(5) .tech-mark { background: var(--red); }
+    .tech-card:nth-child(6) .tech-mark { background: #0f766e; }
     .tech-title { font-weight: 800; font-size: 15px; }
     .tech-subtitle { color: var(--muted); font-size: 12px; margin-top: 3px; }
     .tech-desc { color: #4b5563; font-size: 12px; margin-top: 7px; line-height: 1.45; }
@@ -713,6 +723,16 @@ INDEX_HTML = r"""<!doctype html>
       const knowledgePairs = (knowledge.topPairs || []).slice(0, 5).map(p => `
         <div class="small-item"><span>${String(p.numbers[0]).padStart(2, "0")} + ${String(p.numbers[1]).padStart(2, "0")}</span><b>${p.count}회</b></div>
       `).join("") || `<div class="small-item"><span>동반출현 없음</span><b>-</b></div>`;
+      const feedback = result.feedbackSummary || {};
+      const feedbackMeta = feedback.observationCount
+        ? `<div class="anchor-box"><strong>피드백 학습 ${feedback.observationCount}회</strong><p>최근 평균 일치 ${Number(feedback.recentAverageMatch || 0).toFixed(2)}개 · 마지막 갱신 ${feedback.updatedAt || "-"}</p></div>`
+        : `<div class="anchor-box"><strong>피드백 학습 대기</strong><p>일요일 결과 비교가 한 번 이상 쌓이면 실패원인과 적중요인이 다음 분석에 반영됩니다.</p></div>`;
+      const feedbackFactors = (feedback.topFactors || []).slice(0, 5).map(f => `
+        <div class="small-item"><span>${f.label}</span><b>${Number(f.bias).toFixed(3)}</b></div>
+      `).join("") || `<div class="small-item"><span>보정 기법 없음</span><b>-</b></div>`;
+      const feedbackNumbers = (feedback.topNumbers || []).slice(0, 6).map(n => `
+        <div class="small-item"><span>${String(n.number).padStart(2, "0")}번</span><b>${Number(n.bias).toFixed(3)}</b></div>
+      `).join("") || `<div class="small-item"><span>보정 번호 없음</span><b>-</b></div>`;
       const sequences = result.frontSequenceCandidates.slice(0, 5).map(c => `
         <div class="small-item"><span>${c.pattern.map(n => String(n).padStart(2, "0")).join(" → ")} → ${String(c.number).padStart(2, "0")} · ${c.hit_count}/${c.support}회</span><b>${c.score.toFixed(1)}점</b></div>
       `).join("") || `<div class="small-item"><span>같은 순서 패턴 없음</span><b>-</b></div>`;
@@ -725,7 +745,7 @@ INDEX_HTML = r"""<!doctype html>
       const shapes = result.topShapes.map(s => `
         <div class="small-item"><span>${s.signature}</span><b>${s.count}회</b></div>
       `).join("");
-      $("evidence").innerHTML = `${anchor}<b>지식그물 중심 번호</b>${knowledgeNumbers}<b style="margin-top:10px;display:block">지식그물 최근 패턴</b>${knowledgePatterns}<b style="margin-top:10px;display:block">지식그물 동반출현</b>${knowledgePairs}<b style="margin-top:10px;display:block">앞번호 순서 패턴 후보</b>${sequences}<b style="margin-top:10px;display:block">앞번호 간격 참고</b>${cycles}<b style="margin-top:10px;display:block">같은 날짜</b>${same}<b style="margin-top:10px;display:block">선 모양 TOP</b>${shapes}`;
+      $("evidence").innerHTML = `${anchor}${feedbackMeta}<b>피드백 강화 기법</b>${feedbackFactors}<b style="margin-top:10px;display:block">피드백 강화 번호</b>${feedbackNumbers}<b style="margin-top:10px;display:block">지식그물 중심 번호</b>${knowledgeNumbers}<b style="margin-top:10px;display:block">지식그물 최근 패턴</b>${knowledgePatterns}<b style="margin-top:10px;display:block">지식그물 동반출현</b>${knowledgePairs}<b style="margin-top:10px;display:block">앞번호 순서 패턴 후보</b>${sequences}<b style="margin-top:10px;display:block">앞번호 간격 참고</b>${cycles}<b style="margin-top:10px;display:block">같은 날짜</b>${same}<b style="margin-top:10px;display:block">선 모양 TOP</b>${shapes}`;
     }
     async function analyze() {
       const factors = selectedFactors();

@@ -12,6 +12,7 @@ from typing import Any
 
 from import_lotto_history_json import DEFAULT_URL, load_json_from_url, write_standard_csv
 from lotto_auto import LottoAnalyzer, load_draws, print_report
+from lotto_feedback import feedback_summary, load_feedback_memory
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -95,6 +96,7 @@ def save_recommendations(
     candidates: int,
     seed: int | None,
     combos,
+    feedback,
 ) -> Path:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -104,6 +106,7 @@ def save_recommendations(
         "latest_draw_date_at_analysis": latest_draw_date.isoformat(),
         "candidates": candidates,
         "seed": seed,
+        "feedback_snapshot": feedback,
         "combos": [
             {
                 "rank": idx,
@@ -121,8 +124,9 @@ def save_recommendations(
 def build_analysis(target_date: date, candidates: int, seed: int | None) -> tuple[str, str, str]:
     draws = load_draws(DATA_PATH)
     analyzer = LottoAnalyzer(draws)
-    number_factors = ["same_date", "skip", "front", "shape", "recent", "overdue", "frequency", "ending"]
-    combo_factors = ["number", "line_shape", "front", "sum", "odd_even", "low_high", "ending", "consecutive", "pair", "recent_hot", "history_penalty"]
+    feedback = feedback_summary(load_feedback_memory())
+    number_factors = ["same_date", "skip", "front", "shape", "recent", "overdue", "frequency", "ending", "knowledge", "feedback"]
+    combo_factors = ["number", "line_shape", "front", "sum", "odd_even", "low_high", "ending", "consecutive", "pair", "recent_hot", "knowledge_net", "feedback", "history_penalty"]
 
     front_anchor = analyzer.front_anchor_candidate()
     ranked, diagnostics = analyzer.number_scores(
@@ -148,10 +152,14 @@ def build_analysis(target_date: date, candidates: int, seed: int | None) -> tupl
         print_report(DATA_PATH, target_date, analyzer, ranked, diagnostics, combos, top_numbers=15, output=f)
 
     latest = draws[-1]
-    recommendation_path = save_recommendations(target_date, latest.draw_no, latest.draw_date, candidates, seed, combos)
+    recommendation_path = save_recommendations(target_date, latest.draw_no, latest.draw_date, candidates, seed, combos, feedback)
     anchor_text = "없음"
     if front_anchor:
         anchor_text = f"{front_anchor.number:02d}번 ({front_anchor.reason}, {front_anchor.score:.1f}점)"
+    feedback_text = "없음"
+    if feedback.get("observationCount", 0) > 0:
+        top_factors = ", ".join(item["label"] for item in feedback.get("topFactors", [])[:3]) or "보정값"
+        feedback_text = f"{feedback['observationCount']}회 학습 · {top_factors}"
     combo_lines = [
         f"{idx}. " + " ".join(f"{n:02d}" for n in combo.numbers) + f"  {combo.score:.1f}점"
         for idx, combo in enumerate(combos, 1)
@@ -163,6 +171,7 @@ def build_analysis(target_date: date, candidates: int, seed: int | None) -> tupl
             f"최신 데이터: {latest.draw_no}회 {latest.draw_date.isoformat()}",
             "",
             f"앞번호 순서 앵커: {anchor_text}",
+            f"피드백 보정: {feedback_text}",
             "",
             "추천 조합 TOP 5",
             *combo_lines,

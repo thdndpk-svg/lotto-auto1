@@ -6,6 +6,9 @@ on:
     # Korea time Sunday 11:00 = UTC Sunday 02:00
     - cron: "0 2 * * 0"
 
+permissions:
+  contents: write
+
 jobs:
   send-result:
     runs-on: ubuntu-latest
@@ -25,9 +28,20 @@ jobs:
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
         run: python sunday_kakao_result.py
 
+      - name: Commit feedback memory
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/lotto.csv knowledge
+          git commit -m "Update lotto feedback memory" || echo "No feedback changes"
+          git push
+
       - name: Upload recommendation artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lotto-sunday-result
-          path: reports/latest_recommendations.json
+          path: |
+            reports/latest_recommendations.json
+            knowledge/feedback_memory.json

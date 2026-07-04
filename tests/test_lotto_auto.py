@@ -8,6 +8,13 @@ PROJECT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_DIR))
 
 from lotto_auto import Draw, LottoAnalyzer, load_draws  # noqa: E402
+from lotto_feedback import (  # noqa: E402
+    build_feedback_event,
+    default_feedback_memory,
+    feedback_combo_points,
+    feedback_number_scores,
+    update_feedback_memory,
+)
 
 
 class LottoAutoTests(unittest.TestCase):
@@ -79,6 +86,42 @@ class LottoAutoTests(unittest.TestCase):
         )
         self.assertEqual(set(combos[0].parts), {"knowledge_net"})
         self.assertGreaterEqual(combos[0].parts["knowledge_net"], 0)
+
+    def test_feedback_memory_records_failure_and_adjusts_scores(self):
+        recommendations = {
+            "generated_at": "2026-06-18T12:00:00",
+            "target_date": "2026-06-18",
+            "latest_draw_no_at_analysis": 10,
+            "combos": [
+                {
+                    "rank": 1,
+                    "numbers": [1, 2, 3, 4, 5, 6],
+                    "score": 90,
+                    "parts": {"number": 40, "sum": 8, "odd_even": 7, "feedback": 0},
+                },
+                {
+                    "rank": 2,
+                    "numbers": [7, 8, 9, 10, 11, 12],
+                    "score": 80,
+                    "parts": {"number": 35, "sum": 6, "odd_even": 5, "feedback": 0},
+                },
+            ],
+        }
+        draw = Draw(
+            draw_no=11,
+            draw_date=date(2026, 6, 21),
+            numbers=(1, 8, 20, 27, 34, 45),
+            bonus=12,
+        )
+        event = build_feedback_event(recommendations, draw)
+        memory = update_feedback_memory(default_feedback_memory(), event)
+        self.assertEqual(memory["observation_count"], 1)
+        self.assertIn("1", memory["number_bias"])
+        self.assertIn("feedback", memory["factor_bias"])
+
+        number_scores = feedback_number_scores([1, 2, 20], memory)
+        self.assertGreater(number_scores[1], number_scores[2])
+        self.assertGreater(feedback_combo_points([1, 8, 20, 27, 34, 45], memory), 0)
 
     def test_ticket_grid_coordinates_use_real_lotto_paper_layout(self):
         self.assertEqual(self.analyzer.coord(1), (0, 0))

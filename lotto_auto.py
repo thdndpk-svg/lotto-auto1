@@ -18,6 +18,15 @@ from lotto_knowledge_net import (
     combo_knowledge_points,
     knowledge_insights,
 )
+from lotto_feedback import (
+    adjust_factor_weights,
+    apply_combo_factor_feedback,
+    feedback_combo_points,
+    feedback_number_scores,
+    feedback_summary,
+    has_feedback,
+    load_feedback_memory,
+)
 
 
 LOTTO_MIN = 1
@@ -34,6 +43,7 @@ NUMBER_FACTOR_LABELS = {
     "shape": "선패턴",
     "ending": "끝수",
     "knowledge": "지식그물",
+    "feedback": "피드백학습",
 }
 
 COMBO_FACTOR_LABELS = {
@@ -48,6 +58,7 @@ COMBO_FACTOR_LABELS = {
     "pair": "동반출현",
     "recent_hot": "최근상위",
     "knowledge_net": "지식그물",
+    "feedback": "피드백학습",
     "history_penalty": "과거중복감점",
 }
 
@@ -66,6 +77,7 @@ COMBO_FACTOR_MAX_POINTS = {
     "pair": 4.0,
     "recent_hot": 3.0,
     "knowledge_net": 6.0,
+    "feedback": 5.0,
 }
 
 
@@ -548,6 +560,7 @@ class LottoAnalyzer:
 
         same_date, same_date_matches = self.same_date_scores(target)
         knowledge_metrics = build_knowledge_metrics(self.draws, grid_cols=self.grid_cols, recent_window=window)
+        feedback_memory = load_feedback_memory()
         raw_sources = {
             "same_date": same_date,
             "skip": self.skip_scores(window=window),
@@ -558,6 +571,7 @@ class LottoAnalyzer:
             "shape": self.shape_number_scores(),
             "ending": self.ending_scores(window),
             "knowledge": knowledge_metrics.number_scores,
+            "feedback": feedback_number_scores(self.all_numbers, feedback_memory),
         }
         weights = {
             "same_date": 1.25,
@@ -569,7 +583,9 @@ class LottoAnalyzer:
             "shape": 0.85,
             "ending": 0.45,
             "knowledge": 1.10,
+            "feedback": 0.65,
         }
+        weights = adjust_factor_weights(weights, feedback_memory)
 
         totals = {}
         factor_points: Dict[int, Dict[str, float]] = {}
@@ -597,6 +613,7 @@ class LottoAnalyzer:
             "top_shapes": self.shape_stats().most_common(5),
             "enabled_number_factors": enabled,
             "knowledge_insights": knowledge_insights(knowledge_metrics),
+            "feedback_summary": feedback_summary(feedback_memory),
         }
         return ranked, diagnostics
 
@@ -634,6 +651,7 @@ class LottoAnalyzer:
         recent_sum_mean: float,
         recent_sum_std: float,
         knowledge_metrics,
+        feedback_memory,
         enabled_combo_factors: Optional[Sequence[str]] = None,
     ) -> ComboScore:
         enabled = tuple(enabled_combo_factors or DEFAULT_COMBO_FACTORS)
@@ -677,6 +695,7 @@ class LottoAnalyzer:
         hot_part = 3.0 * bucket_score(hot_count, 2.0, 2.0)
 
         knowledge_part = combo_knowledge_points(combo, knowledge_metrics)
+        feedback_part = feedback_combo_points(combo, feedback_memory)
 
         history_penalty = self.history_similarity_penalty(combo)
 
@@ -692,10 +711,16 @@ class LottoAnalyzer:
             "pair": pair_part,
             "recent_hot": hot_part,
             "knowledge_net": knowledge_part,
+            "feedback": feedback_part,
             "history_penalty": -history_penalty,
         }
+        all_parts = apply_combo_factor_feedback(all_parts, feedback_memory)
         parts = {k: v for k, v in all_parts.items() if k in enabled}
-        max_points = sum(COMBO_FACTOR_MAX_POINTS[k] for k in enabled if k in COMBO_FACTOR_MAX_POINTS)
+        max_points = sum(
+            COMBO_FACTOR_MAX_POINTS[k]
+            for k in enabled
+            if k in COMBO_FACTOR_MAX_POINTS and not (k == "feedback" and not has_feedback(feedback_memory))
+        )
         if max_points <= 0:
             max_points = 1.0
         score = max(0.0, min(100.0, 100.0 * sum(parts.values()) / max_points))
@@ -740,6 +765,7 @@ class LottoAnalyzer:
         max_shape_count = max(shape_counts.values(), default=1)
         distributions = self.historical_distribution()
         knowledge_metrics = build_knowledge_metrics(self.draws, grid_cols=self.grid_cols, recent_window=window)
+        feedback_memory = load_feedback_memory()
         recent = self.recent_draws(window)
         recent_sums = [d.total for d in recent]
         recent_sum_mean = mean(recent_sums)
@@ -769,6 +795,7 @@ class LottoAnalyzer:
                 recent_sum_mean,
                 recent_sum_std,
                 knowledge_metrics,
+                feedback_memory,
                 combo_factors,
             )
         )
@@ -796,6 +823,7 @@ class LottoAnalyzer:
                     recent_sum_mean,
                     recent_sum_std,
                     knowledge_metrics,
+                    feedback_memory,
                     combo_factors,
                 )
             )
@@ -881,6 +909,22 @@ def print_report(
         print(f"   - 중심 번호: {number_text}", file=output)
         for item in knowledge.get("recentPatterns", [])[:5]:
             print(f"   - 최근 패턴: {item['label']} · 최근 {item['count']}회 / 전체 {item['allCount']}회", file=output)
+        print(file=output)
+
+    feedback = diagnostics.get("feedback_summary") or {}
+    if feedback and feedback.get("observationCount", 0) > 0:
+        print("2-2) 피드백 학습", file=output)
+        print(
+            f"   - 누적 결과 분석: {feedback.get('observationCount')}회, "
+            f"최근 평균 일치 {feedback.get('recentAverageMatch'):.2f}개",
+            file=output,
+        )
+        top_feedback_numbers = feedback.get("topNumbers", [])[:6]
+        if top_feedback_numbers:
+            text = ", ".join(f"{item['number']:02d}({item['bias']:+.2f})" for item in top_feedback_numbers)
+            print(f"   - 강화 번호: {text}", file=output)
+        for item in feedback.get("topFactors", [])[:4]:
+            print(f"   - 강화 기법: {item['label']} {item['bias']:+.3f}", file=output)
         print(file=output)
 
     print(f"3) 교차 점수 상위 번호 TOP {top_numbers}", file=output)

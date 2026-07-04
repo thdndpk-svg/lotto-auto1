@@ -1,7 +1,7 @@
 ---
 type: source
-created: 2026-07-03
-updated: 2026-07-03
+created: 2026-07-04
+updated: 2026-07-04
 sources: ["data/lotto.csv"]
 aliases: ["로또 지식그물", "lotto knowledge net"]
 ---
@@ -49,3 +49,7 @@ aliases: ["로또 지식그물", "lotto knowledge net"]
 
 ## 열린 질문
 - 특정 패턴이 실제 다음 회차 적중률을 높이는지 백테스트로 계속 검증해야 한다.
+
+## 피드백 학습
+- [[feedback-learning-summary]]
+- [[feedback-latest-result]]
