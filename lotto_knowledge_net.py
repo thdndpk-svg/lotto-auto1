@@ -230,22 +230,26 @@ def combo_knowledge_points(
     combo: Sequence[int],
     metrics: KnowledgeMetrics,
     max_points: float = 6.0,
+    context: dict[str, float] | None = None,
 ) -> float:
     numbers = tuple(sorted(int(n) for n in combo))
-    avg_number = mean(metrics.number_scores.get(n, 0.0) for n in numbers) / 100.0
+    avg_number = (sum(metrics.number_scores.get(n, 0.0) for n in numbers) / len(numbers)) / 100.0
 
-    pair_high = max(metrics.pair_counts.values(), default=1)
+    context = context or {}
+    pair_high = float(context.get("pair_high") or max(metrics.pair_counts.values(), default=1))
     pair_scores = [
         safe_ratio(metrics.pair_counts[tuple(sorted(pair))], pair_high)
         for pair in combinations(numbers, 2)
     ]
-    pair_part = mean(pair_scores) if pair_scores else 0.0
+    pair_part = sum(pair_scores) / len(pair_scores) if pair_scores else 0.0
 
-    pattern_high = max(metrics.pattern_counts.values(), default=1)
-    recent_pattern_high = max(metrics.recent_pattern_counts.values(), default=1)
+    pattern_high = float(context.get("pattern_high") or max(metrics.pattern_counts.values(), default=1))
+    recent_pattern_high = float(
+        context.get("recent_pattern_high") or max(metrics.recent_pattern_counts.values(), default=1)
+    )
     patterns = pattern_nodes(numbers, metrics.grid_cols)
-    pattern_part = mean(safe_ratio(metrics.pattern_counts[p], pattern_high) for p in patterns)
-    recent_part = mean(safe_ratio(metrics.recent_pattern_counts[p], recent_pattern_high) for p in patterns)
+    pattern_part = sum(safe_ratio(metrics.pattern_counts[p], pattern_high) for p in patterns) / len(patterns)
+    recent_part = sum(safe_ratio(metrics.recent_pattern_counts[p], recent_pattern_high) for p in patterns) / len(patterns)
 
     score = max_points * (
         avg_number * 0.38

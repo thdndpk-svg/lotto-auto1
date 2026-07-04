@@ -107,6 +107,8 @@ python3 weekly_kakao_report.py --dry-run --skip-refresh
 
 일요일 워크플로는 수요일 추천번호와 최신 당첨번호를 비교한 뒤 `knowledge/feedback_memory.json`에 실패원인과 적중요인을 저장합니다. 이 오답노트는 다음 수요일 추천의 번호 점수, 기법별 가중치, 조합 점수에 `피드백학습` 항목으로 반영됩니다.
 
+맥 앱과 GitHub Actions 자동분석 모두 기본 후보 조합 수는 `20,000`개입니다. 정밀 분석이 필요할 때만 수동 실행에서 `--candidates` 값을 올리면 됩니다.
+
 일요일 결과 카톡 dry-run:
 
 ```bash
@@ -175,7 +177,7 @@ knowledge/wiki/feedback-latest-result.md
 
 ```bash
 python3 lotto_auto.py --data data/lotto.csv --target-date 2026-06-18
-python3 lotto_auto.py --recent-window 20 --candidates 100000 --pool-size 32
+python3 lotto_auto.py --recent-window 20 --candidates 20000 --pool-size 32
 python3 lotto_auto.py --count 10 --top-numbers 20 --seed 777
 ```
 

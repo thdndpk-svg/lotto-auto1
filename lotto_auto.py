@@ -521,14 +521,20 @@ class LottoAnalyzer:
         signature: Tuple[str, ...],
         shape_counts: Counter,
         max_shape_count: int,
+        top_shape_profiles: Optional[Sequence[Tuple[Tuple[str, ...], float]]] = None,
         top_n: int = 12,
     ) -> float:
         if not shape_counts:
             return 0.0
         best = 0.0
-        for known_signature, count in shape_counts.most_common(top_n):
+        profiles = top_shape_profiles
+        if profiles is None:
+            profiles = [
+                (known_signature, 0.40 + 0.60 * safe_ratio(count, max_shape_count))
+                for known_signature, count in shape_counts.most_common(top_n)
+            ]
+        for known_signature, frequency_boost in profiles:
             similarity = self.shape_similarity(signature, known_signature)
-            frequency_boost = 0.40 + 0.60 * safe_ratio(count, max_shape_count)
             best = max(best, similarity * frequency_boost)
         return 12.0 * best
 
@@ -647,10 +653,14 @@ class LottoAnalyzer:
         max_pair_count: int,
         shape_counts: Counter,
         max_shape_count: int,
+        top_shape_profiles: Sequence[Tuple[Tuple[str, ...], float]],
         distributions: Dict[str, Counter],
+        distribution_highs: Dict[str, int],
         recent_sum_mean: float,
         recent_sum_std: float,
+        historical_index: Dict[str, set[Tuple[int, ...]]],
         knowledge_metrics,
+        knowledge_context: Dict[str, float],
         feedback_memory,
         enabled_combo_factors: Optional[Sequence[str]] = None,
     ) -> ComboScore:
@@ -660,10 +670,10 @@ class LottoAnalyzer:
             raise ValueError("At least one combination scoring factor must be enabled.")
 
         combo = tuple(sorted(combo))
-        number_part = mean(number_score_map[n] for n in combo) * 0.45
+        number_part = (sum(number_score_map[n] for n in combo) / len(combo)) * 0.45
 
         signature = self.shape_signature(combo)
-        shape_part = self.shape_combo_points(signature, shape_counts, max_shape_count)
+        shape_part = self.shape_combo_points(signature, shape_counts, max_shape_count, top_shape_profiles)
 
         first = combo[0]
         front_part = 8.0 * safe_ratio(front_scores.get(first, 0.0), 100.0)
@@ -677,15 +687,15 @@ class LottoAnalyzer:
         ending_dup = PICK_COUNT - len({n % 10 for n in combo})
         consecutive = self.consecutive_count(combo)
 
-        odd_part = 7.0 * safe_ratio(distributions["odd"][odd_count], max(distributions["odd"].values()))
-        low_part = 5.0 * safe_ratio(distributions["low"][low_count], max(distributions["low"].values()))
+        odd_part = 7.0 * safe_ratio(distributions["odd"][odd_count], distribution_highs["odd"])
+        low_part = 5.0 * safe_ratio(distributions["low"][low_count], distribution_highs["low"])
         ending_part = 5.0 * safe_ratio(
             distributions["ending_dup"][ending_dup],
-            max(distributions["ending_dup"].values()),
+            distribution_highs["ending_dup"],
         )
         consecutive_part = 4.0 * safe_ratio(
             distributions["consecutive"][consecutive],
-            max(distributions["consecutive"].values()),
+            distribution_highs["consecutive"],
         )
 
         pair_total = sum(pair_counts[pair] for pair in combinations(combo, 2))
@@ -694,10 +704,10 @@ class LottoAnalyzer:
         hot_count = len(set(combo) & top_recent_numbers)
         hot_part = 3.0 * bucket_score(hot_count, 2.0, 2.0)
 
-        knowledge_part = combo_knowledge_points(combo, knowledge_metrics)
+        knowledge_part = combo_knowledge_points(combo, knowledge_metrics, context=knowledge_context)
         feedback_part = feedback_combo_points(combo, feedback_memory)
 
-        history_penalty = self.history_similarity_penalty(combo)
+        history_penalty = self.history_similarity_penalty(combo, historical_index)
 
         all_parts = {
             "number": number_part,
@@ -726,12 +736,24 @@ class LottoAnalyzer:
         score = max(0.0, min(100.0, 100.0 * sum(parts.values()) / max_points))
         return ComboScore(combo, round(score, 2), {k: round(v, 2) for k, v in parts.items()})
 
-    def history_similarity_penalty(self, combo: Sequence[int]) -> float:
-        combo_set = set(combo)
-        best_overlap = max(len(combo_set & set(d.numbers)) for d in self.draws)
-        if best_overlap >= 6:
+    def history_similarity_penalty(
+        self,
+        combo: Sequence[int],
+        historical_index: Optional[Dict[str, set[Tuple[int, ...]]]] = None,
+    ) -> float:
+        combo_tuple = tuple(sorted(combo))
+        if historical_index is None:
+            historical_full = {tuple(sorted(d.numbers)) for d in self.draws}
+            historical_fives = {
+                tuple(five)
+                for draw in self.draws
+                for five in combinations(tuple(sorted(draw.numbers)), PICK_COUNT - 1)
+            }
+            historical_index = {"full": historical_full, "fives": historical_fives}
+
+        if combo_tuple in historical_index["full"]:
             return 18.0
-        if best_overlap == 5:
+        if any(tuple(five) in historical_index["fives"] for five in combinations(combo_tuple, PICK_COUNT - 1)):
             return 8.0
         return 0.0
 
@@ -763,9 +785,30 @@ class LottoAnalyzer:
         max_pair_count = max(pair_counts.values(), default=1)
         shape_counts = self.shape_stats()
         max_shape_count = max(shape_counts.values(), default=1)
+        top_shape_profiles = [
+            (known_signature, 0.40 + 0.60 * safe_ratio(count, max_shape_count))
+            for known_signature, count in shape_counts.most_common(12)
+        ]
         distributions = self.historical_distribution()
+        distribution_highs = {
+            key: max(counter.values(), default=1)
+            for key, counter in distributions.items()
+        }
         knowledge_metrics = build_knowledge_metrics(self.draws, grid_cols=self.grid_cols, recent_window=window)
+        knowledge_context = {
+            "pair_high": max(knowledge_metrics.pair_counts.values(), default=1),
+            "pattern_high": max(knowledge_metrics.pattern_counts.values(), default=1),
+            "recent_pattern_high": max(knowledge_metrics.recent_pattern_counts.values(), default=1),
+        }
         feedback_memory = load_feedback_memory()
+        historical_index = {
+            "full": {tuple(sorted(d.numbers)) for d in self.draws},
+            "fives": {
+                tuple(five)
+                for draw in self.draws
+                for five in combinations(tuple(sorted(draw.numbers)), PICK_COUNT - 1)
+            },
+        }
         recent = self.recent_draws(window)
         recent_sums = [d.total for d in recent]
         recent_sum_mean = mean(recent_sums)
@@ -791,10 +834,14 @@ class LottoAnalyzer:
                 max_pair_count,
                 shape_counts,
                 max_shape_count,
+                top_shape_profiles,
                 distributions,
+                distribution_highs,
                 recent_sum_mean,
                 recent_sum_std,
+                historical_index,
                 knowledge_metrics,
+                knowledge_context,
                 feedback_memory,
                 combo_factors,
             )
@@ -819,10 +866,14 @@ class LottoAnalyzer:
                     max_pair_count,
                     shape_counts,
                     max_shape_count,
+                    top_shape_profiles,
                     distributions,
+                    distribution_highs,
                     recent_sum_mean,
                     recent_sum_std,
+                    historical_index,
                     knowledge_metrics,
+                    knowledge_context,
                     feedback_memory,
                     combo_factors,
                 )

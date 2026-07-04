@@ -186,7 +186,7 @@ def build_analysis(target_date: date, candidates: int, seed: int | None) -> tupl
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Weekly LottoAuto Kakao sender.")
     parser.add_argument("--target-date", default=date.today().isoformat())
-    parser.add_argument("--candidates", type=int, default=50000)
+    parser.add_argument("--candidates", type=int, default=20000)
     parser.add_argument("--seed", type=int, default=18)
     parser.add_argument("--dry-run", action="store_true", help="Print message without sending KakaoTalk.")
     parser.add_argument("--skip-refresh", action="store_true", help="Do not refresh lotto.csv before analysis.")

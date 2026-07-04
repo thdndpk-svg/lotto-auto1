@@ -128,8 +128,8 @@ def latest_payload() -> dict[str, Any]:
 
 def analyze_payload(request: dict[str, Any]) -> dict[str, Any]:
     target = parse_date(str(request.get("targetDate") or time.strftime("%Y-%m-%d")))
-    candidates = int(request.get("candidates") or 50000)
-    candidates = max(1000, min(candidates, 200000))
+    candidates = int(request.get("candidates") or 20000)
+    candidates = max(1000, min(candidates, 60000))
     seed_raw = str(request.get("seed") or "").strip()
     seed = int(seed_raw) if seed_raw else None
     number_factors = request.get("numberFactors") or list(DEFAULT_NUMBER_FACTORS)
@@ -266,8 +266,13 @@ class LottoRequestHandler(BaseHTTPRequestHandler):
                 self.send_json(save_report(str(payload.get("report") or ""), str(payload.get("targetDate") or "latest")))
             else:
                 self.send_error(404)
+        except BrokenPipeError:
+            return
         except Exception as exc:
-            self.send_json({"ok": False, "error": str(exc)}, status=500)
+            try:
+                self.send_json({"ok": False, "error": str(exc)}, status=500)
+            except BrokenPipeError:
+                return
 
     def read_json(self) -> dict[str, Any]:
         length = int(self.headers.get("Content-Length") or 0)
@@ -534,7 +539,7 @@ INDEX_HTML = r"""<!doctype html>
         <div>
           <div class="section-title"><h2>분석 설정</h2><span>원하는 조건만 켜기</span></div>
           <label class="field">기준일<input id="targetDate" type="text"></label>
-          <label class="field">후보 조합 수<input id="candidates" type="number" value="50000" min="1000" max="200000" step="1000"></label>
+          <label class="field">후보 조합 수<input id="candidates" type="number" value="20000" min="1000" max="60000" step="1000"></label>
           <label class="field">시드<input id="seed" type="text" value="18"></label>
         </div>
 
@@ -755,7 +760,7 @@ INDEX_HTML = r"""<!doctype html>
       try {
         const result = await postJson("/api/analyze", {
           targetDate: $("targetDate").value,
-          candidates: Number($("candidates").value || 50000),
+          candidates: Number($("candidates").value || 20000),
           seed: $("seed").value,
           numberFactors: factors.numberFactors,
           comboFactors: factors.comboFactors

@@ -2,6 +2,11 @@ name: Lotto Kakao Weekly
 
 on:
   workflow_dispatch:
+    inputs:
+      candidates:
+        description: "후보 조합 수"
+        required: false
+        default: "20000"
   schedule:
     # Korea time Wednesday 12:00 = UTC Wednesday 03:00
     - cron: "0 3 * * 3"
@@ -26,7 +31,8 @@ jobs:
           KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
           KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
-        run: python weekly_kakao_report.py
+          LOTTO_CANDIDATES: ${{ github.event.inputs.candidates || '20000' }}
+        run: python weekly_kakao_report.py --candidates "$LOTTO_CANDIDATES"
 
       - name: Build knowledge net
         if: success()
