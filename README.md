@@ -76,6 +76,26 @@ http://127.0.0.1:8765/
 - 상세 리포트 패널과 저장
 - 데이터 갱신
 
+## 휴대폰용 웹 앱
+
+GitHub Pages를 켜면 휴대폰에서 아래 주소로 접속할 수 있습니다.
+
+```text
+https://thdndpk-svg.github.io/lotto-auto1/
+```
+
+휴대폰용 페이지는 `index.html`과 `assets/mobile.js`로 구성됩니다. `data/lotto.csv`, `reports/latest_recommendations.json`, `knowledge/feedback_memory.json`을 읽어 최신 당첨번호, 저장 추천번호, 모바일 간편 분석 결과를 표시합니다.
+
+Pages 설정:
+
+```text
+Settings > Pages > Build and deployment > Deploy from a branch
+Branch: main
+Folder: /root
+```
+
+무료 GitHub Pages를 쓰려면 저장소가 Public이어야 합니다.
+
 ## 카카오톡 자동 전송
 
 GitHub Actions를 이용해 매주 수요일 12:00(KST)에 분석 결과를 카카오톡 `나와의 채팅`으로 보낼 수 있습니다.
