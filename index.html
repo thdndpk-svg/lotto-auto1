@@ -113,6 +113,39 @@
       background: var(--accent);
     }
 
+    .quick-panel {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 14px;
+    }
+
+    .quick-title {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .quick-title h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.15;
+    }
+
+    .quick-title span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      min-width: 210px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: 1.1fr .9fr;
@@ -222,7 +255,7 @@
       font-size: 12px;
     }
 
-    input {
+    input:not([type="checkbox"]) {
       width: 100%;
       min-height: 42px;
       padding: 0 11px;
@@ -252,6 +285,71 @@
     }
 
     .btn:disabled { opacity: .55; cursor: wait; }
+
+    .mini-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mini-btn {
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .method-section {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .method-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .method-toggle {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #11151a;
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .method-toggle.main {
+      border-color: rgba(61, 220, 151, .42);
+      background: rgba(61, 220, 151, .08);
+    }
+
+    .method-toggle input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      flex: 0 0 auto;
+    }
 
     .tabs {
       display: flex;
@@ -432,10 +530,14 @@
 
     @media (max-width: 840px) {
       .app { padding-left: 10px; padding-right: 10px; }
+      .quick-panel { grid-template-columns: 1fr; }
+      .quick-actions { min-width: 0; width: 100%; }
       .grid { grid-template-columns: 1fr; }
+      .settings-panel { order: -1; }
       .topbar { align-items: flex-start; }
       .status { font-size: 11px; }
       .controls, .actions, .metric-grid { grid-template-columns: 1fr; }
+      .method-grid { grid-template-columns: 1fr; }
       .latest-main { grid-template-columns: 1fr; }
       .draw-badge { width: 100%; height: 62px; }
       .ball { width: 35px; height: 35px; font-size: 13px; }
@@ -458,8 +560,19 @@
       </div>
     </header>
 
+    <section class="panel quick-panel">
+      <div class="quick-title">
+        <h2>수동 분석</h2>
+        <span id="methodSummary">기법 준비 중</span>
+      </div>
+      <div class="quick-actions">
+        <button class="btn primary" id="quickAnalyzeBtn">분석 실행</button>
+        <button class="btn" id="quickReloadBtn">데이터 갱신</button>
+      </div>
+    </section>
+
     <section class="grid">
-      <div class="panel">
+      <div class="panel latest-panel">
         <div class="panel-head">
           <h2>최신 회차</h2>
           <span id="latestMeta">-</span>
@@ -473,7 +586,7 @@
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel settings-panel">
         <div class="panel-head">
           <h2>분석 설정</h2>
           <span id="analysisState">준비</span>
@@ -488,6 +601,40 @@
           <div class="actions">
             <button class="btn primary" id="analyzeBtn">분석 실행</button>
             <button class="btn" id="reloadBtn">데이터 갱신</button>
+          </div>
+          <div class="mini-actions">
+            <button class="mini-btn" id="corePresetBtn">핵심만</button>
+            <button class="mini-btn" id="allPresetBtn">전체 선택</button>
+            <button class="mini-btn" id="clearPresetBtn">전체 해제</button>
+          </div>
+          <div class="method-section">
+            <div class="method-head">
+              <strong>메인 기법</strong>
+              <span>고정 신호 우선</span>
+            </div>
+            <div class="method-grid">
+              <label class="method-toggle main"><input type="checkbox" data-method="same_date" checked><span>같은 날짜</span></label>
+              <label class="method-toggle main"><input type="checkbox" data-method="cross_score" checked><span>교차 점수</span></label>
+              <label class="method-toggle main"><input type="checkbox" data-method="skip" checked><span>건너뛰기</span></label>
+              <label class="method-toggle main"><input type="checkbox" data-method="front" checked><span>앞번호</span></label>
+              <label class="method-toggle main"><input type="checkbox" data-method="line_shape" checked><span>로또용지 선패턴</span></label>
+            </div>
+          </div>
+          <div class="method-section">
+            <div class="method-head">
+              <strong>보조 통계</strong>
+              <span>조합 균형</span>
+            </div>
+            <div class="method-grid">
+              <label class="method-toggle"><input type="checkbox" data-method="recent" checked><span>최근 흐름</span></label>
+              <label class="method-toggle"><input type="checkbox" data-method="sum" checked><span>번호합</span></label>
+              <label class="method-toggle"><input type="checkbox" data-method="odd_even" checked><span>홀짝</span></label>
+              <label class="method-toggle"><input type="checkbox" data-method="low_high" checked><span>저고</span></label>
+              <label class="method-toggle"><input type="checkbox" data-method="ending" checked><span>끝수</span></label>
+              <label class="method-toggle"><input type="checkbox" data-method="consecutive" checked><span>연속수</span></label>
+              <label class="method-toggle"><input type="checkbox" data-method="pair" checked><span>동반번호</span></label>
+              <label class="method-toggle"><input type="checkbox" data-method="feedback" checked><span>피드백 학습</span></label>
+            </div>
           </div>
           <div class="notice" id="notice">로또 추첨은 독립 시행입니다. 결과는 데이터 기반 참고값입니다.</div>
         </div>
@@ -527,6 +674,6 @@
       </div>
     </section>
   </main>
-  <script src="assets/mobile.js?v=20260707"></script>
+  <script src="assets/mobile.js?v=20260707-2"></script>
 </body>
 </html>

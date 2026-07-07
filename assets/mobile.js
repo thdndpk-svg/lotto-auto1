@@ -16,6 +16,26 @@ const PART_LABELS = {
   history_penalty: "과거"
 };
 
+const METHOD_STORAGE_KEY = "lotto-auto-mobile-methods-v2";
+const CORE_METHODS = ["same_date", "cross_score", "skip", "front", "line_shape"];
+const METHOD_LABELS = {
+  same_date: "같은 날짜",
+  cross_score: "교차 점수",
+  skip: "건너뛰기",
+  front: "앞번호",
+  line_shape: "선패턴",
+  recent: "최근",
+  sum: "번호합",
+  odd_even: "홀짝",
+  low_high: "저고",
+  ending: "끝수",
+  consecutive: "연속수",
+  pair: "동반",
+  feedback: "피드백"
+};
+const DEFAULT_METHODS = Object.fromEntries(Object.keys(METHOD_LABELS).map((key) => [key, true]));
+const NUMBER_METHODS = ["same_date", "cross_score", "skip", "front", "recent", "ending", "feedback"];
+
 const state = {
   draws: [],
   recommendations: null,
@@ -35,6 +55,80 @@ function todayLocal() {
 
 function setStatus(text) {
   $("statusText").textContent = text;
+}
+
+function methodEnabled(methods, key) {
+  return methods?.[key] !== false;
+}
+
+function selectedMethodCount(methods) {
+  return Object.keys(METHOD_LABELS).filter((key) => methodEnabled(methods, key)).length;
+}
+
+function numberMethodsActive(methods) {
+  return NUMBER_METHODS.some((key) => methodEnabled(methods, key));
+}
+
+function readSavedMethods() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(METHOD_STORAGE_KEY) || "{}");
+    return { ...DEFAULT_METHODS, ...saved };
+  } catch (_) {
+    return { ...DEFAULT_METHODS };
+  }
+}
+
+function methodCheckboxes() {
+  return [...document.querySelectorAll("[data-method]")];
+}
+
+function getMethodSettings() {
+  const methods = { ...DEFAULT_METHODS };
+  methodCheckboxes().forEach((input) => {
+    methods[input.dataset.method] = input.checked;
+  });
+  return methods;
+}
+
+function saveMethodSettings() {
+  try {
+    localStorage.setItem(METHOD_STORAGE_KEY, JSON.stringify(getMethodSettings()));
+  } catch (_) {
+    // Some mobile private browsing modes block localStorage.
+  }
+}
+
+function updateMethodSummary() {
+  const methods = getMethodSettings();
+  const coreCount = CORE_METHODS.filter((key) => methodEnabled(methods, key)).length;
+  const total = selectedMethodCount(methods);
+  const activeNames = Object.keys(METHOD_LABELS)
+    .filter((key) => methodEnabled(methods, key))
+    .slice(0, 4)
+    .map((key) => METHOD_LABELS[key])
+    .join(" · ");
+  $("methodSummary").textContent = total
+    ? `${total}개 선택 · 핵심 ${coreCount}개 · ${activeNames}`
+    : "기법 선택 필요";
+}
+
+function applyMethodSettings(methods) {
+  const merged = { ...DEFAULT_METHODS, ...methods };
+  methodCheckboxes().forEach((input) => {
+    input.checked = methodEnabled(merged, input.dataset.method);
+  });
+  saveMethodSettings();
+  updateMethodSummary();
+}
+
+function setPreset(mode) {
+  if (mode === "core") {
+    applyMethodSettings(Object.fromEntries(Object.keys(METHOD_LABELS).map((key) => [key, CORE_METHODS.includes(key)])));
+  } else if (mode === "all") {
+    applyMethodSettings({ ...DEFAULT_METHODS });
+  } else if (mode === "clear") {
+    applyMethodSettings(Object.fromEntries(Object.keys(METHOD_LABELS).map((key) => [key, false])));
+  }
 }
 
 function ballClass(number) {
@@ -132,6 +226,27 @@ function shapeSignature(numbers) {
   return moves.join(">");
 }
 
+function detectFrontSignal(draws = state.draws) {
+  const fronts = draws.map((draw) => Math.min(...draw.numbers)).filter(Number.isFinite);
+  for (const windowSize of [4, 3]) {
+    if (fronts.length <= windowSize + 2) continue;
+    const current = fronts.slice(-windowSize).join(":");
+    const nexts = [];
+    for (let start = 0; start <= fronts.length - windowSize - 2; start += 1) {
+      const pattern = fronts.slice(start, start + windowSize).join(":");
+      if (pattern === current) nexts.push(fronts[start + windowSize]);
+    }
+    if (!nexts.length) continue;
+    const counts = [...buildCounter(nexts).entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);
+    const [number, count] = counts[0];
+    const confidence = count / nexts.length;
+    if (count >= 2 && confidence >= 0.67) {
+      return { number, confidence, observations: nexts.length, windowSize };
+    }
+  }
+  return null;
+}
+
 function ticketPattern(numbers) {
   const selected = new Set(numbers.map(Number));
   const sorted = [...numbers].sort((a, b) => a - b);
@@ -156,8 +271,9 @@ function ticketPattern(numbers) {
 }
 
 function partRows(parts = {}) {
-  return Object.entries(parts)
+  const rows = Object.entries(parts)
     .filter(([key]) => key !== "history_penalty")
+    .filter(([, value]) => Math.abs(Number(value) || 0) > 0.01)
     .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
     .slice(0, 5)
     .map(([key, value]) => {
@@ -170,6 +286,7 @@ function partRows(parts = {}) {
         </div>
       `;
     }).join("");
+  return rows || `<div class="notice">선택 점수 항목이 없습니다.</div>`;
 }
 
 function renderCombos(target, combos) {
@@ -259,7 +376,7 @@ function weightedSample(pool, weights, k, random) {
   return result;
 }
 
-function analyzeNumbers(targetDate) {
+function analyzeNumbers(targetDate, methods = getMethodSettings()) {
   const draws = state.draws;
   const recent = draws.slice(-20);
   const sameDate = draws.filter((draw) => draw.date.slice(5) === targetDate.slice(5));
@@ -313,23 +430,21 @@ function analyzeNumbers(targetDate) {
     });
     const feedbackBias = state.feedback?.number_bias?.[String(number)] || 0;
     const feedback = Math.max(0, Math.min(30, 15 + feedbackBias * 24));
-    const total = (
-      frequency * 0.16 +
-      recentScore * 0.18 +
-      sameScore * 0.16 +
-      skip * 0.20 +
-      front * 0.12 +
-      ending * 0.09 +
-      feedback * 0.09
-    );
-    const factors = [
-      ["최근", recentScore],
-      ["건너", skip],
-      ["같은날", sameScore],
-      ["빈도", frequency],
-      ["앞번호", front],
-      ["끝수", ending]
-    ].sort((a, b) => b[1] - a[1]).slice(0, 3);
+    const activeFactors = [
+      ["recent", "최근", recentScore, 0.18],
+      ["skip", "건너", skip, 0.20],
+      ["same_date", "같은날", sameScore, 0.16],
+      ["cross_score", "빈도", frequency, 0.16],
+      ["front", "앞번호", front, 0.12],
+      ["ending", "끝수", ending, 0.09],
+      ["feedback", "피드백", feedback, 0.09]
+    ].filter(([key]) => methodEnabled(methods, key));
+    const fallbackFactors = activeFactors.length ? activeFactors : [["cross_score", "빈도", frequency, 0.16]];
+    const total = fallbackFactors.reduce((acc, [, , value, weight]) => acc + value * weight, 0);
+    const factors = fallbackFactors
+      .map(([, label, value]) => [label, value])
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3);
     scores.push({ number, score: total, factors });
   }
   scores.sort((a, b) => b.score - a.score || a.number - b.number);
@@ -381,27 +496,44 @@ function shapeSimilarity(left, right) {
 
 function comboScore(combo, context) {
   const scoreMap = context.scoreMap;
+  const methods = context.methods || DEFAULT_METHODS;
   const sum = combo.reduce((acc, value) => acc + value, 0);
   const odd = combo.filter((n) => n % 2).length;
   const low = combo.filter((n) => n <= 22).length;
   const endingDup = 6 - new Set(combo.map((n) => n % 10)).size;
   const consecutive = consecutiveCount(combo);
   const signature = shapeSignature(combo);
-  const numberPart = combo.reduce((acc, n) => acc + (scoreMap.get(n) || 0), 0) / combo.length * 0.45;
-  const sumPart = 10 * Math.max(0, 1 - Math.abs(sum - context.recentSumMean) / context.sumTolerance);
-  const oddPart = 7 * normalize(context.oddDist.get(odd) || 0, context.oddHigh);
-  const lowPart = 5 * normalize(context.lowDist.get(low) || 0, context.lowHigh);
-  const endingPart = 5 * normalize(context.endingDist.get(endingDup) || 0, context.endingHigh);
-  const consecutivePart = 4 * normalize(context.consecutiveDist.get(consecutive) || 0, context.consecutiveHigh);
+  const numberPart = numberMethodsActive(methods)
+    ? combo.reduce((acc, n) => acc + (scoreMap.get(n) || 0), 0) / combo.length * 0.45
+    : 0;
+  const sumPart = methodEnabled(methods, "sum")
+    ? 10 * Math.max(0, 1 - Math.abs(sum - context.recentSumMean) / context.sumTolerance)
+    : 0;
+  const oddPart = methodEnabled(methods, "odd_even")
+    ? 7 * normalize(context.oddDist.get(odd) || 0, context.oddHigh)
+    : 0;
+  const lowPart = methodEnabled(methods, "low_high")
+    ? 5 * normalize(context.lowDist.get(low) || 0, context.lowHigh)
+    : 0;
+  const endingPart = methodEnabled(methods, "ending")
+    ? 5 * normalize(context.endingDist.get(endingDup) || 0, context.endingHigh)
+    : 0;
+  const consecutivePart = methodEnabled(methods, "consecutive")
+    ? 4 * normalize(context.consecutiveDist.get(consecutive) || 0, context.consecutiveHigh)
+    : 0;
   let pairTotal = 0;
   for (let i = 0; i < combo.length; i += 1) {
     for (let j = i + 1; j < combo.length; j += 1) {
       pairTotal += context.pairs.get(`${combo[i]}:${combo[j]}`) || 0;
     }
   }
-  const pairPart = 4 * normalize(pairTotal, context.pairHigh * 2.5);
-  const hotPart = 3 * Math.max(0, 1 - Math.abs(combo.filter((n) => context.hot.has(n)).length - 2) / 2);
-  const shapePart = 12 * Math.max(...context.topShapes.map(([shape, boost]) => shapeSimilarity(signature, shape) * boost), 0);
+  const pairPart = methodEnabled(methods, "pair") ? 4 * normalize(pairTotal, context.pairHigh * 2.5) : 0;
+  const hotPart = methodEnabled(methods, "recent")
+    ? 3 * Math.max(0, 1 - Math.abs(combo.filter((n) => context.hot.has(n)).length - 2) / 2)
+    : 0;
+  const shapePart = methodEnabled(methods, "line_shape")
+    ? 12 * Math.max(...context.topShapes.map(([shape, boost]) => shapeSimilarity(signature, shape) * boost), 0)
+    : 0;
   let historyPenalty = 0;
   const key = combo.join(":");
   if (context.fullHistory.has(key)) historyPenalty = 18;
@@ -426,14 +558,33 @@ function comboScore(combo, context) {
     recent_hot: hotPart,
     history_penalty: -historyPenalty
   };
+  const maxTotal = [
+    numberMethodsActive(methods) ? 45 : 0,
+    methodEnabled(methods, "line_shape") ? 12 : 0,
+    methodEnabled(methods, "sum") ? 10 : 0,
+    methodEnabled(methods, "odd_even") ? 7 : 0,
+    methodEnabled(methods, "low_high") ? 5 : 0,
+    methodEnabled(methods, "ending") ? 5 : 0,
+    methodEnabled(methods, "consecutive") ? 4 : 0,
+    methodEnabled(methods, "pair") ? 4 : 0,
+    methodEnabled(methods, "recent") ? 3 : 0
+  ].reduce((acc, value) => acc + value, 0) || 1;
   const total = Object.values(parts).reduce((acc, value) => acc + value, 0);
-  return { numbers: combo, score: Math.max(0, Math.min(100, 100 * total / 102)), parts };
+  return { numbers: combo, score: Math.max(0, Math.min(100, 100 * total / maxTotal)), parts };
 }
 
-function generateCombos(targetDate, candidates, seed, poolSize) {
-  const scores = analyzeNumbers(targetDate);
-  const pool = scores.slice(0, poolSize).map((item) => item.number);
-  const weights = scores.slice(0, poolSize).map((item) => Math.max(1, item.score));
+function generateCombos(targetDate, candidates, seed, poolSize, methods = getMethodSettings()) {
+  const scores = analyzeNumbers(targetDate, methods);
+  const frontSignal = methodEnabled(methods, "front") ? detectFrontSignal() : null;
+  const fixedFront = frontSignal?.number || null;
+  let poolItems = scores
+    .filter((item) => !fixedFront || item.number >= fixedFront)
+    .slice(0, poolSize);
+  if (poolItems.length < 6) {
+    poolItems = scores.slice(0, poolSize);
+  }
+  const pool = poolItems.map((item) => item.number);
+  const weights = poolItems.map((item) => Math.max(1, item.score));
   const random = mulberry32(Number(seed) || 18);
   const recent = state.draws.slice(-20);
   const recentSums = recent.map((draw) => draw.numbers.reduce((acc, n) => acc + n, 0));
@@ -466,7 +617,8 @@ function generateCombos(targetDate, candidates, seed, poolSize) {
     hot,
     topShapes,
     fullHistory,
-    fiveHistory
+    fiveHistory,
+    methods
   };
   context.oddHigh = maxCounter(context.oddDist);
   context.lowHigh = maxCounter(context.lowDist);
@@ -475,11 +627,23 @@ function generateCombos(targetDate, candidates, seed, poolSize) {
 
   const seen = new Set();
   const scored = [];
-  const topSeed = [...pool.slice(0, 6)].sort((a, b) => a - b);
+  const fixedAvailable = fixedFront && pool.includes(fixedFront) && pool.filter((n) => n > fixedFront).length >= 5;
+  const topSeed = fixedAvailable
+    ? [fixedFront, ...pool.filter((n) => n > fixedFront).slice(0, 5)].sort((a, b) => a - b)
+    : [...pool.slice(0, 6)].sort((a, b) => a - b);
   seen.add(topSeed.join(":"));
   scored.push(comboScore(topSeed, context));
   for (let i = 0; i < candidates; i += 1) {
-    const combo = weightedSample(pool, weights, 6, random).sort((a, b) => a - b);
+    let samplePool = pool;
+    let sampleWeights = weights;
+    let combo;
+    if (fixedAvailable) {
+      samplePool = pool.filter((n) => n > fixedFront);
+      sampleWeights = samplePool.map((n) => Math.max(1, context.scoreMap.get(n) || 1));
+      combo = [fixedFront, ...weightedSample(samplePool, sampleWeights, 5, random)].sort((a, b) => a - b);
+    } else {
+      combo = weightedSample(samplePool, sampleWeights, 6, random).sort((a, b) => a - b);
+    }
     const key = combo.join(":");
     if (seen.has(key)) continue;
     seen.add(key);
@@ -496,16 +660,19 @@ function generateCombos(targetDate, candidates, seed, poolSize) {
   return diversified;
 }
 
-function renderSignals(targetDate) {
-  const latestScores = analyzeNumbers(targetDate);
+function renderSignals(targetDate, methods = getMethodSettings()) {
+  const latestScores = analyzeNumbers(targetDate, methods);
   const hotText = latestScores.slice(0, 3).map((item) => pad2(item.number)).join(" ");
   const same = state.draws.filter((draw) => draw.date.slice(5) === targetDate.slice(5)).slice(-3);
+  const frontSignal = methodEnabled(methods, "front") ? detectFrontSignal() : null;
   const front = latestScores.find((item) => item.factors.some(([label]) => label === "앞번호"));
   $("hotMetric").textContent = hotText || "-";
   $("sameMetric").textContent = same.length ? `${same.at(-1).drawNo}회` : "-";
-  $("frontMetric").textContent = front ? `${pad2(front.number)}번` : "-";
+  $("frontMetric").textContent = frontSignal
+    ? `${pad2(frontSignal.number)}번 고정`
+    : front ? `${pad2(front.number)}번` : "-";
   $("feedbackMetric").textContent = state.feedback?.observation_count ? `${state.feedback.observation_count}회` : "대기";
-  $("signalMeta").textContent = `${latestScores.length}개 번호`;
+  $("signalMeta").textContent = `선택 ${selectedMethodCount(methods)}개`;
   $("numberBody").innerHTML = latestScores.slice(0, 10).map((item) => `
     <tr>
       <td>${item.rank}</td>
@@ -529,14 +696,23 @@ async function loadAll() {
   state.feedback = feedback;
   renderLatest();
   renderSavedRecommendations();
-  renderSignals($("targetDate").value || todayLocal());
+  renderSignals($("targetDate").value || todayLocal(), getMethodSettings());
   $("analysisState").textContent = "준비";
   setStatus("정상");
 }
 
 async function runMobileAnalysis() {
   if (!state.draws.length) return;
+  const methods = getMethodSettings();
+  if (selectedMethodCount(methods) === 0) {
+    $("notice").textContent = "사용할 기법을 하나 이상 선택하세요.";
+    $("analysisState").textContent = "대기";
+    return;
+  }
+  saveMethodSettings();
+  updateMethodSummary();
   $("analyzeBtn").disabled = true;
+  $("quickAnalyzeBtn").disabled = true;
   $("analysisState").textContent = "분석 중";
   setStatus("분석 중");
   await new Promise((resolve) => setTimeout(resolve, 40));
@@ -544,10 +720,14 @@ async function runMobileAnalysis() {
     const targetDate = $("targetDate").value || todayLocal();
     const candidates = Math.max(1000, Math.min(60000, Number($("candidates").value || 12000)));
     const poolSize = Math.max(18, Math.min(36, Number($("poolSize").value || 30)));
-    const combos = generateCombos(targetDate, candidates, $("seed").value, poolSize);
+    const combos = generateCombos(targetDate, candidates, $("seed").value, poolSize, methods);
     renderCombos($("mobilePanel"), combos);
-    renderSignals(targetDate);
+    renderSignals(targetDate, methods);
     activateTab("mobile");
+    const frontSignal = methodEnabled(methods, "front") ? detectFrontSignal() : null;
+    $("notice").textContent = frontSignal
+      ? `앞번호 ${pad2(frontSignal.number)}번 고정 신호 적용 · ${frontSignal.windowSize}주 패턴 ${frontSignal.observations}회 확인`
+      : `선택 기법 ${selectedMethodCount(methods)}개로 모바일 분석 완료`;
     $("analysisState").textContent = "완료";
     setStatus("정상");
   } catch (error) {
@@ -556,6 +736,7 @@ async function runMobileAnalysis() {
     setStatus("확인 필요");
   } finally {
     $("analyzeBtn").disabled = false;
+    $("quickAnalyzeBtn").disabled = false;
   }
 }
 
@@ -569,8 +750,33 @@ function activateTab(name) {
 
 function bindEvents() {
   $("targetDate").value = todayLocal();
+  applyMethodSettings(readSavedMethods());
   $("analyzeBtn").addEventListener("click", runMobileAnalysis);
+  $("quickAnalyzeBtn").addEventListener("click", runMobileAnalysis);
   $("reloadBtn").addEventListener("click", loadAll);
+  $("quickReloadBtn").addEventListener("click", loadAll);
+  $("corePresetBtn").addEventListener("click", () => {
+    setPreset("core");
+    renderSignals($("targetDate").value || todayLocal(), getMethodSettings());
+  });
+  $("allPresetBtn").addEventListener("click", () => {
+    setPreset("all");
+    renderSignals($("targetDate").value || todayLocal(), getMethodSettings());
+  });
+  $("clearPresetBtn").addEventListener("click", () => {
+    setPreset("clear");
+    renderSignals($("targetDate").value || todayLocal(), getMethodSettings());
+  });
+  $("targetDate").addEventListener("change", () => {
+    renderSignals($("targetDate").value || todayLocal(), getMethodSettings());
+  });
+  methodCheckboxes().forEach((input) => {
+    input.addEventListener("change", () => {
+      saveMethodSettings();
+      updateMethodSummary();
+      renderSignals($("targetDate").value || todayLocal(), getMethodSettings());
+    });
+  });
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => activateTab(tab.dataset.tab));
   });
