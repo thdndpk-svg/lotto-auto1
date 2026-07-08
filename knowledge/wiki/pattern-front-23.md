@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-07-04
-updated: 2026-07-04
+created: 2026-07-08
+updated: 2026-07-08
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 23번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 23번"]
 # 앞번호 23번
 
 - 전체 출현: 4회
-- 최근 출현: 1회
+- 최근 출현: 0회
 
 ## 강하게 연결된 번호
 - [[number-23|23번]] — 4회

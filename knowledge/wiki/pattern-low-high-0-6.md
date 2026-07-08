@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-07-04
-updated: 2026-07-04
+created: 2026-07-08
+updated: 2026-07-08
 sources: ["data/lotto.csv"]
 aliases: ["저고 0:6"]
 ---
@@ -9,7 +9,7 @@ aliases: ["저고 0:6"]
 # 저고 0:6
 
 - 전체 출현: 17회
-- 최근 출현: 2회
+- 최근 출현: 1회
 
 ## 강하게 연결된 번호
 - [[number-27|27번]] — 7회

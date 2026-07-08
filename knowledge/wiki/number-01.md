@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-04
-updated: 2026-07-04
+created: 2026-07-08
+updated: 2026-07-08
 sources: ["data/lotto.csv"]
 aliases: ["01", "1번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["01", "1번"]
 
 - 전체 출현: 169회
 - 최근 출현: 2회
-- 지식그물 점수: 51.19
+- 지식그물 점수: 51.51
 
 ## 자주 연결된 패턴
 - [[pattern-front-01|앞번호 01번]] — 169회

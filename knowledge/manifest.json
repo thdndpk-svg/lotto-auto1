@@ -1,57 +1,57 @@
 {
-  "generatedAt": "2026-07-04T14:14:35",
-  "drawCount": 1230,
+  "generatedAt": "2026-07-08T05:53:50",
+  "drawCount": 1231,
   "pageCount": 109,
   "changedCount": 108,
   "insights": {
-    "drawCount": 1230,
+    "drawCount": 1231,
     "topNumbers": [
       {
+        "number": 13,
+        "score": 65.63,
+        "count": 179,
+        "recentCount": 5
+      },
+      {
         "number": 28,
-        "score": 62.01,
+        "score": 62.22,
         "count": 157,
         "recentCount": 6
       },
       {
-        "number": 13,
-        "score": 61.27,
-        "count": 178,
-        "recentCount": 4
-      },
-      {
-        "number": 27,
-        "score": 61.18,
-        "count": 181,
-        "recentCount": 4
-      },
-      {
         "number": 34,
-        "score": 61.13,
+        "score": 61.47,
         "count": 184,
         "recentCount": 3
       },
       {
+        "number": 31,
+        "score": 61.14,
+        "count": 168,
+        "recentCount": 5
+      },
+      {
+        "number": 18,
+        "score": 60.89,
+        "count": 176,
+        "recentCount": 4
+      },
+      {
+        "number": 15,
+        "score": 60.38,
+        "count": 167,
+        "recentCount": 5
+      },
+      {
         "number": 44,
-        "score": 60.72,
+        "score": 59.8,
         "count": 164,
         "recentCount": 5
       },
       {
         "number": 45,
-        "score": 60.27,
+        "score": 59.79,
         "count": 175,
-        "recentCount": 4
-      },
-      {
-        "number": 15,
-        "score": 60.14,
-        "count": 167,
-        "recentCount": 5
-      },
-      {
-        "number": 31,
-        "score": 57.96,
-        "count": 167,
         "recentCount": 4
       }
     ],
@@ -74,7 +74,7 @@
         "key": "consecutive-1",
         "slug": "pattern-consecutive-1",
         "label": "연속수 1개",
-        "count": 482,
+        "count": 483,
         "recentCount": 8
       },
       {
@@ -89,7 +89,7 @@
         "slug": "pattern-odd-even-3-3",
         "label": "홀짝 3:3",
         "count": 412,
-        "recentCount": 7
+        "recentCount": 6
       },
       {
         "key": "low-high-3-3",
@@ -191,14 +191,7 @@
         "slug": "pattern-consecutive-1",
         "label": "연속수 1개",
         "count": 8,
-        "allCount": 482
-      },
-      {
-        "key": "odd-even-3-3",
-        "slug": "pattern-odd-even-3-3",
-        "label": "홀짝 3:3",
-        "count": 7,
-        "allCount": 412
+        "allCount": 483
       },
       {
         "key": "sum-150-179",
@@ -215,6 +208,13 @@
         "allCount": 404
       },
       {
+        "key": "low-high-4-2",
+        "slug": "pattern-low-high-4-2",
+        "label": "저고 4:2",
+        "count": 7,
+        "allCount": 278
+      },
+      {
         "key": "odd-even-4-2",
         "slug": "pattern-odd-even-4-2",
         "label": "홀짝 4:2",
@@ -222,11 +222,11 @@
         "allCount": 328
       },
       {
-        "key": "sum-120-149",
-        "slug": "pattern-sum-120-149",
-        "label": "번호합 120-149",
+        "key": "ending-dup-2",
+        "slug": "pattern-ending-dup-2",
+        "label": "끝수 중복 2개",
         "count": 6,
-        "allCount": 452
+        "allCount": 321
       }
     ]
   }
