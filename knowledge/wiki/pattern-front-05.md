@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-07-08
-updated: 2026-07-08
+created: 2026-07-15
+updated: 2026-07-15
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 05번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 05번"]
 # 앞번호 05번
 
 - 전체 출현: 97회
-- 최근 출현: 2회
+- 최근 출현: 1회
 
 ## 강하게 연결된 번호
 - [[number-05|05번]] — 97회

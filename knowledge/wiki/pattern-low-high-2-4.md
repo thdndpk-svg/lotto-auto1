@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-07-08
-updated: 2026-07-08
+created: 2026-07-15
+updated: 2026-07-15
 sources: ["data/lotto.csv"]
 aliases: ["저고 2:4"]
 ---
@@ -9,7 +9,7 @@ aliases: ["저고 2:4"]
 # 저고 2:4
 
 - 전체 출현: 309회
-- 최근 출현: 4회
+- 최근 출현: 3회
 
 ## 강하게 연결된 번호
 - [[number-36|36번]] — 66회

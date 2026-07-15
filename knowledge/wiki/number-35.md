@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-08
-updated: 2026-07-08
+created: 2026-07-15
+updated: 2026-07-15
 sources: ["data/lotto.csv"]
 aliases: ["35", "35번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["35", "35번"]
 
 - 전체 출현: 162회
 - 최근 출현: 1회
-- 지식그물 점수: 45.06
+- 지식그물 점수: 45.09
 
 ## 자주 연결된 패턴
 - [[pattern-consecutive-0|연속수 0개]] — 80회
