@@ -35,6 +35,24 @@ const METHOD_LABELS = {
 };
 const DEFAULT_METHODS = Object.fromEntries(Object.keys(METHOD_LABELS).map((key) => [key, true]));
 const NUMBER_METHODS = ["same_date", "cross_score", "skip", "front", "recent", "ending", "feedback"];
+const STRATEGY_KEYS = {
+  number: "frequency",
+  cross_score: "frequency",
+  line_shape: "shape",
+  low_high: "low_high",
+  odd_even: "odd_even",
+  recent_hot: "recent_hot",
+  knowledge_net: "knowledge",
+  same_date: "same_date",
+  skip: "skip",
+  front: "front",
+  recent: "recent",
+  sum: "sum",
+  ending: "ending",
+  consecutive: "consecutive",
+  pair: "pair",
+  feedback: "feedback"
+};
 
 const state = {
   draws: [],
@@ -335,6 +353,12 @@ function normalize(value, high) {
   return high > 0 ? Math.max(0, Math.min(1, value / high)) : 0;
 }
 
+function strategyMultiplier(key) {
+  const strategyKey = STRATEGY_KEYS[key] || key;
+  const bias = Number(state.feedback?.strategy_bias?.[strategyKey] || 0);
+  return Math.max(0.72, Math.min(1.28, 1 + bias * 0.22));
+}
+
 function consecutiveCount(numbers) {
   const sorted = [...numbers].sort((a, b) => a - b);
   let count = 0;
@@ -440,7 +464,7 @@ function analyzeNumbers(targetDate, methods = getMethodSettings()) {
       ["feedback", "피드백", feedback, 0.09]
     ].filter(([key]) => methodEnabled(methods, key));
     const fallbackFactors = activeFactors.length ? activeFactors : [["cross_score", "빈도", frequency, 0.16]];
-    const total = fallbackFactors.reduce((acc, [, , value, weight]) => acc + value * weight, 0);
+    const total = fallbackFactors.reduce((acc, [key, , value, weight]) => acc + value * weight * strategyMultiplier(key), 0);
     const factors = fallbackFactors
       .map(([, label, value]) => [label, value])
       .sort((a, b) => b[1] - a[1])
@@ -547,27 +571,27 @@ function comboScore(combo, context) {
     }
   }
   const parts = {
-    number: numberPart,
-    line_shape: shapePart,
-    sum: sumPart,
-    odd_even: oddPart,
-    low_high: lowPart,
-    ending: endingPart,
-    consecutive: consecutivePart,
-    pair: pairPart,
-    recent_hot: hotPart,
+    number: numberPart * strategyMultiplier("number"),
+    line_shape: shapePart * strategyMultiplier("line_shape"),
+    sum: sumPart * strategyMultiplier("sum"),
+    odd_even: oddPart * strategyMultiplier("odd_even"),
+    low_high: lowPart * strategyMultiplier("low_high"),
+    ending: endingPart * strategyMultiplier("ending"),
+    consecutive: consecutivePart * strategyMultiplier("consecutive"),
+    pair: pairPart * strategyMultiplier("pair"),
+    recent_hot: hotPart * strategyMultiplier("recent_hot"),
     history_penalty: -historyPenalty
   };
   const maxTotal = [
-    numberMethodsActive(methods) ? 45 : 0,
-    methodEnabled(methods, "line_shape") ? 12 : 0,
-    methodEnabled(methods, "sum") ? 10 : 0,
-    methodEnabled(methods, "odd_even") ? 7 : 0,
-    methodEnabled(methods, "low_high") ? 5 : 0,
-    methodEnabled(methods, "ending") ? 5 : 0,
-    methodEnabled(methods, "consecutive") ? 4 : 0,
-    methodEnabled(methods, "pair") ? 4 : 0,
-    methodEnabled(methods, "recent") ? 3 : 0
+    numberMethodsActive(methods) ? 45 * strategyMultiplier("number") : 0,
+    methodEnabled(methods, "line_shape") ? 12 * strategyMultiplier("line_shape") : 0,
+    methodEnabled(methods, "sum") ? 10 * strategyMultiplier("sum") : 0,
+    methodEnabled(methods, "odd_even") ? 7 * strategyMultiplier("odd_even") : 0,
+    methodEnabled(methods, "low_high") ? 5 * strategyMultiplier("low_high") : 0,
+    methodEnabled(methods, "ending") ? 5 * strategyMultiplier("ending") : 0,
+    methodEnabled(methods, "consecutive") ? 4 * strategyMultiplier("consecutive") : 0,
+    methodEnabled(methods, "pair") ? 4 * strategyMultiplier("pair") : 0,
+    methodEnabled(methods, "recent") ? 3 * strategyMultiplier("recent_hot") : 0
   ].reduce((acc, value) => acc + value, 0) || 1;
   const total = Object.values(parts).reduce((acc, value) => acc + value, 0);
   return { numbers: combo, score: Math.max(0, Math.min(100, 100 * total / maxTotal)), parts };
@@ -671,7 +695,11 @@ function renderSignals(targetDate, methods = getMethodSettings()) {
   $("frontMetric").textContent = frontSignal
     ? `${pad2(frontSignal.number)}번 고정`
     : front ? `${pad2(front.number)}번` : "-";
-  $("feedbackMetric").textContent = state.feedback?.observation_count ? `${state.feedback.observation_count}회` : "대기";
+  const realObservations = Number(state.feedback?.observation_count || 0);
+  const virtualExperiences = Number(state.feedback?.virtual_experience_count || state.feedback?.strategy_audit?.sample || 0);
+  $("feedbackMetric").textContent = virtualExperiences
+    ? `실전 ${realObservations}회 · 가상 ${virtualExperiences}회`
+    : realObservations ? `실전 ${realObservations}회` : "대기";
   $("signalMeta").textContent = `선택 ${selectedMethodCount(methods)}개`;
   $("numberBody").innerHTML = latestScores.slice(0, 10).map((item) => `
     <tr>
