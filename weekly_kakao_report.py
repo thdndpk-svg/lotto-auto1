@@ -11,8 +11,8 @@ from pathlib import Path
 from typing import Any
 
 from import_lotto_history_json import DEFAULT_URL, load_json_from_url, write_standard_csv
-from lotto_auto import LottoAnalyzer, load_draws, print_report
-from lotto_feedback import feedback_summary, load_feedback_memory
+from lotto_auto import LottoAnalyzer, load_draws, print_report, refresh_strategy_memory
+from lotto_feedback import feedback_summary
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -124,7 +124,7 @@ def save_recommendations(
 def build_analysis(target_date: date, candidates: int, seed: int | None) -> tuple[str, str, str]:
     draws = load_draws(DATA_PATH)
     analyzer = LottoAnalyzer(draws)
-    feedback = feedback_summary(load_feedback_memory())
+    feedback = feedback_summary(refresh_strategy_memory(analyzer, sample=100, top_n=15, window=20))
     number_factors = ["same_date", "skip", "front", "shape", "recent", "overdue", "frequency", "ending", "knowledge", "feedback"]
     combo_factors = ["number", "line_shape", "front", "sum", "odd_even", "low_high", "ending", "consecutive", "pair", "recent_hot", "knowledge_net", "feedback", "history_penalty"]
 

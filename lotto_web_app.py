@@ -22,6 +22,7 @@ from lotto_auto import (
     load_draws,
     parse_date,
     print_report,
+    refresh_strategy_memory,
 )
 from lotto_knowledge_net import write_knowledge_vault
 
@@ -137,6 +138,7 @@ def analyze_payload(request: dict[str, Any]) -> dict[str, Any]:
 
     draws = load_draws(DATA_PATH)
     analyzer = LottoAnalyzer(draws)
+    refresh_strategy_memory(analyzer, sample=100, top_n=15, window=20)
     front_sequence_candidates = analyzer.front_sequence_candidates()
     front_cycle_candidates = analyzer.front_cycle_candidates()
     front_anchor = None

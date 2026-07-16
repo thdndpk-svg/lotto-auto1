@@ -53,6 +53,40 @@ FACTOR_LABELS = {
     "feedback": "피드백학습",
 }
 
+STRATEGY_LABELS = {
+    "same_date": "같은날짜",
+    "skip": "건너뛰기",
+    "front": "앞번호",
+    "recent": "최근흐름",
+    "overdue": "미출현",
+    "frequency": "전체빈도",
+    "shape": "선패턴",
+    "ending": "끝수",
+    "knowledge": "지식그물",
+    "sum": "번호합",
+    "odd_even": "홀짝",
+    "low_high": "고저",
+    "consecutive": "연속수",
+    "pair": "동반출현",
+    "recent_hot": "최근상위",
+    "feedback": "피드백학습",
+}
+
+COMBO_STRATEGY_ALIASES = {
+    "number": "frequency",
+    "line_shape": "shape",
+    "front": "front",
+    "sum": "sum",
+    "odd_even": "odd_even",
+    "low_high": "low_high",
+    "ending": "ending",
+    "consecutive": "consecutive",
+    "pair": "pair",
+    "recent_hot": "recent_hot",
+    "knowledge_net": "knowledge",
+    "feedback": "feedback",
+}
+
 
 def clamp(value: float, low: float, high: float) -> float:
     return max(low, min(high, value))
@@ -66,6 +100,9 @@ def default_feedback_memory() -> dict[str, Any]:
         "number_bias": {},
         "pattern_bias": {},
         "factor_bias": {},
+        "strategy_bias": {},
+        "strategy_audit": {},
+        "virtual_experience_count": 0,
         "outcomes": [],
         "latest_event": None,
     }
@@ -83,6 +120,9 @@ def load_feedback_memory(path: Path = DEFAULT_FEEDBACK_PATH) -> dict[str, Any]:
     memory["number_bias"] = {str(k): float(v) for k, v in memory.get("number_bias", {}).items()}
     memory["pattern_bias"] = {str(k): float(v) for k, v in memory.get("pattern_bias", {}).items()}
     memory["factor_bias"] = {str(k): float(v) for k, v in memory.get("factor_bias", {}).items()}
+    memory["strategy_bias"] = {str(k): float(v) for k, v in memory.get("strategy_bias", {}).items()}
+    memory["strategy_audit"] = dict(memory.get("strategy_audit", {}))
+    memory["virtual_experience_count"] = int(memory.get("virtual_experience_count") or 0)
     memory["outcomes"] = list(memory.get("outcomes", []))[-80:]
     return memory
 
@@ -97,6 +137,10 @@ def has_feedback(memory: dict[str, Any]) -> bool:
     return int(memory.get("observation_count") or 0) > 0
 
 
+def has_strategy(memory: dict[str, Any]) -> bool:
+    return bool(memory.get("strategy_bias"))
+
+
 def feedback_number_scores(numbers: Sequence[int], memory: dict[str, Any]) -> dict[int, float]:
     if not has_feedback(memory):
         return {int(number): 0.0 for number in numbers}
@@ -109,13 +153,16 @@ def feedback_number_scores(numbers: Sequence[int], memory: dict[str, Any]) -> di
 
 def factor_multiplier(name: str, memory: dict[str, Any]) -> float:
     if not has_feedback(memory):
-        return 1.0
-    bias = float(memory.get("factor_bias", {}).get(name, 0.0))
-    return round(clamp(1.0 + 0.18 * bias, 0.82, 1.18), 4)
+        strategy_bias = float(memory.get("strategy_bias", {}).get(COMBO_STRATEGY_ALIASES.get(name, name), 0.0))
+        return round(clamp(1.0 + 0.20 * strategy_bias, 0.78, 1.22), 4)
+    factor_bias = float(memory.get("factor_bias", {}).get(name, 0.0))
+    strategy_key = COMBO_STRATEGY_ALIASES.get(name, name)
+    strategy_bias = float(memory.get("strategy_bias", {}).get(strategy_key, 0.0))
+    return round(clamp(1.0 + 0.16 * factor_bias + 0.22 * strategy_bias, 0.72, 1.28), 4)
 
 
 def adjust_factor_weights(weights: dict[str, float], memory: dict[str, Any]) -> dict[str, float]:
-    if not has_feedback(memory):
+    if not has_feedback(memory) and not has_strategy(memory):
         return dict(weights)
     return {
         name: round(value * factor_multiplier(name, memory), 4)
@@ -124,7 +171,7 @@ def adjust_factor_weights(weights: dict[str, float], memory: dict[str, Any]) -> 
 
 
 def apply_combo_factor_feedback(parts: dict[str, float], memory: dict[str, Any]) -> dict[str, float]:
-    if not has_feedback(memory):
+    if not has_feedback(memory) and not has_strategy(memory):
         return dict(parts)
     adjusted = {}
     for name, value in parts.items():
@@ -388,6 +435,26 @@ def update_feedback_memory(memory: dict[str, Any], event: dict[str, Any]) -> dic
     return memory
 
 
+def update_strategy_memory(memory: dict[str, Any], audit: dict[str, Any]) -> dict[str, Any]:
+    methods = audit.get("methods") or {}
+    if not methods:
+        return memory
+    previous = memory.get("strategy_bias", {})
+    strategy_bias = {}
+    for key, item in methods.items():
+        old = float(previous.get(key, 0.0))
+        measured = float(item.get("bias", 0.0))
+        # Keep the system adaptive without swinging wildly after one noisy window.
+        strategy_bias[str(key)] = round(clamp(old * 0.35 + measured * 0.65, -0.85, 0.85), 4)
+    memory["strategy_bias"] = {
+        key: value for key, value in strategy_bias.items() if abs(value) >= 0.01
+    }
+    memory["strategy_audit"] = audit
+    memory["virtual_experience_count"] = int(audit.get("sample") or 0)
+    memory["updated_at"] = datetime.now().isoformat(timespec="seconds")
+    return memory
+
+
 def feedback_summary(memory: dict[str, Any]) -> dict[str, Any]:
     outcomes = list(memory.get("outcomes", []))
     recent = outcomes[-10:]
@@ -404,17 +471,28 @@ def feedback_summary(memory: dict[str, Any]) -> dict[str, Any]:
         ((str(k), float(v)) for k, v in memory.get("pattern_bias", {}).items()),
         key=lambda item: (-item[1], item[0]),
     )
+    strategy_bias = sorted(
+        ((str(k), float(v)) for k, v in memory.get("strategy_bias", {}).items()),
+        key=lambda item: (-item[1], item[0]),
+    )
     return {
         "observationCount": int(memory.get("observation_count") or 0),
+        "virtualExperienceCount": int(memory.get("virtual_experience_count") or 0),
         "updatedAt": memory.get("updated_at"),
         "recentAverageMatch": round(mean(best_matches), 2) if best_matches else 0.0,
         "topNumbers": [{"number": n, "bias": round(v, 4)} for n, v in number_bias[:8]],
         "weakNumbers": [{"number": n, "bias": round(v, 4)} for n, v in sorted(number_bias, key=lambda item: (item[1], item[0]))[:8]],
         "topFactors": [{"key": k, "label": FACTOR_LABELS.get(k, k), "bias": round(v, 4)} for k, v in factor_bias[:8]],
+        "topStrategies": [{"key": k, "label": STRATEGY_LABELS.get(k, k), "bias": round(v, 4)} for k, v in strategy_bias[:8]],
+        "weakStrategies": [
+            {"key": k, "label": STRATEGY_LABELS.get(k, k), "bias": round(v, 4)}
+            for k, v in sorted(strategy_bias, key=lambda item: (item[1], item[0]))[:8]
+        ],
         "topPatterns": [
             {"key": k, "label": pattern_title(k), "slug": pattern_slug(k), "bias": round(v, 4)}
             for k, v in pattern_bias[:8]
         ],
+        "strategyAudit": memory.get("strategy_audit") or {},
         "latestEvent": memory.get("latest_event"),
     }
 
@@ -433,6 +511,14 @@ def write_feedback_pages(memory: dict[str, Any], vault_dir: Path = KNOWLEDGE_DIR
         f"- {item['label']} — 보정 {item['bias']:+.3f}"
         for item in summary["topFactors"]
     ) or "- 데이터 없음"
+    top_strategies = "\n".join(
+        f"- {item['label']} — 진화가중 {item['bias']:+.3f}"
+        for item in summary["topStrategies"]
+    ) or "- 데이터 없음"
+    weak_strategies = "\n".join(
+        f"- {item['label']} — 진화가중 {item['bias']:+.3f}"
+        for item in summary["weakStrategies"]
+    ) or "- 데이터 없음"
     top_patterns = "\n".join(
         f"- [[{item['slug']}|{item['label']}]] — 보정 {item['bias']:+.3f}"
         for item in summary["topPatterns"]
@@ -448,6 +534,7 @@ aliases: ["피드백 학습", "오답노트", "실패 원인"]
 # 피드백 학습 요약
 
 - 누적 결과 분석: {summary['observationCount']}회
+- 가상 경험치: 최근 {summary['virtualExperienceCount']}회 워크포워드 검증
 - 최근 평균 일치: {summary['recentAverageMatch']}개
 - 마지막 갱신: {summary.get('updatedAt') or '-'}
 
@@ -456,6 +543,12 @@ aliases: ["피드백 학습", "오답노트", "실패 원인"]
 
 ## 강화 기법
 {top_factors}
+
+## 최근 백테스트상 유지할 기법
+{top_strategies}
+
+## 최근 백테스트상 낮출 기법
+{weak_strategies}
 
 ## 강화 패턴
 {top_patterns}
@@ -548,4 +641,7 @@ def feedback_kakao_lines(result: dict[str, Any], max_causes: int = 3) -> list[st
         lines.append("보완점: " + " / ".join(causes))
     if hits:
         lines.append("유지할 요인: " + " / ".join(hits))
+    strategies = result.get("summary", {}).get("topStrategies", [])[:2]
+    if strategies:
+        lines.append("진화가중: " + " / ".join(f"{item['label']} {item['bias']:+.2f}" for item in strategies))
     return lines

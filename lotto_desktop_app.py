@@ -24,6 +24,7 @@ from lotto_auto import (
     load_draws,
     parse_date,
     print_report,
+    refresh_strategy_memory,
 )
 
 
@@ -323,6 +324,7 @@ class LottoDesktopApp:
 
             draws = load_draws(DATA_PATH)
             analyzer = LottoAnalyzer(draws)
+            refresh_strategy_memory(analyzer, sample=100, top_n=15, window=20)
             ranked, diagnostics = analyzer.number_scores(
                 target=target,
                 window=20,

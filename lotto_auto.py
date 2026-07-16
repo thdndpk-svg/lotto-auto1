@@ -26,6 +26,8 @@ from lotto_feedback import (
     feedback_summary,
     has_feedback,
     load_feedback_memory,
+    save_feedback_memory,
+    update_strategy_memory,
 )
 
 
@@ -222,6 +224,10 @@ def safe_ratio(value: float, high: float) -> float:
     if high <= 0:
         return 0.0
     return max(0.0, min(1.0, value / high))
+
+
+def clamp(value: float, low: float, high: float) -> float:
+    return max(low, min(high, value))
 
 
 def bucket_score(value: float, target: float, tolerance: float) -> float:
@@ -623,6 +629,184 @@ class LottoAnalyzer:
         }
         return ranked, diagnostics
 
+    def strategy_backtest(
+        self,
+        sample: int = 100,
+        top_n: int = 15,
+        window: int = 20,
+    ) -> Dict[str, object]:
+        if len(self.draws) < 14:
+            return {
+                "generated_at": datetime.now().isoformat(timespec="seconds"),
+                "sample": 0,
+                "top_n": top_n,
+                "methods": {},
+            }
+
+        start = max(10, len(self.draws) - max(8, sample))
+        number_hits: Dict[str, List[float]] = defaultdict(list)
+        combo_hits: Dict[str, List[float]] = defaultdict(list)
+        evaluated_draws: List[int] = []
+
+        for index in range(start, len(self.draws)):
+            history = self.draws[:index]
+            target_draw = self.draws[index]
+            if len(history) < 10:
+                continue
+            evaluated_draws.append(target_draw.draw_no)
+            analyzer = LottoAnalyzer(history, grid_cols=self.grid_cols)
+            target_numbers = set(target_draw.numbers)
+
+            same_date, _ = analyzer.same_date_scores(target_draw.draw_date)
+            number_sources = {
+                "same_date": same_date,
+                "skip": analyzer.skip_scores(window=window),
+                "front": analyzer.front_number_scores(),
+                "recent": analyzer.recent_scores(window),
+                "overdue": analyzer.overdue_scores(),
+                "frequency": analyzer.frequency_scores(),
+                "shape": analyzer.shape_number_scores(),
+                "ending": analyzer.ending_scores(window),
+            }
+            try:
+                knowledge_metrics = build_knowledge_metrics(
+                    analyzer.draws,
+                    grid_cols=analyzer.grid_cols,
+                    recent_window=window,
+                )
+                number_sources["knowledge"] = knowledge_metrics.number_scores
+            except Exception:
+                knowledge_metrics = None
+
+            for method, scores in number_sources.items():
+                top_numbers = {
+                    number
+                    for number, _ in sorted(scores.items(), key=lambda item: (-item[1], item[0]))[:top_n]
+                }
+                number_hits[method].append(float(len(top_numbers & target_numbers)))
+
+            recent = analyzer.recent_draws(window)
+            recent_sums = [draw.total for draw in recent]
+            recent_sum_mean = mean(recent_sums)
+            recent_sum_std = pstdev(recent_sums) if len(recent_sums) > 1 else 28.0
+            distributions = analyzer.historical_distribution()
+            distribution_highs = {
+                key: max(counter.values(), default=1)
+                for key, counter in distributions.items()
+            }
+            odd_count = sum(number % 2 for number in target_draw.numbers)
+            low_count = sum(number <= 22 for number in target_draw.numbers)
+            ending_dup = PICK_COUNT - len({number % 10 for number in target_draw.numbers})
+            consecutive = analyzer.consecutive_count(target_draw.numbers)
+
+            combo_hits["sum"].append(
+                bucket_score(target_draw.total, recent_sum_mean, max(24.0, recent_sum_std * 2.2))
+            )
+            combo_hits["odd_even"].append(
+                safe_ratio(distributions["odd"][odd_count], distribution_highs["odd"])
+            )
+            combo_hits["low_high"].append(
+                safe_ratio(distributions["low"][low_count], distribution_highs["low"])
+            )
+            combo_hits["ending"].append(
+                safe_ratio(distributions["ending_dup"][ending_dup], distribution_highs["ending_dup"])
+            )
+            combo_hits["consecutive"].append(
+                safe_ratio(distributions["consecutive"][consecutive], distribution_highs["consecutive"])
+            )
+            combo_hits["front"].append(
+                safe_ratio(analyzer.front_number_scores().get(target_draw.first_number, 0.0), 100.0)
+            )
+
+            shape_counts = analyzer.shape_stats()
+            combo_hits["shape"].append(
+                safe_ratio(
+                    analyzer.shape_combo_points(
+                        analyzer.shape_signature(target_draw.numbers),
+                        shape_counts,
+                        max(shape_counts.values(), default=1),
+                    ),
+                    12.0,
+                )
+            )
+            recent_counter = Counter(number for draw in recent for number in draw.numbers)
+            top_recent_numbers = {number for number, _ in recent_counter.most_common(6)}
+            combo_hits["recent_hot"].append(
+                bucket_score(len(target_numbers & top_recent_numbers), 2.0, 2.0)
+            )
+            pair_counts = analyzer.pair_counter()
+            pair_total = sum(pair_counts[pair] for pair in combinations(tuple(sorted(target_draw.numbers)), 2))
+            combo_hits["pair"].append(safe_ratio(pair_total, max(pair_counts.values(), default=1) * 2.5))
+            if knowledge_metrics is not None:
+                knowledge_context = {
+                    "pair_high": max(knowledge_metrics.pair_counts.values(), default=1),
+                    "pattern_high": max(knowledge_metrics.pattern_counts.values(), default=1),
+                    "recent_pattern_high": max(knowledge_metrics.recent_pattern_counts.values(), default=1),
+                }
+                combo_hits["knowledge"].append(
+                    safe_ratio(
+                        combo_knowledge_points(
+                            target_draw.numbers,
+                            knowledge_metrics,
+                            context=knowledge_context,
+                        ),
+                        6.0,
+                    )
+                )
+
+        baseline_hits = PICK_COUNT * top_n / (LOTTO_MAX - LOTTO_MIN + 1)
+        methods: Dict[str, object] = {}
+
+        for method, values in sorted(number_hits.items()):
+            if not values:
+                continue
+            recent_values = values[-10:]
+            prior_values = values[:-10] or values
+            avg = mean(values)
+            recent_avg = mean(recent_values)
+            prior_avg = mean(prior_values)
+            bias = clamp(
+                ((avg - baseline_hits) / max(0.1, baseline_hits)) * 0.70
+                + ((recent_avg - prior_avg) / PICK_COUNT) * 0.30,
+                -0.85,
+                0.85,
+            )
+            methods[method] = {
+                "type": "number",
+                "samples": len(values),
+                "avg_hits": round(avg, 3),
+                "recent_hits": round(recent_avg, 3),
+                "baseline_hits": round(baseline_hits, 3),
+                "bias": round(bias, 4),
+            }
+
+        for method, values in sorted(combo_hits.items()):
+            if not values:
+                continue
+            recent_values = values[-10:]
+            prior_values = values[:-10] or values
+            avg = mean(values)
+            recent_avg = mean(recent_values)
+            prior_avg = mean(prior_values)
+            bias = clamp((avg - 0.52) * 1.35 + (recent_avg - prior_avg) * 0.35, -0.85, 0.85)
+            methods[method] = {
+                "type": "combo",
+                "samples": len(values),
+                "avg_fit": round(avg, 3),
+                "recent_fit": round(recent_avg, 3),
+                "baseline_fit": 0.52,
+                "bias": round(bias, 4),
+            }
+
+        return {
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "sample": len(evaluated_draws),
+            "draws": evaluated_draws[:1] + evaluated_draws[-1:] if evaluated_draws else [],
+            "top_n": top_n,
+            "baseline_hits": round(baseline_hits, 3),
+            "methods": methods,
+        }
+
     def pair_counter(self) -> Counter:
         pairs = Counter()
         for d in self.draws:
@@ -913,6 +1097,19 @@ def weighted_sample_without_replacement(
     return result
 
 
+def refresh_strategy_memory(
+    analyzer: LottoAnalyzer,
+    sample: int = 100,
+    top_n: int = 15,
+    window: int = 20,
+) -> Dict[str, object]:
+    memory = load_feedback_memory()
+    audit = analyzer.strategy_backtest(sample=sample, top_n=top_n, window=window)
+    memory = update_strategy_memory(memory, audit)
+    save_feedback_memory(memory)
+    return memory
+
+
 def format_draw(draw: Draw) -> str:
     nums = " ".join(f"{n:02d}" for n in draw.numbers)
     return f"{draw.draw_no}회 {draw.draw_date.isoformat()} [{nums}]"
@@ -967,6 +1164,7 @@ def print_report(
         print("2-2) 피드백 학습", file=output)
         print(
             f"   - 누적 결과 분석: {feedback.get('observationCount')}회, "
+            f"가상 경험치 {feedback.get('virtualExperienceCount', 0)}회, "
             f"최근 평균 일치 {feedback.get('recentAverageMatch'):.2f}개",
             file=output,
         )
@@ -976,6 +1174,18 @@ def print_report(
             print(f"   - 강화 번호: {text}", file=output)
         for item in feedback.get("topFactors", [])[:4]:
             print(f"   - 강화 기법: {item['label']} {item['bias']:+.3f}", file=output)
+        for item in feedback.get("topStrategies", [])[:4]:
+            print(f"   - 백테스트 우세: {item['label']} {item['bias']:+.3f}", file=output)
+        for item in feedback.get("weakStrategies", [])[:3]:
+            print(f"   - 백테스트 약세: {item['label']} {item['bias']:+.3f}", file=output)
+        print(file=output)
+    elif feedback and feedback.get("virtualExperienceCount", 0) > 0:
+        print("2-2) 가상 경험치 학습", file=output)
+        print(f"   - 최근 {feedback.get('virtualExperienceCount')}회 워크포워드 검증 반영", file=output)
+        for item in feedback.get("topStrategies", [])[:4]:
+            print(f"   - 백테스트 우세: {item['label']} {item['bias']:+.3f}", file=output)
+        for item in feedback.get("weakStrategies", [])[:3]:
+            print(f"   - 백테스트 약세: {item['label']} {item['bias']:+.3f}", file=output)
         print(file=output)
 
     print(f"3) 교차 점수 상위 번호 TOP {top_numbers}", file=output)
@@ -1045,6 +1255,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     target = parse_date(args.target_date)
     draws = load_draws(data_path)
     analyzer = LottoAnalyzer(draws)
+    refresh_strategy_memory(analyzer, sample=100, top_n=args.top_numbers, window=args.recent_window)
     number_factors = [item.strip() for item in args.number_factors.split(",") if item.strip()]
     combo_factors = [item.strip() for item in args.combo_factors.split(",") if item.strip()]
     ranked, diagnostics = analyzer.number_scores(

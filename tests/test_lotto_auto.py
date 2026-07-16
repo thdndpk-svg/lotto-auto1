@@ -13,6 +13,7 @@ from lotto_feedback import (  # noqa: E402
     default_feedback_memory,
     feedback_combo_points,
     feedback_number_scores,
+    update_strategy_memory,
     update_feedback_memory,
 )
 
@@ -122,6 +123,17 @@ class LottoAutoTests(unittest.TestCase):
         number_scores = feedback_number_scores([1, 2, 20], memory)
         self.assertGreater(number_scores[1], number_scores[2])
         self.assertGreater(feedback_combo_points([1, 8, 20, 27, 34, 45], memory), 0)
+
+    def test_strategy_backtest_creates_virtual_experience_bias(self):
+        audit = self.analyzer.strategy_backtest(sample=12, top_n=12, window=8)
+        self.assertGreaterEqual(audit["sample"], 8)
+        self.assertIn("same_date", audit["methods"])
+        self.assertIn("sum", audit["methods"])
+        self.assertIn("bias", audit["methods"]["same_date"])
+
+        memory = update_strategy_memory(default_feedback_memory(), audit)
+        self.assertEqual(memory["virtual_experience_count"], audit["sample"])
+        self.assertTrue(memory["strategy_bias"])
 
     def test_ticket_grid_coordinates_use_real_lotto_paper_layout(self):
         self.assertEqual(self.analyzer.coord(1), (0, 0))

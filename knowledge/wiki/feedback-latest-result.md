@@ -1,7 +1,7 @@
 ---
 type: note
 created: 2026-07-12
-updated: 2026-07-12
+updated: 2026-07-16
 sources: ["reports/latest_recommendations.json", "data/lotto.csv"]
 aliases: ["최근 결과 피드백", "최근 실패 원인"]
 ---
