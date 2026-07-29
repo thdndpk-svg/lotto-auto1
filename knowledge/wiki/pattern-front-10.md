@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-07-15
-updated: 2026-07-15
+created: 2026-07-29
+updated: 2026-07-29
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 10번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 10번"]
 # 앞번호 10번
 
 - 전체 출현: 50회
-- 최근 출현: 1회
+- 최근 출현: 0회
 
 ## 강하게 연결된 번호
 - [[number-10|10번]] — 50회

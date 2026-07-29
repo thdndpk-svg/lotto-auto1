@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-15
-updated: 2026-07-15
+created: 2026-07-29
+updated: 2026-07-29
 sources: ["data/lotto.csv"]
 aliases: ["06", "6번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["06", "6번"]
 
 - 전체 출현: 165회
 - 최근 출현: 2회
-- 지식그물 점수: 51.46
+- 지식그물 점수: 51.53
 
 ## 자주 연결된 패턴
 - [[pattern-front-06|앞번호 06번]] — 97회

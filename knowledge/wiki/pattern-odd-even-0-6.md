@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-07-15
-updated: 2026-07-15
+created: 2026-07-29
+updated: 2026-07-29
 sources: ["data/lotto.csv"]
 aliases: ["홀짝 0:6"]
 ---

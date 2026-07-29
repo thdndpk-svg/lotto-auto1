@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-15
-updated: 2026-07-15
+created: 2026-07-29
+updated: 2026-07-29
 sources: ["data/lotto.csv"]
 aliases: ["03", "3번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["03", "3번"]
 
 - 전체 출현: 172회
 - 최근 출현: 3회
-- 지식그물 점수: 56.88
+- 지식그물 점수: 56.42
 
 ## 자주 연결된 패턴
 - [[pattern-front-03|앞번호 03번]] — 132회

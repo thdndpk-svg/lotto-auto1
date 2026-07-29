@@ -1,79 +1,80 @@
 {
-  "generated_at": "2026-07-15T05:33:38",
-  "target_date": "2026-07-15",
-  "latest_draw_no_at_analysis": 1232,
-  "latest_draw_date_at_analysis": "2026-07-11",
+  "generated_at": "2026-07-29T15:32:15",
+  "target_date": "2026-07-29",
+  "latest_draw_no_at_analysis": 1234,
+  "latest_draw_date_at_analysis": "2026-07-25",
   "candidates": 20000,
   "seed": 18,
   "feedback_snapshot": {
-    "observationCount": 2,
-    "updatedAt": "2026-07-12T05:34:38",
-    "recentAverageMatch": 1.5,
+    "observationCount": 3,
+    "virtualExperienceCount": 100,
+    "updatedAt": "2026-07-29T15:32:10",
+    "recentAverageMatch": 1.33,
     "topNumbers": [
       {
         "number": 22,
-        "bias": 0.045
+        "bias": 0.0443
+      },
+      {
+        "number": 20,
+        "bias": 0.038
+      },
+      {
+        "number": 25,
+        "bias": 0.038
+      },
+      {
+        "number": 37,
+        "bias": 0.038
+      },
+      {
+        "number": 40,
+        "bias": 0.038
       },
       {
         "number": 12,
-        "bias": 0.038
-      },
-      {
-        "number": 19,
-        "bias": 0.038
+        "bias": 0.0374
       },
       {
         "number": 36,
-        "bias": 0.038
+        "bias": 0.0374
       },
       {
         "number": 4,
-        "bias": 0.0374
-      },
-      {
-        "number": 14,
-        "bias": 0.0374
-      },
-      {
-        "number": 24,
-        "bias": 0.0273
-      },
-      {
-        "number": 38,
-        "bias": 0.0263
+        "bias": 0.0368
       }
     ],
     "weakNumbers": [
       {
         "number": 27,
-        "bias": -0.0715
-      },
-      {
-        "number": 28,
-        "bias": -0.0715
-      },
-      {
-        "number": 44,
-        "bias": -0.0715
-      },
-      {
-        "number": 7,
-        "bias": -0.0535
-      },
-      {
-        "number": 2,
-        "bias": -0.036
-      },
-      {
-        "number": 41,
-        "bias": -0.036
-      },
-      {
-        "number": 10,
-        "bias": -0.0357
+        "bias": -0.1064
       },
       {
         "number": 45,
+        "bias": -0.0712
+      },
+      {
+        "number": 28,
+        "bias": -0.0704
+      },
+      {
+        "number": 44,
+        "bias": -0.0704
+      },
+      {
+        "number": 42,
+        "bias": -0.053
+      },
+      {
+        "number": 33,
+        "bias": -0.036
+      },
+      {
+        "number": 34,
+        "bias": -0.036
+      },
+      {
+        "number": 30,
         "bias": -0.0357
       }
     ],
@@ -81,127 +82,343 @@
       {
         "key": "feedback",
         "label": "피드백학습",
-        "bias": -0.0033
+        "bias": -0.0211
       },
       {
         "key": "knowledge_net",
         "label": "지식그물",
-        "bias": -0.0637
+        "bias": -0.1155
       },
       {
         "key": "front",
         "label": "첫번호",
-        "bias": -0.1679
+        "bias": -0.2392
       },
       {
         "key": "line_shape",
         "label": "선모양",
-        "bias": -0.1762
+        "bias": -0.2483
       },
       {
         "key": "number",
         "label": "번호점수",
-        "bias": -0.1819
+        "bias": -0.2518
       },
       {
         "key": "consecutive",
         "label": "연속수",
-        "bias": -0.2035
+        "bias": -0.2819
       },
       {
         "key": "sum",
         "label": "번호합",
-        "bias": -0.2052
+        "bias": -0.285
+      },
+      {
+        "key": "odd_even",
+        "label": "홀짝",
+        "bias": -0.3014
+      }
+    ],
+    "topStrategies": [
+      {
+        "key": "pair",
+        "label": "동반출현",
+        "bias": 0.5686
+      },
+      {
+        "key": "consecutive",
+        "label": "연속수",
+        "bias": 0.3544
+      },
+      {
+        "key": "low_high",
+        "label": "고저",
+        "bias": 0.2405
       },
       {
         "key": "ending",
         "label": "끝수",
-        "bias": -0.2206
+        "bias": 0.2277
+      },
+      {
+        "key": "odd_even",
+        "label": "홀짝",
+        "bias": 0.2167
+      },
+      {
+        "key": "sum",
+        "label": "번호합",
+        "bias": 0.1401
+      },
+      {
+        "key": "shape",
+        "label": "선패턴",
+        "bias": 0.1104
+      },
+      {
+        "key": "overdue",
+        "label": "미출현",
+        "bias": 0.0652
+      }
+    ],
+    "weakStrategies": [
+      {
+        "key": "recent_hot",
+        "label": "최근상위",
+        "bias": -0.2654
+      },
+      {
+        "key": "recent",
+        "label": "최근흐름",
+        "bias": -0.0917
+      },
+      {
+        "key": "skip",
+        "label": "건너뛰기",
+        "bias": -0.0781
+      },
+      {
+        "key": "frequency",
+        "label": "전체빈도",
+        "bias": -0.0388
+      },
+      {
+        "key": "knowledge",
+        "label": "지식그물",
+        "bias": -0.0322
+      },
+      {
+        "key": "same_date",
+        "label": "같은날짜",
+        "bias": 0.0233
+      },
+      {
+        "key": "front",
+        "label": "앞번호",
+        "bias": 0.0239
+      },
+      {
+        "key": "overdue",
+        "label": "미출현",
+        "bias": 0.0652
       }
     ],
     "topPatterns": [
       {
+        "key": "ending-dup-2",
+        "label": "끝수 중복 2개",
+        "slug": "pattern-ending-dup-2",
+        "bias": 0.1084
+      },
+      {
         "key": "low-high-4-2",
         "label": "저고 4:2",
         "slug": "pattern-low-high-4-2",
-        "bias": 0.1092
+        "bias": 0.1076
       },
       {
         "key": "odd-even-2-4",
         "label": "홀짝 2:4",
         "slug": "pattern-odd-even-2-4",
-        "bias": 0.1092
+        "bias": 0.1076
+      },
+      {
+        "key": "consecutive-0",
+        "label": "연속수 0개",
+        "slug": "pattern-consecutive-0",
+        "bias": 0.082
+      },
+      {
+        "key": "sum-120-149",
+        "label": "번호합 120-149",
+        "slug": "pattern-sum-120-149",
+        "bias": 0.082
+      },
+      {
+        "key": "shape-RS5-LD3-LD3-LD4-RS3",
+        "label": "선패턴 RS5 > LD3 > LD3 > LD4 > RS3",
+        "slug": "pattern-shape-rs5-ld3-ld3-ld4-rs3",
+        "bias": 0.055
       },
       {
         "key": "front-12",
         "label": "앞번호 12번",
         "slug": "pattern-front-12",
-        "bias": 0.055
+        "bias": 0.0542
       },
       {
         "key": "shape-LD5-RS4-LD5-RS2-LD4",
         "label": "선패턴 LD5 > RS4 > LD5 > RS2 > LD4",
         "slug": "pattern-shape-ld5-rs4-ld5-rs2-ld4",
-        "bias": 0.055
-      },
-      {
-        "key": "ending-dup-2",
-        "label": "끝수 중복 2개",
-        "slug": "pattern-ending-dup-2",
-        "bias": 0.0542
-      },
-      {
-        "key": "front-04",
-        "label": "앞번호 04번",
-        "slug": "pattern-front-04",
-        "bias": 0.0542
-      },
-      {
-        "key": "shape-RD3-RS1-LD4-LD3-SD1",
-        "label": "선패턴 RD3 > RS1 > LD4 > LD3 > SD1",
-        "slug": "pattern-shape-rd3-rs1-ld4-ld3-sd1",
-        "bias": 0.0542
-      },
-      {
-        "key": "sum-090-119",
-        "label": "번호합 090-119",
-        "slug": "pattern-sum-090-119",
         "bias": 0.0542
       }
     ],
-    "latestEvent": {
-      "event_id": "2026-07-08T05:53:47_1232",
-      "created_at": "2026-07-12T05:34:38",
-      "recommendation_target_date": "2026-07-08",
-      "recommendation_generated_at": "2026-07-08T05:53:47",
-      "analysis_latest_draw_no": 1231,
-      "draw_no": 1232,
-      "draw_date": "2026-07-11",
-      "winning_numbers": [
-        12,
-        15,
-        19,
-        22,
-        24,
-        36
+    "strategyAudit": {
+      "generated_at": "2026-07-29T15:32:10",
+      "sample": 100,
+      "draws": [
+        1135,
+        1234
       ],
-      "bonus": 3,
+      "top_n": 15,
+      "baseline_hits": 2.0,
+      "methods": {
+        "ending": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.714,
+          "recent_fit": 0.725,
+          "baseline_fit": 0.52,
+          "bias": 0.2661
+        },
+        "frequency": {
+          "type": "number",
+          "samples": 100,
+          "avg_hits": 1.87,
+          "recent_hits": 1.8,
+          "baseline_hits": 2.0,
+          "bias": -0.0494
+        },
+        "front": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.536,
+          "recent_fit": 0.557,
+          "baseline_fit": 0.52,
+          "bias": 0.0297
+        },
+        "knowledge": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.493,
+          "recent_fit": 0.498,
+          "baseline_fit": 0.52,
+          "bias": -0.035
+        },
+        "overdue": {
+          "type": "number",
+          "samples": 100,
+          "avg_hits": 2.21,
+          "recent_hits": 2.2,
+          "baseline_hits": 2.0,
+          "bias": 0.0729
+        },
+        "recent": {
+          "type": "number",
+          "samples": 100,
+          "avg_hits": 1.75,
+          "recent_hits": 1.4,
+          "baseline_hits": 2.0,
+          "bias": -0.1069
+        },
+        "same_date": {
+          "type": "number",
+          "samples": 100,
+          "avg_hits": 2.09,
+          "recent_hits": 2.0,
+          "baseline_hits": 2.0,
+          "bias": 0.0265
+        },
+        "shape": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.62,
+          "recent_fit": 0.603,
+          "baseline_fit": 0.52,
+          "bias": 0.1285
+        },
+        "skip": {
+          "type": "number",
+          "samples": 100,
+          "avg_hits": 1.79,
+          "recent_hits": 1.6,
+          "baseline_hits": 2.0,
+          "bias": -0.0841
+        },
+        "consecutive": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.838,
+          "recent_fit": 0.788,
+          "baseline_fit": 0.52,
+          "bias": 0.4101
+        },
+        "low_high": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.712,
+          "recent_fit": 0.754,
+          "baseline_fit": 0.52,
+          "bias": 0.2752
+        },
+        "odd_even": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.689,
+          "recent_fit": 0.717,
+          "baseline_fit": 0.52,
+          "bias": 0.2391
+        },
+        "pair": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 1.0,
+          "recent_fit": 1.0,
+          "baseline_fit": 0.52,
+          "bias": 0.648
+        },
+        "recent_hot": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.325,
+          "recent_fit": 0.25,
+          "baseline_fit": 0.52,
+          "bias": -0.2924
+        },
+        "sum": {
+          "type": "combo",
+          "samples": 100,
+          "avg_fit": 0.646,
+          "recent_fit": 0.637,
+          "baseline_fit": 0.52,
+          "bias": 0.1664
+        }
+      }
+    },
+    "latestEvent": {
+      "event_id": "2026-07-15T05:33:38_1233",
+      "created_at": "2026-07-19T05:28:40",
+      "recommendation_target_date": "2026-07-15",
+      "recommendation_generated_at": "2026-07-15T05:33:38",
+      "analysis_latest_draw_no": 1232,
+      "draw_no": 1233,
+      "draw_date": "2026-07-18",
+      "winning_numbers": [
+        2,
+        7,
+        20,
+        25,
+        37,
+        40
+      ],
+      "bonus": 29,
       "winning_profile": {
-        "sum": 128,
-        "odd": 2,
-        "low": 4,
-        "ending_dup": 1,
+        "sum": 131,
+        "odd": 3,
+        "low": 3,
+        "ending_dup": 2,
         "consecutive": 0,
-        "front": 12
+        "front": 2
       },
       "winning_patterns": [
         "sum-120-149",
-        "odd-even-2-4",
-        "low-high-4-2",
-        "ending-dup-1",
+        "odd-even-3-3",
+        "low-high-3-3",
+        "ending-dup-2",
         "consecutive-0",
-        "front-12",
-        "shape-LD5-RS4-LD5-RS2-LD4"
+        "front-02",
+        "shape-RS5-LD3-LD3-LD4-RS3"
       ],
       "combo_results": [
         {
@@ -211,76 +428,112 @@
             13,
             18,
             27,
-            28,
+            32,
             45
           ],
-          "matched_numbers": [],
-          "match_count": 0,
+          "matched_numbers": [
+            2
+          ],
+          "match_count": 1,
           "bonus_match": false,
           "label": "낙첨",
           "profile": {
-            "sum": 133,
+            "sum": 137,
             "odd": 3,
             "low": 3,
             "ending_dup": 1,
-            "consecutive": 1,
+            "consecutive": 0,
             "front": 2
           },
           "distance": {
-            "sum": 5,
-            "odd": 1,
-            "low": 1,
-            "ending_dup": 0,
-            "consecutive": 1,
-            "front": 10
+            "sum": 6,
+            "odd": 0,
+            "low": 0,
+            "ending_dup": 1,
+            "consecutive": 0,
+            "front": 0
           }
         },
         {
           "rank": 2,
           "numbers": [
-            2,
+            7,
             13,
             15,
-            24,
-            41,
-            44
+            30,
+            33,
+            38
           ],
           "matched_numbers": [
-            15,
-            24
+            7
           ],
-          "match_count": 2,
+          "match_count": 1,
           "bonus_match": false,
           "label": "낙첨",
           "profile": {
-            "sum": 139,
-            "odd": 3,
+            "sum": 136,
+            "odd": 4,
             "low": 3,
             "ending_dup": 1,
             "consecutive": 0,
-            "front": 2
+            "front": 7
           },
           "distance": {
-            "sum": 11,
+            "sum": 5,
             "odd": 1,
-            "low": 1,
-            "ending_dup": 0,
+            "low": 0,
+            "ending_dup": 1,
             "consecutive": 0,
-            "front": 10
+            "front": 5
           }
         },
         {
           "rank": 3,
           "numbers": [
-            5,
-            18,
-            21,
-            27,
-            28,
-            44
+            2,
+            13,
+            15,
+            34,
+            35,
+            38
           ],
-          "matched_numbers": [],
-          "match_count": 0,
+          "matched_numbers": [
+            2
+          ],
+          "match_count": 1,
+          "bonus_match": false,
+          "label": "낙첨",
+          "profile": {
+            "sum": 137,
+            "odd": 3,
+            "low": 3,
+            "ending_dup": 1,
+            "consecutive": 1,
+            "front": 2
+          },
+          "distance": {
+            "sum": 6,
+            "odd": 0,
+            "low": 0,
+            "ending_dup": 1,
+            "consecutive": 1,
+            "front": 0
+          }
+        },
+        {
+          "rank": 4,
+          "numbers": [
+            2,
+            8,
+            19,
+            27,
+            42,
+            45
+          ],
+          "matched_numbers": [
+            2
+          ],
+          "match_count": 1,
           "bonus_match": false,
           "label": "낙첨",
           "profile": {
@@ -288,153 +541,119 @@
             "odd": 3,
             "low": 3,
             "ending_dup": 1,
-            "consecutive": 1,
-            "front": 5
-          },
-          "distance": {
-            "sum": 15,
-            "odd": 1,
-            "low": 1,
-            "ending_dup": 0,
-            "consecutive": 1,
-            "front": 7
-          }
-        },
-        {
-          "rank": 4,
-          "numbers": [
-            2,
-            13,
-            22,
-            31,
-            35,
-            38
-          ],
-          "matched_numbers": [
-            22
-          ],
-          "match_count": 1,
-          "bonus_match": false,
-          "label": "낙첨",
-          "profile": {
-            "sum": 141,
-            "odd": 3,
-            "low": 3,
-            "ending_dup": 1,
             "consecutive": 0,
             "front": 2
           },
           "distance": {
-            "sum": 13,
-            "odd": 1,
-            "low": 1,
-            "ending_dup": 0,
+            "sum": 12,
+            "odd": 0,
+            "low": 0,
+            "ending_dup": 1,
             "consecutive": 0,
-            "front": 10
+            "front": 0
           }
         },
         {
           "rank": 5,
           "numbers": [
-            7,
-            10,
-            15,
-            30,
-            41,
-            44
+            2,
+            13,
+            18,
+            33,
+            34,
+            45
           ],
           "matched_numbers": [
-            15
+            2
           ],
           "match_count": 1,
           "bonus_match": false,
           "label": "낙첨",
           "profile": {
-            "sum": 147,
+            "sum": 145,
             "odd": 3,
             "low": 3,
             "ending_dup": 1,
-            "consecutive": 0,
-            "front": 7
+            "consecutive": 1,
+            "front": 2
           },
           "distance": {
-            "sum": 19,
-            "odd": 1,
-            "low": 1,
-            "ending_dup": 0,
-            "consecutive": 0,
-            "front": 5
+            "sum": 14,
+            "odd": 0,
+            "low": 0,
+            "ending_dup": 1,
+            "consecutive": 1,
+            "front": 0
           }
         }
       ],
-      "best_match": 2,
+      "best_match": 1,
       "best_bonus_match": false,
       "best_label": "낙첨",
       "causes": [
-        "최고 일치 2개로 5등권 미달",
-        "홀짝비율 불일치: 당첨 홀수 2개",
-        "저/고 비율 불일치: 당첨 저번호 4개",
-        "앞번호 불일치: 당첨 첫번호 12번",
-        "미포함 당첨번호: 12 19 36"
+        "최고 일치 1개로 5등권 미달",
+        "끝수 중복 패턴 불일치: 당첨 2개",
+        "미포함 당첨번호: 20 25 37 40"
       ],
       "hit_factors": [
-        "번호합 범위 근접: 당첨 128"
+        "번호합 범위 근접: 당첨 131",
+        "홀짝비율 적중 축: 홀수 3개",
+        "저/고 비율 적중 축: 저번호 3개",
+        "앞번호 후보 포함: 02번"
       ],
       "recommended_numbers": {
-        "2": 3,
-        "13": 3,
+        "2": 4,
+        "13": 4,
         "18": 2,
         "27": 2,
-        "28": 2,
-        "45": 1,
-        "15": 2,
-        "24": 1,
-        "41": 2,
-        "44": 3,
-        "5": 1,
-        "21": 1,
-        "22": 1,
-        "31": 1,
-        "35": 1,
-        "38": 1,
+        "32": 1,
+        "45": 3,
         "7": 1,
-        "10": 1,
-        "30": 1
+        "15": 2,
+        "30": 1,
+        "33": 2,
+        "38": 2,
+        "34": 2,
+        "35": 1,
+        "8": 1,
+        "19": 1,
+        "42": 1
       },
       "recommended_patterns": {
         "sum-120-149": 5,
-        "odd-even-3-3": 5,
+        "odd-even-3-3": 4,
         "low-high-3-3": 5,
         "ending-dup-1": 5,
-        "consecutive-1": 2,
-        "front-02": 3,
-        "shape-RD5-LD3-RD3-RS1-LD6": 1,
         "consecutive-0": 3,
-        "shape-RD5-LD6-RD3-RD5-LD5": 1,
-        "front-05": 1,
-        "shape-LD3-RS3-LD2-RS1-LD6": 1,
-        "shape-RD5-LD6-RD3-RS4-LD5": 1,
+        "front-02": 4,
+        "shape-RD5-LD3-RD3-LD3-LD3": 1,
+        "odd-even-4-2": 1,
         "front-07": 1,
-        "shape-LD5-LD3-RD3-RD5-LD5": 1
+        "shape-LD2-LD6-RD3-RS3-LD3": 1,
+        "consecutive-1": 2,
+        "shape-RD5-LD6-RD6-RS1-LD5": 1,
+        "shape-LD2-RD5-RD2-RD3-LD5": 1,
+        "shape-RD5-LD3-RD3-RS1-LD5": 1
       },
       "winning_not_recommended": [
-        12,
-        19,
-        36
+        20,
+        25,
+        37,
+        40
       ],
       "factor_effect": {
-        "number": -1.1847,
-        "line_shape": -1.1806,
-        "front": -1.1806,
-        "sum": -1.3583,
-        "odd_even": -1.47,
-        "low_high": -1.47,
-        "ending": -1.47,
-        "consecutive": -1.2875,
-        "pair": -1.47,
-        "recent_hot": -1.47,
-        "knowledge_net": -0.8487,
-        "feedback": -0.7025
+        "number": -0.9922,
+        "line_shape": -1.0194,
+        "front": -1.0069,
+        "sum": -1.1322,
+        "odd_even": -1.1511,
+        "low_high": -1.2,
+        "ending": -1.2,
+        "consecutive": -1.1131,
+        "pair": -1.2,
+        "recent_hot": -1.2,
+        "knowledge_net": -0.7121,
+        "feedback": -0.5715
       }
     }
   },
@@ -442,134 +661,134 @@
     {
       "rank": 1,
       "numbers": [
-        2,
-        13,
-        18,
-        27,
+        6,
+        11,
+        15,
+        28,
         32,
         45
       ],
-      "score": 81.92,
+      "score": 81.14,
       "parts": {
-        "number": 36.71,
-        "line_shape": 8.25,
-        "front": 6.58,
-        "sum": 9.25,
-        "odd_even": 6.72,
-        "low_high": 4.8,
-        "ending": 4.8,
-        "consecutive": 3.85,
-        "pair": 3.84,
-        "recent_hot": 2.88,
-        "knowledge_net": 3.44,
-        "feedback": 2.27,
+        "number": 35.05,
+        "line_shape": 9.1,
+        "front": 5.13,
+        "sum": 9.47,
+        "odd_even": 7.0,
+        "low_high": 5.02,
+        "ending": 5.01,
+        "consecutive": 4.13,
+        "pair": 4.31,
+        "recent_hot": 2.68,
+        "knowledge_net": 3.36,
+        "feedback": 2.24,
         "history_penalty": -0.0
       }
     },
     {
       "rank": 2,
       "numbers": [
-        7,
-        13,
+        5,
+        11,
         15,
         30,
-        33,
-        38
+        42,
+        44
       ],
-      "score": 81.87,
+      "score": 81.06,
       "parts": {
-        "number": 35.78,
-        "line_shape": 11.39,
-        "front": 5.9,
-        "sum": 9.08,
-        "odd_even": 5.35,
-        "low_high": 4.8,
-        "ending": 4.8,
-        "consecutive": 3.85,
-        "pair": 3.84,
-        "recent_hot": 2.88,
-        "knowledge_net": 3.35,
-        "feedback": 2.3,
+        "number": 33.99,
+        "line_shape": 10.04,
+        "front": 6.24,
+        "sum": 8.54,
+        "odd_even": 7.0,
+        "low_high": 5.02,
+        "ending": 5.01,
+        "consecutive": 4.13,
+        "pair": 4.31,
+        "recent_hot": 2.68,
+        "knowledge_net": 3.23,
+        "feedback": 2.23,
         "history_penalty": -0.0
       }
     },
     {
       "rank": 3,
       "numbers": [
-        2,
-        13,
+        5,
+        11,
         15,
-        34,
-        35,
-        38
+        24,
+        28,
+        42
       ],
-      "score": 81.54,
+      "score": 80.9,
       "parts": {
-        "number": 35.46,
-        "line_shape": 9.88,
-        "front": 6.58,
-        "sum": 9.25,
-        "odd_even": 6.72,
-        "low_high": 4.8,
-        "ending": 4.8,
-        "consecutive": 3.13,
-        "pair": 3.84,
-        "recent_hot": 2.88,
-        "knowledge_net": 3.31,
-        "feedback": 2.3,
+        "number": 34.6,
+        "line_shape": 10.28,
+        "front": 6.24,
+        "sum": 7.44,
+        "odd_even": 7.0,
+        "low_high": 5.02,
+        "ending": 5.01,
+        "consecutive": 4.13,
+        "pair": 4.31,
+        "recent_hot": 2.68,
+        "knowledge_net": 3.27,
+        "feedback": 2.25,
         "history_penalty": -0.0
       }
     },
     {
       "rank": 4,
       "numbers": [
-        2,
+        5,
         8,
-        19,
+        15,
         27,
         42,
-        45
+        44
       ],
-      "score": 81.39,
+      "score": 80.76,
       "parts": {
-        "number": 34.98,
-        "line_shape": 9.53,
-        "front": 6.58,
-        "sum": 9.02,
-        "odd_even": 6.72,
-        "low_high": 4.8,
-        "ending": 4.8,
-        "consecutive": 3.85,
-        "pair": 3.84,
-        "recent_hot": 2.88,
-        "knowledge_net": 3.51,
-        "feedback": 2.27,
+        "number": 34.11,
+        "line_shape": 8.51,
+        "front": 6.24,
+        "sum": 9.56,
+        "odd_even": 7.0,
+        "low_high": 5.02,
+        "ending": 5.01,
+        "consecutive": 4.13,
+        "pair": 4.31,
+        "recent_hot": 2.68,
+        "knowledge_net": 3.29,
+        "feedback": 2.22,
         "history_penalty": -0.0
       }
     },
     {
       "rank": 5,
       "numbers": [
-        2,
-        13,
-        18,
-        33,
-        34,
+        6,
+        12,
+        15,
+        24,
+        31,
         45
       ],
-      "score": 81.37,
+      "score": 80.69,
       "parts": {
-        "number": 35.67,
-        "line_shape": 9.88,
-        "front": 6.58,
-        "sum": 8.69,
-        "odd_even": 6.72,
-        "low_high": 4.8,
-        "ending": 4.8,
-        "consecutive": 3.13,
-        "pair": 3.84,
-        "recent_hot": 2.88,
-        "knowledge_net": 3.48,
+        "number": 35.3,
+        "line_shape": 8.86,
+        "front": 5.13,
+        "sum": 8.79,
+        "odd_even": 7.0,
+        "low_high": 5.02,
+        "ending": 5.01,
+        "consecutive": 4.13,
+        "pair": 4.31,
+        "recent_hot": 2.68,
+        "knowledge_net": 3.46,
         "feedback": 2.29,
         "history_penalty": -0.0
       }

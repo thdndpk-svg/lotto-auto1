@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-15
-updated: 2026-07-15
+created: 2026-07-29
+updated: 2026-07-29
 sources: ["data/lotto.csv"]
 aliases: ["04", "4번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["04", "4번"]
 
 - 전체 출현: 162회
 - 최근 출현: 3회
-- 지식그물 점수: 53.42
+- 지식그물 점수: 52.90
 
 ## 자주 연결된 패턴
 - [[pattern-front-04|앞번호 04번]] — 106회
