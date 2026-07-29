@@ -96,16 +96,17 @@ Folder: /root
 
 무료 GitHub Pages를 쓰려면 저장소가 Public이어야 합니다.
 
-## 카카오톡 자동 전송
+## 메시지 자동 전송
 
-GitHub Actions를 이용해 매주 수요일 12:00(KST)에 분석 결과를 카카오톡 `나와의 채팅`으로 보낼 수 있습니다.
+GitHub Actions를 이용해 매주 수요일 12:00(KST)에 분석 결과를 카카오톡 또는 텔레그램으로 보낼 수 있습니다.
 
-추가로 매주 일요일 11:00(KST)에 수요일 추천번호와 최신 당첨번호를 비교한 결과를 카카오톡으로 받을 수 있습니다.
+추가로 매주 일요일 11:00(KST)에 수요일 추천번호와 최신 당첨번호를 비교한 결과도 받을 수 있습니다.
 
 설정 순서:
 
 ```text
 KAKAO_SETUP.md
+TELEGRAM_SETUP.md
 ```
 
 카톡 발송 없이 메시지만 확인:
@@ -120,6 +121,8 @@ python3 weekly_kakao_report.py --dry-run --skip-refresh
 .github/workflows/lotto-kakao-weekly.yml
 .github/workflows/lotto-kakao-sunday-result.yml
 ```
+
+GitHub Secrets에 `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`를 등록하면 텔레그램 발송이 켜집니다. 카카오 Secret이 함께 있으면 둘 다 보내고, 카카오 토큰이 실패해도 텔레그램이 정상이라면 자동화는 성공 처리됩니다.
 
 수요일 워크플로는 발송한 추천번호를 `reports/latest_recommendations.json`으로 저장하고 GitHub에 커밋합니다. 일요일 워크플로는 이 파일을 읽어 최신 회차 당첨번호와 비교합니다.
 

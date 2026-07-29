@@ -68,7 +68,7 @@ KAKAO_CLIENT_SECRET
 수동 실행:
 
 ```text
-GitHub > Actions > Lotto Kakao Weekly > Run workflow
+GitHub > Actions > Lotto Weekly Message > Run workflow
 ```
 
 ## 5. 로컬 테스트

@@ -1,4 +1,4 @@
-name: Lotto Kakao Weekly
+name: Lotto Weekly Message
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 jobs:
-  send-kakao:
+  send-message:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,11 +26,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run weekly Lotto analysis and Kakao send
+      - name: Run weekly Lotto analysis and send message
         env:
           KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
           KAKAO_REFRESH_TOKEN: ${{ secrets.KAKAO_REFRESH_TOKEN }}
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           LOTTO_CANDIDATES: ${{ github.event.inputs.candidates || '20000' }}
         run: python weekly_kakao_report.py --candidates "$LOTTO_CANDIDATES"
 

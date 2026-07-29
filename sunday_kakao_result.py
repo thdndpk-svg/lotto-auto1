@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 from pathlib import Path
 
 from lotto_feedback import analyze_and_save_feedback, feedback_kakao_lines
@@ -11,13 +10,9 @@ from lotto_auto import load_draws
 from weekly_kakao_report import (
     APP_DIR,
     DATA_PATH,
-    GITHUB_SECRET_SETTINGS_URL,
     RECOMMENDATION_PATH,
-    build_refresh_token_notice,
-    refresh_kakao_token,
     refresh_lotto_data,
-    send_kakao_memo,
-    load_local_token,
+    send_configured_notifications,
 )
 
 
@@ -126,19 +121,8 @@ def main() -> int:
     if args.dry_run:
         return 0
 
-    local_token = load_local_token()
-    rest_api_key = os.environ.get("KAKAO_REST_API_KEY") or local_token.get("rest_api_key")
-    refresh_token = os.environ.get("KAKAO_REFRESH_TOKEN") or local_token.get("refresh_token")
-    client_secret = os.environ.get("KAKAO_CLIENT_SECRET") or local_token.get("client_secret")
-    if not rest_api_key or not refresh_token:
-        raise SystemExit("Missing KAKAO_REST_API_KEY or KAKAO_REFRESH_TOKEN environment variable.")
-
-    access_token, renewed_refresh_token = refresh_kakao_token(rest_api_key, refresh_token, client_secret)
-    if renewed_refresh_token:
-        send_kakao_memo(access_token, build_refresh_token_notice(renewed_refresh_token), GITHUB_SECRET_SETTINGS_URL)
-        print("Kakao refresh token renewal notice sent.")
-    response = send_kakao_memo(access_token, message)
-    print(f"Kakao send response: {response}")
+    sent = send_configured_notifications(message)
+    print("Message sent via: " + ", ".join(sent))
     return 0
 
 

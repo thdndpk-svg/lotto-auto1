@@ -26,7 +26,12 @@ LOCAL_TOKEN_PATH = APP_DIR / "kakao_token.local.json"
 GITHUB_SECRET_SETTINGS_URL = "https://github.com/thdndpk-svg/lotto-auto1/settings/secrets/actions"
 
 
-def post_form(url: str, data: dict[str, str], headers: dict[str, str] | None = None) -> dict[str, Any]:
+def post_form(
+    url: str,
+    data: dict[str, str],
+    headers: dict[str, str] | None = None,
+    error_label: str = "Kakao API",
+) -> dict[str, Any]:
     body = urllib.parse.urlencode(data).encode("utf-8")
     request = urllib.request.Request(
         url,
@@ -41,7 +46,7 @@ def post_form(url: str, data: dict[str, str], headers: dict[str, str] | None = N
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as error:
         body = error.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"Kakao API HTTP {error.code}: {body}") from error
+        raise RuntimeError(f"{error_label} HTTP {error.code}: {body}") from error
 
 
 def refresh_kakao_token(rest_api_key: str, refresh_token: str, client_secret: str | None = None) -> tuple[str, str | None]:
@@ -82,6 +87,19 @@ def send_kakao_memo(access_token: str, text: str, link_url: str = "https://www.d
     )
 
 
+def send_telegram_message(bot_token: str, chat_id: str, text: str) -> dict[str, Any]:
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    return post_form(
+        url,
+        {
+            "chat_id": chat_id,
+            "text": text[:4096],
+            "disable_web_page_preview": "true",
+        },
+        error_label="Telegram API",
+    )
+
+
 def build_refresh_token_notice(renewed_refresh_token: str) -> str:
     return "\n".join(
         [
@@ -94,6 +112,52 @@ def build_refresh_token_notice(renewed_refresh_token: str) -> str:
             "이 값은 비밀번호처럼 보관하고 다른 곳에 공개하지 마세요.",
         ]
     )
+
+
+def send_configured_notifications(message: str) -> list[str]:
+    local_token = load_local_token()
+    rest_api_key = os.environ.get("KAKAO_REST_API_KEY") or local_token.get("rest_api_key")
+    refresh_token = os.environ.get("KAKAO_REFRESH_TOKEN") or local_token.get("refresh_token")
+    client_secret = os.environ.get("KAKAO_CLIENT_SECRET") or local_token.get("client_secret")
+    telegram_bot_token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    telegram_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+
+    sent: list[str] = []
+    errors: list[str] = []
+
+    if rest_api_key and refresh_token:
+        try:
+            access_token, renewed_refresh_token = refresh_kakao_token(rest_api_key, refresh_token, client_secret)
+            if renewed_refresh_token:
+                send_kakao_memo(access_token, build_refresh_token_notice(renewed_refresh_token), GITHUB_SECRET_SETTINGS_URL)
+                print("Kakao refresh token renewal notice sent.")
+            response = send_kakao_memo(access_token, message)
+            print(f"Kakao send response: {response}")
+            sent.append("Kakao")
+        except Exception as error:
+            errors.append(f"Kakao: {error}")
+            print(f"Kakao send failed: {error}")
+    else:
+        print("Kakao secrets are not configured; skipping Kakao.")
+
+    if telegram_bot_token and telegram_chat_id:
+        try:
+            response = send_telegram_message(telegram_bot_token, telegram_chat_id, message)
+            print(f"Telegram send response: {response}")
+            sent.append("Telegram")
+        except Exception as error:
+            errors.append(f"Telegram: {error}")
+            print(f"Telegram send failed: {error}")
+    else:
+        print("Telegram secrets are not configured; skipping Telegram.")
+
+    if sent:
+        if errors:
+            print("Message sent with fallback. Failed channels: " + " | ".join(errors))
+        return sent
+    if errors:
+        raise RuntimeError("All configured message channels failed: " + " | ".join(errors))
+    raise SystemExit("No message channel configured. Set Kakao secrets or TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.")
 
 
 def load_local_token() -> dict[str, str]:
@@ -232,19 +296,8 @@ def main() -> int:
     if args.dry_run:
         return 0
 
-    local_token = load_local_token()
-    rest_api_key = os.environ.get("KAKAO_REST_API_KEY") or local_token.get("rest_api_key")
-    refresh_token = os.environ.get("KAKAO_REFRESH_TOKEN") or local_token.get("refresh_token")
-    client_secret = os.environ.get("KAKAO_CLIENT_SECRET") or local_token.get("client_secret")
-    if not rest_api_key or not refresh_token:
-        raise SystemExit("Missing KAKAO_REST_API_KEY or KAKAO_REFRESH_TOKEN environment variable.")
-
-    access_token, renewed_refresh_token = refresh_kakao_token(rest_api_key, refresh_token, client_secret)
-    if renewed_refresh_token:
-        send_kakao_memo(access_token, build_refresh_token_notice(renewed_refresh_token), GITHUB_SECRET_SETTINGS_URL)
-        print("Kakao refresh token renewal notice sent.")
-    response = send_kakao_memo(access_token, message)
-    print(f"Kakao send response: {response}")
+    sent = send_configured_notifications(message)
+    print("Message sent via: " + ", ".join(sent))
     return 0
 
 
