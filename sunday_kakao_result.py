@@ -11,8 +11,10 @@ from lotto_auto import load_draws
 from weekly_kakao_report import (
     APP_DIR,
     DATA_PATH,
+    GITHUB_SECRET_SETTINGS_URL,
     RECOMMENDATION_PATH,
-    refresh_access_token,
+    build_refresh_token_notice,
+    refresh_kakao_token,
     refresh_lotto_data,
     send_kakao_memo,
     load_local_token,
@@ -131,7 +133,10 @@ def main() -> int:
     if not rest_api_key or not refresh_token:
         raise SystemExit("Missing KAKAO_REST_API_KEY or KAKAO_REFRESH_TOKEN environment variable.")
 
-    access_token = refresh_access_token(rest_api_key, refresh_token, client_secret)
+    access_token, renewed_refresh_token = refresh_kakao_token(rest_api_key, refresh_token, client_secret)
+    if renewed_refresh_token:
+        send_kakao_memo(access_token, build_refresh_token_notice(renewed_refresh_token), GITHUB_SECRET_SETTINGS_URL)
+        print("Kakao refresh token renewal notice sent.")
     response = send_kakao_memo(access_token, message)
     print(f"Kakao send response: {response}")
     return 0

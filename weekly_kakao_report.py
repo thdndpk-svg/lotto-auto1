@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import date, datetime
@@ -22,6 +23,7 @@ RECOMMENDATION_PATH = REPORT_DIR / "latest_recommendations.json"
 TOKEN_URL = "https://kauth.kakao.com/oauth/token"
 MEMO_SEND_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
 LOCAL_TOKEN_PATH = APP_DIR / "kakao_token.local.json"
+GITHUB_SECRET_SETTINGS_URL = "https://github.com/thdndpk-svg/lotto-auto1/settings/secrets/actions"
 
 
 def post_form(url: str, data: dict[str, str], headers: dict[str, str] | None = None) -> dict[str, Any]:
@@ -34,11 +36,15 @@ def post_form(url: str, data: dict[str, str], headers: dict[str, str] | None = N
             **(headers or {}),
         },
     )
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        body = error.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"Kakao API HTTP {error.code}: {body}") from error
 
 
-def refresh_access_token(rest_api_key: str, refresh_token: str, client_secret: str | None = None) -> str:
+def refresh_kakao_token(rest_api_key: str, refresh_token: str, client_secret: str | None = None) -> tuple[str, str | None]:
     payload = {
         "grant_type": "refresh_token",
         "client_id": rest_api_key,
@@ -50,7 +56,13 @@ def refresh_access_token(rest_api_key: str, refresh_token: str, client_secret: s
     access_token = token.get("access_token")
     if not access_token:
         raise RuntimeError(f"Kakao access_token refresh failed: {token}")
-    return str(access_token)
+    renewed_refresh_token = token.get("refresh_token")
+    return str(access_token), str(renewed_refresh_token) if renewed_refresh_token else None
+
+
+def refresh_access_token(rest_api_key: str, refresh_token: str, client_secret: str | None = None) -> str:
+    access_token, _ = refresh_kakao_token(rest_api_key, refresh_token, client_secret)
+    return access_token
 
 
 def send_kakao_memo(access_token: str, text: str, link_url: str = "https://www.dhlottery.co.kr/") -> dict[str, Any]:
@@ -67,6 +79,20 @@ def send_kakao_memo(access_token: str, text: str, link_url: str = "https://www.d
         MEMO_SEND_URL,
         {"template_object": json.dumps(template_object, ensure_ascii=False)},
         {"Authorization": f"Bearer {access_token}"},
+    )
+
+
+def build_refresh_token_notice(renewed_refresh_token: str) -> str:
+    return "\n".join(
+        [
+            "[로또 자동화 관리 알림]",
+            "카카오 refresh token이 새로 발급됐습니다.",
+            "GitHub Secret KAKAO_REFRESH_TOKEN을 아래 값으로 교체해야 다음 자동 톡이 계속 갑니다.",
+            "",
+            renewed_refresh_token,
+            "",
+            "이 값은 비밀번호처럼 보관하고 다른 곳에 공개하지 마세요.",
+        ]
     )
 
 
@@ -213,7 +239,10 @@ def main() -> int:
     if not rest_api_key or not refresh_token:
         raise SystemExit("Missing KAKAO_REST_API_KEY or KAKAO_REFRESH_TOKEN environment variable.")
 
-    access_token = refresh_access_token(rest_api_key, refresh_token, client_secret)
+    access_token, renewed_refresh_token = refresh_kakao_token(rest_api_key, refresh_token, client_secret)
+    if renewed_refresh_token:
+        send_kakao_memo(access_token, build_refresh_token_notice(renewed_refresh_token), GITHUB_SECRET_SETTINGS_URL)
+        print("Kakao refresh token renewal notice sent.")
     response = send_kakao_memo(access_token, message)
     print(f"Kakao send response: {response}")
     return 0
