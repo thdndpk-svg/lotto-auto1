@@ -313,6 +313,9 @@ class LottoRequestHandler(BaseHTTPRequestHandler):
                 self.send_json({"ok": True, "latest": latest_payload(auto_refresh=False), "output": output})
             elif self.path == "/api/save-report":
                 self.send_json(save_report(str(payload.get("report") or ""), str(payload.get("targetDate") or "latest")))
+            elif self.path == "/api/shutdown":
+                self.send_json({"ok": True})
+                threading.Thread(target=self.server.shutdown, daemon=True).start()
             else:
                 self.send_error(404)
         except BrokenPipeError:
@@ -450,6 +453,8 @@ INDEX_HTML = r"""<!doctype html>
     .btn-primary { background: var(--blue); color: white; box-shadow: 0 12px 22px rgba(37,99,235,.22); }
     .btn-soft { background: #edf2f7; color: #1f2937; }
     .btn-green { background: var(--green); color: white; }
+    .btn-danger { background: var(--red); color: white; }
+    .btn-wide { grid-column: 1 / -1; }
     .btn:disabled { opacity: .55; cursor: not-allowed; }
     .results { display: grid; gap: 18px; }
     .combo-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
@@ -611,6 +616,7 @@ INDEX_HTML = r"""<!doctype html>
           <button id="refreshBtn" class="btn btn-green">데이터 갱신</button>
           <button id="saveBtn" class="btn btn-soft">리포트 저장</button>
           <button id="folderBtn" class="btn btn-soft">폴더 열기</button>
+          <button id="shutdownBtn" class="btn btn-danger btn-wide">앱 종료</button>
         </div>
         <div id="toast" class="toast"></div>
       </div></aside>
@@ -833,6 +839,7 @@ INDEX_HTML = r"""<!doctype html>
       setStatus(label);
       $("analyzeBtn").disabled = isBusy;
       $("refreshBtn").disabled = isBusy;
+      $("shutdownBtn").disabled = isBusy;
     }
     async function refreshData() {
       setBusy(true, "데이터 갱신 중...");
@@ -852,6 +859,18 @@ INDEX_HTML = r"""<!doctype html>
       const saved = await postJson("/api/save-report", {report: state.lastResult.report, targetDate: state.lastResult.targetDate});
       toast(`저장됨: ${saved.path}`);
     }
+    async function shutdownApp() {
+      if (!confirm("Lotto Auto 앱을 종료할까요?")) return;
+      setBusy(true, "앱 종료 중...");
+      try {
+        await postJson("/api/shutdown", {});
+        toast("앱이 종료됐습니다. 이 브라우저 탭은 닫아도 됩니다.");
+        setStatus("종료됨");
+        setTimeout(() => window.close(), 500);
+      } catch (err) {
+        toast(err.message);
+      }
+    }
     async function boot() {
       $("targetDate").value = new Date().toISOString().slice(0, 10);
       state.config = await getJson("/api/config");
@@ -862,6 +881,7 @@ INDEX_HTML = r"""<!doctype html>
       $("refreshBtn").addEventListener("click", refreshData);
       $("saveBtn").addEventListener("click", saveReport);
       $("folderBtn").addEventListener("click", () => getJson("/api/open-folder"));
+      $("shutdownBtn").addEventListener("click", shutdownApp);
       toast("원하는 기법을 고르고 분석 실행을 누르세요.");
     }
     boot().catch(err => { setStatus("오류"); toast(err.message); });
