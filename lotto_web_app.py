@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import datetime as dt
 import json
 import subprocess
 import sys
@@ -32,6 +33,9 @@ DATA_PATH = APP_DIR / "data" / "lotto.csv"
 REPORT_DIR = APP_DIR / "reports"
 HOST = "127.0.0.1"
 PORT = 8765
+AUTO_REFRESH_MIN_INTERVAL_SECONDS = 15 * 60
+AUTO_REFRESH_READY_TIME = dt.time(21, 0)
+_last_auto_refresh_attempt = 0.0
 
 
 MAIN_TECHNIQUES = [
@@ -107,7 +111,56 @@ def read_rows() -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
-def latest_payload() -> dict[str, Any]:
+def expected_latest_draw_date(now: dt.datetime | None = None) -> dt.date:
+    now = now or dt.datetime.now()
+    today = now.date()
+    days_since_saturday = (today.weekday() - 5) % 7
+    latest = today - dt.timedelta(days=days_since_saturday)
+    if today.weekday() == 5 and now.time() < AUTO_REFRESH_READY_TIME:
+        latest -= dt.timedelta(days=7)
+    return latest
+
+
+def refresh_data_from_source() -> str:
+    result = subprocess.run(
+        [sys.executable, str(APP_DIR / "import_lotto_history_json.py")],
+        cwd=str(APP_DIR),
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    write_knowledge_vault(load_draws(DATA_PATH), APP_DIR / "knowledge")
+    return result.stdout.strip()
+
+
+def maybe_refresh_stale_data() -> None:
+    global _last_auto_refresh_attempt
+    now = time.monotonic()
+    if now - _last_auto_refresh_attempt < AUTO_REFRESH_MIN_INTERVAL_SECONDS:
+        return
+
+    rows = read_rows()
+    if not rows:
+        _last_auto_refresh_attempt = now
+        refresh_data_from_source()
+        return
+
+    latest_date = dt.date.fromisoformat(rows[-1]["date"])
+    if latest_date >= expected_latest_draw_date():
+        return
+
+    _last_auto_refresh_attempt = now
+    try:
+        output = refresh_data_from_source()
+        if output:
+            print(f"Auto refreshed lotto data: {output}")
+    except Exception as exc:
+        print(f"Auto lotto data refresh skipped: {exc}")
+
+
+def latest_payload(auto_refresh: bool = True) -> dict[str, Any]:
+    if auto_refresh:
+        maybe_refresh_stale_data()
     rows = read_rows()
     if not rows:
         raise ValueError("lotto.csv is empty")
@@ -128,6 +181,7 @@ def latest_payload() -> dict[str, Any]:
 
 
 def analyze_payload(request: dict[str, Any]) -> dict[str, Any]:
+    maybe_refresh_stale_data()
     target = parse_date(str(request.get("targetDate") or time.strftime("%Y-%m-%d")))
     candidates = int(request.get("candidates") or 20000)
     candidates = max(1000, min(candidates, 60000))
@@ -166,7 +220,7 @@ def analyze_payload(request: dict[str, Any]) -> dict[str, Any]:
     report = report_buffer.getvalue()
 
     return {
-        "latest": latest_payload(),
+        "latest": latest_payload(auto_refresh=False),
         "targetDate": target.isoformat(),
         "sameDateMatches": [
             {
@@ -255,15 +309,8 @@ class LottoRequestHandler(BaseHTTPRequestHandler):
             if self.path == "/api/analyze":
                 self.send_json(analyze_payload(payload))
             elif self.path == "/api/refresh":
-                subprocess.run(
-                    [sys.executable, str(APP_DIR / "import_lotto_history_json.py")],
-                    cwd=str(APP_DIR),
-                    check=True,
-                    text=True,
-                    capture_output=True,
-                )
-                write_knowledge_vault(load_draws(DATA_PATH), APP_DIR / "knowledge")
-                self.send_json({"ok": True, "latest": latest_payload()})
+                output = refresh_data_from_source()
+                self.send_json({"ok": True, "latest": latest_payload(auto_refresh=False), "output": output})
             elif self.path == "/api/save-report":
                 self.send_json(save_report(str(payload.get("report") or ""), str(payload.get("targetDate") or "latest")))
             else:
