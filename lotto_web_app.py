@@ -872,14 +872,14 @@ INDEX_HTML = r"""<!doctype html>
 
 
 def open_existing_or_serve() -> int:
+    url = f"http://{HOST}:{PORT}/"
     try:
         server = ThreadingHTTPServer((HOST, PORT), LottoRequestHandler)
     except OSError:
-        webbrowser.open(f"http://{HOST}:{PORT}/")
+        open_browser(url)
         return 0
 
-    url = f"http://{HOST}:{PORT}/"
-    threading.Thread(target=lambda: (time.sleep(0.4), webbrowser.open(url)), daemon=True).start()
+    threading.Thread(target=lambda: (time.sleep(0.4), open_browser(url)), daemon=True).start()
     print(f"Lotto Auto running at {url}")
     try:
         server.serve_forever()
@@ -888,6 +888,16 @@ def open_existing_or_serve() -> int:
     finally:
         server.server_close()
     return 0
+
+
+def open_browser(url: str) -> None:
+    if sys.platform == "darwin":
+        try:
+            subprocess.run(["open", url], check=False)
+            return
+        except Exception as exc:
+            print(f"Failed to open browser with macOS open command: {exc}")
+    webbrowser.open(url)
 
 
 if __name__ == "__main__":
