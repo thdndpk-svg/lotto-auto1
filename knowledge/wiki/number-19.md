@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-29
-updated: 2026-07-29
+created: 2026-08-05
+updated: 2026-08-05
 sources: ["data/lotto.csv"]
 aliases: ["19", "19번"]
 ---
@@ -9,8 +9,8 @@ aliases: ["19", "19번"]
 # 19번
 
 - 전체 출현: 170회
-- 최근 출현: 4회
-- 지식그물 점수: 60.07
+- 최근 출현: 3회
+- 지식그물 점수: 55.89
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 88회

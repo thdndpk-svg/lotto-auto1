@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-07-29
-updated: 2026-07-29
+created: 2026-08-05
+updated: 2026-08-05
 sources: ["data/lotto.csv"]
 aliases: ["44", "44번"]
 ---
@@ -9,8 +9,8 @@ aliases: ["44", "44번"]
 # 44번
 
 - 전체 출현: 164회
-- 최근 출현: 4회
-- 지식그물 점수: 55.96
+- 최근 출현: 3회
+- 지식그물 점수: 53.39
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 83회
