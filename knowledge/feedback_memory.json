@@ -1,107 +1,118 @@
 {
   "version": 1,
-  "updated_at": "2026-08-05T05:47:06",
-  "observation_count": 4,
+  "updated_at": "2026-08-09T03:47:52",
+  "observation_count": 5,
   "number_bias": {
-    "1": -0.0345,
-    "11": 0.0105,
-    "15": 0.0188,
-    "38": -0.0099,
-    "42": -0.0882,
-    "44": -0.1053,
-    "7": 0.0304,
-    "10": -0.0347,
-    "28": -0.1053,
-    "45": -0.1061,
-    "24": -0.0095,
-    "18": -0.0274,
-    "27": -0.1228,
-    "13": -0.0274,
-    "16": -0.0171,
-    "4": 0.0362,
-    "14": 0.0362,
-    "2": 0.0094,
-    "41": -0.035,
-    "5": -0.0534,
-    "21": -0.0174,
-    "22": 0.0436,
-    "35": -0.0352,
-    "30": -0.0532,
-    "36": 0.0368,
-    "12": 0.0188,
-    "19": 0.0191,
-    "32": -0.0357,
-    "33": -0.0355,
-    "34": -0.0355,
-    "8": -0.0357,
-    "37": 0.0374,
-    "40": 0.0374,
-    "20": 0.0374,
-    "25": 0.0374,
-    "6": 0.045,
-    "39": 0.038,
-    "43": 0.038
+    "1": -0.034,
+    "11": -0.0257,
+    "15": -0.0175,
+    "38": 0.0282,
+    "42": -0.1229,
+    "44": -0.1037,
+    "7": 0.0299,
+    "10": -0.0342,
+    "28": -0.1037,
+    "45": -0.1405,
+    "24": -0.0454,
+    "18": 0.018,
+    "27": -0.139,
+    "13": -0.063,
+    "16": -0.0168,
+    "14": 0.0357,
+    "2": 0.0093,
+    "41": -0.0345,
+    "5": -0.0526,
+    "21": 0.0209,
+    "22": 0.0429,
+    "35": -0.0347,
+    "30": -0.0884,
+    "36": 0.0362,
+    "12": 0.0565,
+    "19": 0.0188,
+    "32": -0.0352,
+    "33": -0.035,
+    "34": 0.01,
+    "8": -0.0712,
+    "37": 0.0368,
+    "40": 0.0368,
+    "20": 0.0368,
+    "25": 0.0368,
+    "6": 0.0443,
+    "39": 0.0194,
+    "43": 0.0374,
+    "9": -0.018,
+    "3": -0.018,
+    "31": -0.018,
+    "29": 0.038
   },
   "pattern_bias": {
-    "low-high-4-2": 0.161,
-    "ending-dup-2": 0.1068,
-    "odd-even-2-4": 0.106,
-    "sum-090-119": 0.0526,
-    "shape-RD3-RS1-LD4-LD3-SD1": 0.0526,
-    "front-04": 0.0526,
-    "sum-150-179": -0.0134,
-    "consecutive-0": 0.0528,
-    "front-01": -0.0268,
-    "shape-RD4-LD4-RD5-RS4-LD6": -0.0134,
-    "sum-120-149": 0.1358,
-    "front-07": -0.0542,
-    "shape-LD5-LD3-RD6-SD2-LD5": -0.0134,
-    "shape-LD4-LD4-RD3-RD6-LD6": -0.0134,
-    "shape-RD4-SD1-RD3-RD3-LD6": -0.0134,
-    "shape-LD2-LD5-RD5-RS1-SD2": -0.0134,
-    "front-12": 0.0534,
-    "shape-LD5-RS4-LD5-RS2-LD4": 0.0534,
-    "front-02": 0.027,
-    "shape-RD5-LD3-RD3-RS1-LD6": -0.0136,
-    "shape-RD5-LD6-RD3-RD5-LD5": -0.0136,
-    "front-05": -0.0416,
-    "shape-LD3-RS3-LD2-RS1-LD6": -0.0136,
-    "shape-RD5-LD6-RD3-RS4-LD5": -0.0136,
-    "shape-LD5-LD3-RD3-RD5-LD5": -0.0136,
-    "shape-RS5-LD3-LD3-LD4-RS3": 0.0542,
-    "shape-RD5-LD3-RD3-LD3-LD3": -0.0138,
-    "odd-even-4-2": -0.0138,
-    "shape-LD2-LD6-RD3-RS3-LD3": -0.0138,
-    "shape-RD5-LD6-RD6-RS1-LD5": -0.0138,
-    "shape-LD2-RD5-RD2-RD3-LD5": -0.0138,
-    "shape-RD5-LD3-RD3-RS1-LD5": -0.0138,
-    "ending-dup-0": 0.055,
-    "front-06": 0.055,
-    "shape-RS1-LD4-LD4-RD6-LD4": 0.055,
-    "odd-even-5-1": 0.055,
-    "consecutive-1": 0.055,
-    "odd-even-3-3": -0.028,
-    "low-high-3-3": -0.028,
-    "ending-dup-1": -0.028,
-    "shape-LD3-LD4-RD6-LD4-LD3": -0.014,
-    "shape-LD2-LD4-RD3-RD6-LD6": -0.014,
-    "shape-LD2-LD4-RD3-RS4-SD2": -0.014,
-    "shape-LD5-SD1-RD6-RD3-LD6": -0.014,
-    "shape-LD2-LD5-RD3-SD1-SD2": -0.014
+    "low-high-4-2": 0.1586,
+    "ending-dup-2": 0.1052,
+    "odd-even-2-4": 0.1594,
+    "sum-090-119": 0.0518,
+    "shape-RD3-RS1-LD4-LD3-SD1": 0.0518,
+    "front-04": 0.0238,
+    "sum-150-179": 0.0418,
+    "consecutive-0": 0.107,
+    "front-01": -0.0264,
+    "shape-RD4-LD4-RD5-RS4-LD6": -0.0132,
+    "sum-120-149": 0.1058,
+    "front-07": -0.0534,
+    "shape-LD5-LD3-RD6-SD2-LD5": -0.0132,
+    "shape-LD4-LD4-RD3-RD6-LD6": -0.0132,
+    "shape-RD4-SD1-RD3-RD3-LD6": -0.0132,
+    "shape-LD2-LD5-RD5-RS1-SD2": -0.0132,
+    "front-12": 0.1076,
+    "shape-LD5-RS4-LD5-RS2-LD4": 0.0526,
+    "front-02": 0.0266,
+    "shape-RD5-LD3-RD3-RS1-LD6": -0.0134,
+    "shape-RD5-LD6-RD3-RD5-LD5": -0.0134,
+    "front-05": -0.041,
+    "shape-LD3-RS3-LD2-RS1-LD6": -0.0134,
+    "shape-RD5-LD6-RD3-RS4-LD5": -0.0134,
+    "shape-LD5-LD3-RD3-RD5-LD5": -0.0134,
+    "shape-RS5-LD3-LD3-LD4-RS3": 0.0534,
+    "shape-RD5-LD3-RD3-LD3-LD3": -0.0136,
+    "odd-even-4-2": -0.0416,
+    "shape-LD2-LD6-RD3-RS3-LD3": -0.0136,
+    "shape-RD5-LD6-RD6-RS1-LD5": -0.0136,
+    "shape-LD2-RD5-RD2-RD3-LD5": -0.0136,
+    "shape-RD5-LD3-RD3-RS1-LD5": -0.0136,
+    "ending-dup-0": 0.0542,
+    "front-06": 0.0542,
+    "shape-RS1-LD4-LD4-RD6-LD4": 0.0542,
+    "odd-even-5-1": 0.0542,
+    "consecutive-1": 0.0542,
+    "odd-even-3-3": -0.0556,
+    "low-high-3-3": 0.0274,
+    "ending-dup-1": 0.0274,
+    "shape-LD3-LD4-RD6-LD4-LD3": -0.0138,
+    "shape-LD2-LD4-RD3-RD6-LD6": -0.0138,
+    "shape-LD2-LD4-RD3-RS4-SD2": -0.0138,
+    "shape-LD5-SD1-RD6-RD3-LD6": -0.0138,
+    "shape-LD2-LD5-RD3-SD1-SD2": -0.0138,
+    "shape-LD2-RS3-LD6-RS5-LD4": 0.055,
+    "shape-LD4-SD1-RD6-RD3-LD5": -0.014,
+    "front-11": -0.028,
+    "shape-RS2-LD3-LD2-RD4-LD3": -0.014,
+    "shape-LD3-LD2-RD3-RD6-LD5": -0.014,
+    "front-03": -0.014,
+    "shape-LD3-SD1-RD4-RS3-LD5": -0.014,
+    "shape-RS2-LD6-RD3-LD2-RD3": -0.014
   },
   "factor_bias": {
-    "number": -0.2451,
-    "line_shape": -0.2412,
-    "front": -0.2358,
-    "sum": -0.278,
-    "odd_even": -0.2939,
-    "low_high": -0.2975,
-    "ending": -0.2975,
-    "consecutive": -0.2749,
-    "pair": -0.2975,
-    "recent_hot": -0.2975,
-    "feedback": 0.0245,
-    "knowledge_net": -0.1124
+    "number": -0.3388,
+    "line_shape": -0.3349,
+    "front": -0.2943,
+    "sum": -0.393,
+    "odd_even": -0.4062,
+    "low_high": -0.4213,
+    "ending": -0.4213,
+    "consecutive": -0.3993,
+    "pair": -0.4213,
+    "recent_hot": -0.4073,
+    "feedback": -0.0105,
+    "knowledge_net": -0.1845
   },
   "strategy_bias": {
     "ending": 0.2385,
@@ -1324,160 +1335,319 @@
         "knowledge_net": 0.0029,
         "feedback": 0.001
       }
+    },
+    {
+      "event_id": "2026-08-05T05:47:12_1236",
+      "created_at": "2026-08-09T03:47:52",
+      "recommendation_target_date": "2026-08-05",
+      "recommendation_generated_at": "2026-08-05T05:47:12",
+      "analysis_latest_draw_no": 1235,
+      "draw_no": 1236,
+      "draw_date": "2026-08-08",
+      "winning_numbers": [
+        12,
+        18,
+        21,
+        29,
+        34,
+        38
+      ],
+      "bonus": 10,
+      "winning_profile": {
+        "sum": 152,
+        "odd": 2,
+        "low": 3,
+        "ending_dup": 1,
+        "consecutive": 0,
+        "front": 12
+      },
+      "winning_patterns": [
+        "sum-150-179",
+        "odd-even-2-4",
+        "low-high-3-3",
+        "ending-dup-1",
+        "consecutive-0",
+        "front-12",
+        "shape-LD2-RS3-LD6-RS5-LD4"
+      ],
+      "combo_results": [
+        {
+          "rank": 1,
+          "numbers": [
+            4,
+            8,
+            15,
+            27,
+            42,
+            45
+          ],
+          "matched_numbers": [],
+          "match_count": 0,
+          "bonus_match": false,
+          "label": "낙첨",
+          "profile": {
+            "sum": 141,
+            "odd": 3,
+            "low": 3,
+            "ending_dup": 1,
+            "consecutive": 0,
+            "front": 4
+          },
+          "distance": {
+            "sum": 11,
+            "odd": 1,
+            "low": 0,
+            "ending_dup": 0,
+            "consecutive": 0,
+            "front": 8
+          }
+        },
+        {
+          "rank": 2,
+          "numbers": [
+            11,
+            13,
+            18,
+            24,
+            34,
+            39
+          ],
+          "matched_numbers": [
+            18,
+            34
+          ],
+          "match_count": 2,
+          "bonus_match": false,
+          "label": "낙첨",
+          "profile": {
+            "sum": 139,
+            "odd": 3,
+            "low": 3,
+            "ending_dup": 1,
+            "consecutive": 0,
+            "front": 11
+          },
+          "distance": {
+            "sum": 13,
+            "odd": 1,
+            "low": 0,
+            "ending_dup": 0,
+            "consecutive": 0,
+            "front": 1
+          }
+        },
+        {
+          "rank": 3,
+          "numbers": [
+            4,
+            9,
+            15,
+            30,
+            42,
+            45
+          ],
+          "matched_numbers": [],
+          "match_count": 0,
+          "bonus_match": false,
+          "label": "낙첨",
+          "profile": {
+            "sum": 145,
+            "odd": 3,
+            "low": 3,
+            "ending_dup": 1,
+            "consecutive": 0,
+            "front": 4
+          },
+          "distance": {
+            "sum": 7,
+            "odd": 1,
+            "low": 0,
+            "ending_dup": 0,
+            "consecutive": 0,
+            "front": 8
+          }
+        },
+        {
+          "rank": 4,
+          "numbers": [
+            3,
+            8,
+            15,
+            31,
+            34,
+            45
+          ],
+          "matched_numbers": [
+            34
+          ],
+          "match_count": 1,
+          "bonus_match": false,
+          "label": "낙첨",
+          "profile": {
+            "sum": 136,
+            "odd": 4,
+            "low": 3,
+            "ending_dup": 1,
+            "consecutive": 0,
+            "front": 3
+          },
+          "distance": {
+            "sum": 16,
+            "odd": 2,
+            "low": 0,
+            "ending_dup": 0,
+            "consecutive": 0,
+            "front": 9
+          }
+        },
+        {
+          "rank": 5,
+          "numbers": [
+            11,
+            13,
+            15,
+            24,
+            30,
+            45
+          ],
+          "matched_numbers": [],
+          "match_count": 0,
+          "bonus_match": false,
+          "label": "낙첨",
+          "profile": {
+            "sum": 138,
+            "odd": 4,
+            "low": 3,
+            "ending_dup": 1,
+            "consecutive": 0,
+            "front": 11
+          },
+          "distance": {
+            "sum": 14,
+            "odd": 2,
+            "low": 0,
+            "ending_dup": 0,
+            "consecutive": 0,
+            "front": 1
+          }
+        }
+      ],
+      "best_match": 2,
+      "best_bonus_match": false,
+      "best_label": "낙첨",
+      "causes": [
+        "최고 일치 2개로 5등권 미달",
+        "홀짝비율 불일치: 당첨 홀수 2개",
+        "앞번호 불일치: 당첨 첫번호 12번",
+        "미포함 당첨번호: 12 21 29 38"
+      ],
+      "hit_factors": [
+        "번호합 범위 근접: 당첨 152",
+        "저/고 비율 적중 축: 저번호 3개"
+      ],
+      "recommended_numbers": {
+        "4": 2,
+        "8": 2,
+        "15": 4,
+        "27": 1,
+        "42": 2,
+        "45": 4,
+        "11": 2,
+        "13": 2,
+        "18": 1,
+        "24": 2,
+        "34": 2,
+        "39": 1,
+        "9": 1,
+        "30": 2,
+        "3": 1,
+        "31": 1
+      },
+      "recommended_patterns": {
+        "sum-120-149": 5,
+        "odd-even-3-3": 3,
+        "low-high-3-3": 5,
+        "ending-dup-1": 5,
+        "consecutive-0": 5,
+        "front-04": 2,
+        "shape-LD4-SD1-RD6-RD3-LD5": 1,
+        "front-11": 2,
+        "shape-RS2-LD3-LD2-RD4-LD3": 1,
+        "shape-LD3-LD2-RD3-RD6-LD5": 1,
+        "odd-even-4-2": 2,
+        "front-03": 1,
+        "shape-LD3-SD1-RD4-RS3-LD5": 1,
+        "shape-RS2-LD6-RD3-LD2-RD3": 1
+      },
+      "winning_not_recommended": [
+        12,
+        21,
+        29,
+        38
+      ],
+      "factor_effect": {
+        "number": -1.3307,
+        "line_shape": -1.3302,
+        "front": -0.8581,
+        "sum": -1.6255,
+        "odd_even": -1.5957,
+        "low_high": -1.75,
+        "ending": -1.75,
+        "consecutive": -1.75,
+        "pair": -1.75,
+        "recent_hot": -1.5633,
+        "knowledge_net": -0.9983,
+        "feedback": -0.7925
+      }
     }
   ],
   "latest_event": {
-    "event_id": "2026-07-29T15:32:15_1235",
-    "created_at": "2026-08-02T05:33:06",
-    "recommendation_target_date": "2026-07-29",
-    "recommendation_generated_at": "2026-07-29T15:32:15",
-    "analysis_latest_draw_no": 1234,
-    "draw_no": 1235,
-    "draw_date": "2026-08-01",
+    "event_id": "2026-08-05T05:47:12_1236",
+    "created_at": "2026-08-09T03:47:52",
+    "recommendation_target_date": "2026-08-05",
+    "recommendation_generated_at": "2026-08-05T05:47:12",
+    "analysis_latest_draw_no": 1235,
+    "draw_no": 1236,
+    "draw_date": "2026-08-08",
     "winning_numbers": [
-      6,
-      7,
-      11,
-      15,
-      39,
-      43
+      12,
+      18,
+      21,
+      29,
+      34,
+      38
     ],
-    "bonus": 20,
+    "bonus": 10,
     "winning_profile": {
-      "sum": 121,
-      "odd": 5,
-      "low": 4,
-      "ending_dup": 0,
-      "consecutive": 1,
-      "front": 6
+      "sum": 152,
+      "odd": 2,
+      "low": 3,
+      "ending_dup": 1,
+      "consecutive": 0,
+      "front": 12
     },
     "winning_patterns": [
-      "sum-120-149",
-      "odd-even-5-1",
-      "low-high-4-2",
-      "ending-dup-0",
-      "consecutive-1",
-      "front-06",
-      "shape-RS1-LD4-LD4-RD6-LD4"
+      "sum-150-179",
+      "odd-even-2-4",
+      "low-high-3-3",
+      "ending-dup-1",
+      "consecutive-0",
+      "front-12",
+      "shape-LD2-RS3-LD6-RS5-LD4"
     ],
     "combo_results": [
       {
         "rank": 1,
         "numbers": [
-          6,
-          11,
-          15,
-          28,
-          32,
-          45
-        ],
-        "matched_numbers": [
-          6,
-          11,
-          15
-        ],
-        "match_count": 3,
-        "bonus_match": false,
-        "label": "5등",
-        "profile": {
-          "sum": 137,
-          "odd": 3,
-          "low": 3,
-          "ending_dup": 1,
-          "consecutive": 0,
-          "front": 6
-        },
-        "distance": {
-          "sum": 16,
-          "odd": 2,
-          "low": 1,
-          "ending_dup": 1,
-          "consecutive": 1,
-          "front": 0
-        }
-      },
-      {
-        "rank": 2,
-        "numbers": [
-          5,
-          11,
-          15,
-          30,
-          42,
-          44
-        ],
-        "matched_numbers": [
-          11,
-          15
-        ],
-        "match_count": 2,
-        "bonus_match": false,
-        "label": "낙첨",
-        "profile": {
-          "sum": 147,
-          "odd": 3,
-          "low": 3,
-          "ending_dup": 1,
-          "consecutive": 0,
-          "front": 5
-        },
-        "distance": {
-          "sum": 26,
-          "odd": 2,
-          "low": 1,
-          "ending_dup": 1,
-          "consecutive": 1,
-          "front": 1
-        }
-      },
-      {
-        "rank": 3,
-        "numbers": [
-          5,
-          11,
-          15,
-          24,
-          28,
-          42
-        ],
-        "matched_numbers": [
-          11,
-          15
-        ],
-        "match_count": 2,
-        "bonus_match": false,
-        "label": "낙첨",
-        "profile": {
-          "sum": 125,
-          "odd": 3,
-          "low": 3,
-          "ending_dup": 1,
-          "consecutive": 0,
-          "front": 5
-        },
-        "distance": {
-          "sum": 4,
-          "odd": 2,
-          "low": 1,
-          "ending_dup": 1,
-          "consecutive": 1,
-          "front": 1
-        }
-      },
-      {
-        "rank": 4,
-        "numbers": [
-          5,
+          4,
           8,
           15,
           27,
           42,
-          44
+          45
         ],
-        "matched_numbers": [
-          15
-        ],
-        "match_count": 1,
+        "matched_numbers": [],
+        "match_count": 0,
         "bonus_match": false,
         "label": "낙첨",
         "profile": {
@@ -1486,116 +1656,213 @@
           "low": 3,
           "ending_dup": 1,
           "consecutive": 0,
-          "front": 5
+          "front": 4
         },
         "distance": {
-          "sum": 20,
-          "odd": 2,
-          "low": 1,
-          "ending_dup": 1,
-          "consecutive": 1,
-          "front": 1
+          "sum": 11,
+          "odd": 1,
+          "low": 0,
+          "ending_dup": 0,
+          "consecutive": 0,
+          "front": 8
         }
       },
       {
-        "rank": 5,
+        "rank": 2,
         "numbers": [
-          6,
-          12,
-          15,
+          11,
+          13,
+          18,
           24,
-          31,
-          45
+          34,
+          39
         ],
         "matched_numbers": [
-          6,
-          15
+          18,
+          34
         ],
         "match_count": 2,
         "bonus_match": false,
         "label": "낙첨",
         "profile": {
-          "sum": 133,
+          "sum": 139,
           "odd": 3,
           "low": 3,
           "ending_dup": 1,
           "consecutive": 0,
-          "front": 6
+          "front": 11
         },
         "distance": {
-          "sum": 12,
-          "odd": 2,
-          "low": 1,
+          "sum": 13,
+          "odd": 1,
+          "low": 0,
+          "ending_dup": 0,
+          "consecutive": 0,
+          "front": 1
+        }
+      },
+      {
+        "rank": 3,
+        "numbers": [
+          4,
+          9,
+          15,
+          30,
+          42,
+          45
+        ],
+        "matched_numbers": [],
+        "match_count": 0,
+        "bonus_match": false,
+        "label": "낙첨",
+        "profile": {
+          "sum": 145,
+          "odd": 3,
+          "low": 3,
           "ending_dup": 1,
-          "consecutive": 1,
-          "front": 0
+          "consecutive": 0,
+          "front": 4
+        },
+        "distance": {
+          "sum": 7,
+          "odd": 1,
+          "low": 0,
+          "ending_dup": 0,
+          "consecutive": 0,
+          "front": 8
+        }
+      },
+      {
+        "rank": 4,
+        "numbers": [
+          3,
+          8,
+          15,
+          31,
+          34,
+          45
+        ],
+        "matched_numbers": [
+          34
+        ],
+        "match_count": 1,
+        "bonus_match": false,
+        "label": "낙첨",
+        "profile": {
+          "sum": 136,
+          "odd": 4,
+          "low": 3,
+          "ending_dup": 1,
+          "consecutive": 0,
+          "front": 3
+        },
+        "distance": {
+          "sum": 16,
+          "odd": 2,
+          "low": 0,
+          "ending_dup": 0,
+          "consecutive": 0,
+          "front": 9
+        }
+      },
+      {
+        "rank": 5,
+        "numbers": [
+          11,
+          13,
+          15,
+          24,
+          30,
+          45
+        ],
+        "matched_numbers": [],
+        "match_count": 0,
+        "bonus_match": false,
+        "label": "낙첨",
+        "profile": {
+          "sum": 138,
+          "odd": 4,
+          "low": 3,
+          "ending_dup": 1,
+          "consecutive": 0,
+          "front": 11
+        },
+        "distance": {
+          "sum": 14,
+          "odd": 2,
+          "low": 0,
+          "ending_dup": 0,
+          "consecutive": 0,
+          "front": 1
         }
       }
     ],
-    "best_match": 3,
+    "best_match": 2,
     "best_bonus_match": false,
-    "best_label": "5등",
+    "best_label": "낙첨",
     "causes": [
-      "홀짝비율 불일치: 당첨 홀수 5개",
-      "저/고 비율 불일치: 당첨 저번호 4개",
-      "끝수 중복 패턴 불일치: 당첨 0개",
-      "연속수 패턴 불일치: 당첨 1개",
-      "미포함 당첨번호: 07 39 43"
+      "최고 일치 2개로 5등권 미달",
+      "홀짝비율 불일치: 당첨 홀수 2개",
+      "앞번호 불일치: 당첨 첫번호 12번",
+      "미포함 당첨번호: 12 21 29 38"
     ],
     "hit_factors": [
-      "1번 조합이 3개 일치",
-      "번호합 범위 근접: 당첨 121",
-      "앞번호 후보 포함: 06번"
+      "번호합 범위 근접: 당첨 152",
+      "저/고 비율 적중 축: 저번호 3개"
     ],
     "recommended_numbers": {
-      "6": 2,
-      "11": 3,
-      "15": 5,
-      "28": 2,
-      "32": 1,
-      "45": 2,
-      "5": 3,
-      "30": 1,
-      "42": 3,
-      "44": 2,
-      "24": 2,
-      "8": 1,
+      "4": 2,
+      "8": 2,
+      "15": 4,
       "27": 1,
-      "12": 1,
+      "42": 2,
+      "45": 4,
+      "11": 2,
+      "13": 2,
+      "18": 1,
+      "24": 2,
+      "34": 2,
+      "39": 1,
+      "9": 1,
+      "30": 2,
+      "3": 1,
       "31": 1
     },
     "recommended_patterns": {
       "sum-120-149": 5,
-      "odd-even-3-3": 5,
+      "odd-even-3-3": 3,
       "low-high-3-3": 5,
       "ending-dup-1": 5,
       "consecutive-0": 5,
-      "front-06": 2,
-      "shape-LD3-LD4-RD6-LD4-LD3": 1,
-      "front-05": 3,
-      "shape-LD2-LD4-RD3-RD6-LD6": 1,
-      "shape-LD2-LD4-RD3-RS4-SD2": 1,
-      "shape-LD5-SD1-RD6-RD3-LD6": 1,
-      "shape-LD2-LD5-RD3-SD1-SD2": 1
+      "front-04": 2,
+      "shape-LD4-SD1-RD6-RD3-LD5": 1,
+      "front-11": 2,
+      "shape-RS2-LD3-LD2-RD4-LD3": 1,
+      "shape-LD3-LD2-RD3-RD6-LD5": 1,
+      "odd-even-4-2": 2,
+      "front-03": 1,
+      "shape-LD3-SD1-RD4-RS3-LD5": 1,
+      "shape-RS2-LD6-RD3-LD2-RD3": 1
     },
     "winning_not_recommended": [
-      7,
-      39,
-      43
+      12,
+      21,
+      29,
+      38
     ],
     "factor_effect": {
-      "number": 0.0052,
-      "line_shape": 0.0123,
-      "front": -0.0347,
-      "sum": -0.0023,
-      "odd_even": 0.0,
-      "low_high": 0.0,
-      "ending": 0.0,
-      "consecutive": 0.0,
-      "pair": 0.0,
-      "recent_hot": 0.0,
-      "knowledge_net": 0.0029,
-      "feedback": 0.001
+      "number": -1.3307,
+      "line_shape": -1.3302,
+      "front": -0.8581,
+      "sum": -1.6255,
+      "odd_even": -1.5957,
+      "low_high": -1.75,
+      "ending": -1.75,
+      "consecutive": -1.75,
+      "pair": -1.75,
+      "recent_hot": -1.5633,
+      "knowledge_net": -0.9983,
+      "feedback": -0.7925
     }
   }
 }
