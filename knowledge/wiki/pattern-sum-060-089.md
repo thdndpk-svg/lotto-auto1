@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-05
-updated: 2026-08-05
+created: 2026-08-12
+updated: 2026-08-12
 sources: ["data/lotto.csv"]
 aliases: ["번호합 060-089"]
 ---
@@ -9,7 +9,7 @@ aliases: ["번호합 060-089"]
 # 번호합 060-089
 
 - 전체 출현: 67회
-- 최근 출현: 1회
+- 최근 출현: 0회
 
 ## 강하게 연결된 번호
 - [[number-01|01번]] — 25회

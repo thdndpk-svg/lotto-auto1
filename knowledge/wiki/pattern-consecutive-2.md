@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-05
-updated: 2026-08-05
+created: 2026-08-12
+updated: 2026-08-12
 sources: ["data/lotto.csv"]
 aliases: ["연속수 2개"]
 ---
@@ -9,7 +9,7 @@ aliases: ["연속수 2개"]
 # 연속수 2개
 
 - 전체 출현: 134회
-- 최근 출현: 3회
+- 최근 출현: 2회
 
 ## 강하게 연결된 번호
 - [[number-06|06번]] — 27회

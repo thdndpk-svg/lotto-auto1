@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-08-05
-updated: 2026-08-05
+created: 2026-08-12
+updated: 2026-08-12
 sources: ["data/lotto.csv"]
 aliases: ["24", "24번"]
 ---
@@ -9,8 +9,8 @@ aliases: ["24", "24번"]
 # 24번
 
 - 전체 출현: 166회
-- 최근 출현: 3회
-- 지식그물 점수: 54.14
+- 최근 출현: 2회
+- 지식그물 점수: 50.30
 
 ## 자주 연결된 패턴
 - [[pattern-consecutive-0|연속수 0개]] — 88회

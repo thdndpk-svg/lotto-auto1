@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-09T03:47:52",
+  "updated_at": "2026-08-12T04:47:52",
   "observation_count": 5,
   "number_bias": {
     "1": -0.034,
@@ -115,28 +115,28 @@
     "knowledge_net": -0.1845
   },
   "strategy_bias": {
-    "ending": 0.2385,
-    "frequency": -0.0514,
-    "front": 0.0371,
-    "knowledge": -0.033,
-    "overdue": 0.0796,
-    "recent": -0.1057,
-    "same_date": 0.0235,
-    "shape": 0.1255,
-    "skip": -0.0822,
-    "consecutive": 0.4043,
-    "low_high": 0.2579,
-    "odd_even": 0.2172,
-    "pair": 0.6202,
-    "recent_hot": -0.2703,
-    "sum": 0.1516
+    "ending": 0.2457,
+    "frequency": -0.0484,
+    "front": 0.0359,
+    "knowledge": -0.0311,
+    "overdue": 0.0863,
+    "recent": -0.1161,
+    "same_date": 0.0199,
+    "shape": 0.1359,
+    "skip": -0.0983,
+    "consecutive": 0.4217,
+    "low_high": 0.2766,
+    "odd_even": 0.2154,
+    "pair": 0.6383,
+    "recent_hot": -0.2878,
+    "sum": 0.1759
   },
   "strategy_audit": {
-    "generated_at": "2026-08-05T05:47:06",
+    "generated_at": "2026-08-12T04:47:52",
     "sample": 100,
     "draws": [
-      1136,
-      1235
+      1137,
+      1236
     ],
     "top_n": 15,
     "baseline_hits": 2.0,
@@ -144,74 +144,74 @@
       "ending": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.713,
+        "avg_fit": 0.719,
         "recent_fit": 0.67,
         "baseline_fit": 0.52,
-        "bias": 0.2443
+        "bias": 0.2495
       },
       "frequency": {
         "type": "number",
         "samples": 100,
-        "avg_hits": 1.84,
-        "recent_hits": 1.8,
+        "avg_hits": 1.86,
+        "recent_hits": 1.9,
         "baseline_hits": 2.0,
-        "bias": -0.0582
+        "bias": -0.0468
       },
       "front": {
         "type": "combo",
         "samples": 100,
         "avg_fit": 0.536,
-        "recent_fit": 0.593,
+        "recent_fit": 0.571,
         "baseline_fit": 0.52,
-        "bias": 0.0442
+        "bias": 0.0352
       },
       "knowledge": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.493,
-        "recent_fit": 0.501,
+        "avg_fit": 0.494,
+        "recent_fit": 0.507,
         "baseline_fit": 0.52,
-        "bias": -0.0335
+        "bias": -0.0301
       },
       "overdue": {
         "type": "number",
         "samples": 100,
-        "avg_hits": 2.24,
-        "recent_hits": 2.3,
+        "avg_hits": 2.23,
+        "recent_hits": 2.4,
         "baseline_hits": 2.0,
-        "bias": 0.0873
+        "bias": 0.0899
       },
       "recent": {
         "type": "number",
         "samples": 100,
-        "avg_hits": 1.71,
-        "recent_hits": 1.5,
+        "avg_hits": 1.7,
+        "recent_hits": 1.4,
         "baseline_hits": 2.0,
-        "bias": -0.1132
+        "bias": -0.1217
       },
       "same_date": {
         "type": "number",
         "samples": 100,
         "avg_hits": 2.08,
-        "recent_hits": 2.0,
+        "recent_hits": 1.9,
         "baseline_hits": 2.0,
-        "bias": 0.0236
+        "bias": 0.018
       },
       "shape": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.62,
-        "recent_fit": 0.616,
+        "avg_fit": 0.621,
+        "recent_fit": 0.635,
         "baseline_fit": 0.52,
-        "bias": 0.1336
+        "bias": 0.1415
       },
       "skip": {
         "type": "number",
         "samples": 100,
-        "avg_hits": 1.77,
-        "recent_hits": 1.7,
+        "avg_hits": 1.75,
+        "recent_hits": 1.4,
         "baseline_hits": 2.0,
-        "bias": -0.0844
+        "bias": -0.1069
       },
       "consecutive": {
         "type": "combo",
@@ -224,18 +224,18 @@
       "low_high": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.716,
-        "recent_fit": 0.723,
+        "avg_fit": 0.723,
+        "recent_fit": 0.755,
         "baseline_fit": 0.52,
-        "bias": 0.2673
+        "bias": 0.2866
       },
       "odd_even": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.689,
-        "recent_fit": 0.661,
+        "avg_fit": 0.686,
+        "recent_fit": 0.662,
         "baseline_fit": 0.52,
-        "bias": 0.2174
+        "bias": 0.2145
       },
       "pair": {
         "type": "combo",
@@ -248,18 +248,18 @@
       "recent_hot": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.325,
-        "recent_fit": 0.3,
+        "avg_fit": 0.32,
+        "recent_fit": 0.25,
         "baseline_fit": 0.52,
-        "bias": -0.273
+        "bias": -0.2972
       },
       "sum": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.648,
-        "recent_fit": 0.609,
+        "avg_fit": 0.656,
+        "recent_fit": 0.67,
         "baseline_fit": 0.52,
-        "bias": 0.1578
+        "bias": 0.189
       }
     }
   },

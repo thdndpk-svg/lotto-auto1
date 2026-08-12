@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-05
-updated: 2026-08-05
+created: 2026-08-12
+updated: 2026-08-12
 sources: ["data/lotto.csv"]
 aliases: ["저고 4:2"]
 ---
@@ -9,7 +9,7 @@ aliases: ["저고 4:2"]
 # 저고 4:2
 
 - 전체 출현: 280회
-- 최근 출현: 8회
+- 최근 출현: 7회
 
 ## 강하게 연결된 번호
 - [[number-11|11번]] — 64회

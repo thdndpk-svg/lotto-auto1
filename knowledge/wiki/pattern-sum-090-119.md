@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-05
-updated: 2026-08-05
+created: 2026-08-12
+updated: 2026-08-12
 sources: ["data/lotto.csv"]
 aliases: ["번호합 090-119"]
 ---

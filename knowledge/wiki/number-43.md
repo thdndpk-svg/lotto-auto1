@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-08-05
-updated: 2026-08-05
+created: 2026-08-12
+updated: 2026-08-12
 sources: ["data/lotto.csv"]
 aliases: ["43", "43번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["43", "43번"]
 
 - 전체 출현: 165회
 - 최근 출현: 3회
-- 지식그물 점수: 54.64
+- 지식그물 점수: 55.44
 
 ## 자주 연결된 패턴
 - [[pattern-consecutive-0|연속수 0개]] — 76회
