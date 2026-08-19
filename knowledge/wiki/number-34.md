@@ -1,28 +1,28 @@
 ---
 type: entity
-created: 2026-08-12
-updated: 2026-08-12
+created: 2026-08-19
+updated: 2026-08-19
 sources: ["data/lotto.csv"]
 aliases: ["34", "34번"]
 ---
 
 # 34번
 
-- 전체 출현: 185회
-- 최근 출현: 4회
-- 지식그물 점수: 65.65
+- 전체 출현: 186회
+- 최근 출현: 5회
+- 지식그물 점수: 69.97
 
 ## 자주 연결된 패턴
-- [[pattern-consecutive-0|연속수 0개]] — 102회
+- [[pattern-consecutive-0|연속수 0개]] — 103회
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 99회
 - [[pattern-sum-120-149|번호합 120-149]] — 79회
 - [[pattern-low-high-3-3|저고 3:3]] — 66회
 - [[pattern-consecutive-1|연속수 1개]] — 63회
-- [[pattern-odd-even-2-4|홀짝 2:4]] — 62회
-- [[pattern-sum-150-179|번호합 150-179]] — 61회
+- [[pattern-odd-even-2-4|홀짝 2:4]] — 63회
+- [[pattern-sum-150-179|번호합 150-179]] — 62회
+- [[pattern-low-high-2-4|저고 2:4]] — 59회
 - [[pattern-odd-even-3-3|홀짝 3:3]] — 59회
-- [[pattern-low-high-2-4|저고 2:4]] — 58회
-- [[pattern-ending-dup-2|끝수 중복 2개]] — 40회
+- [[pattern-ending-dup-2|끝수 중복 2개]] — 41회
 
 ## 자주 같이 나온 번호
 - [[number-42]] — 30회

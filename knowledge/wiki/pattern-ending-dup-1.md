@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-12
-updated: 2026-08-12
+created: 2026-08-19
+updated: 2026-08-19
 sources: ["data/lotto.csv"]
 aliases: ["끝수 중복 1개"]
 ---
@@ -9,7 +9,7 @@ aliases: ["끝수 중복 1개"]
 # 끝수 중복 1개
 
 - 전체 출현: 593회
-- 최근 출현: 10회
+- 최근 출현: 9회
 
 ## 강하게 연결된 번호
 - [[number-34|34번]] — 99회

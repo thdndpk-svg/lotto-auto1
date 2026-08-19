@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-08-12
-updated: 2026-08-12
+created: 2026-08-19
+updated: 2026-08-19
 sources: ["data/lotto.csv"]
 aliases: ["31", "31번"]
 ---
@@ -9,8 +9,8 @@ aliases: ["31", "31번"]
 # 31번
 
 - 전체 출현: 169회
-- 최근 출현: 5회
-- 지식그물 점수: 61.84
+- 최근 출현: 4회
+- 지식그물 점수: 58.13
 
 ## 자주 연결된 패턴
 - [[pattern-consecutive-0|연속수 0개]] — 85회

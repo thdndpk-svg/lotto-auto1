@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-16T03:05:26",
+  "updated_at": "2026-08-19T03:47:40",
   "observation_count": 6,
   "number_bias": {
     "1": -0.0335,
@@ -122,28 +122,28 @@
     "knowledge_net": -0.2477
   },
   "strategy_bias": {
-    "ending": 0.2457,
-    "frequency": -0.0484,
-    "front": 0.0359,
-    "knowledge": -0.0311,
-    "overdue": 0.0863,
-    "recent": -0.1161,
-    "same_date": 0.0199,
-    "shape": 0.1359,
-    "skip": -0.0983,
-    "consecutive": 0.4217,
-    "low_high": 0.2766,
-    "odd_even": 0.2154,
-    "pair": 0.6383,
-    "recent_hot": -0.2878,
-    "sum": 0.1759
+    "ending": 0.2571,
+    "frequency": -0.0474,
+    "front": 0.0256,
+    "knowledge": -0.0301,
+    "overdue": 0.0868,
+    "recent": -0.118,
+    "same_date": 0.0115,
+    "shape": 0.1385,
+    "skip": -0.1039,
+    "consecutive": 0.4278,
+    "low_high": 0.2775,
+    "odd_even": 0.2146,
+    "pair": 0.6446,
+    "recent_hot": -0.297,
+    "sum": 0.1743
   },
   "strategy_audit": {
-    "generated_at": "2026-08-12T04:47:52",
+    "generated_at": "2026-08-19T03:47:40",
     "sample": 100,
     "draws": [
-      1137,
-      1236
+      1138,
+      1237
     ],
     "top_n": 15,
     "baseline_hits": 2.0,
@@ -151,10 +151,10 @@
       "ending": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.719,
-        "recent_fit": 0.67,
+        "avg_fit": 0.714,
+        "recent_fit": 0.717,
         "baseline_fit": 0.52,
-        "bias": 0.2495
+        "bias": 0.2632
       },
       "frequency": {
         "type": "number",
@@ -167,50 +167,50 @@
       "front": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.536,
-        "recent_fit": 0.571,
+        "avg_fit": 0.535,
+        "recent_fit": 0.536,
         "baseline_fit": 0.52,
-        "bias": 0.0352
+        "bias": 0.0201
       },
       "knowledge": {
         "type": "combo",
         "samples": 100,
         "avg_fit": 0.494,
-        "recent_fit": 0.507,
+        "recent_fit": 0.509,
         "baseline_fit": 0.52,
-        "bias": -0.0301
+        "bias": -0.0295
       },
       "overdue": {
         "type": "number",
         "samples": 100,
-        "avg_hits": 2.23,
+        "avg_hits": 2.22,
         "recent_hits": 2.4,
         "baseline_hits": 2.0,
-        "bias": 0.0899
+        "bias": 0.087
       },
       "recent": {
         "type": "number",
         "samples": 100,
-        "avg_hits": 1.7,
-        "recent_hits": 1.4,
+        "avg_hits": 1.69,
+        "recent_hits": 1.5,
         "baseline_hits": 2.0,
-        "bias": -0.1217
+        "bias": -0.1191
       },
       "same_date": {
         "type": "number",
         "samples": 100,
         "avg_hits": 2.08,
-        "recent_hits": 1.9,
+        "recent_hits": 1.7,
         "baseline_hits": 2.0,
-        "bias": 0.018
+        "bias": 0.0069
       },
       "shape": {
         "type": "combo",
         "samples": 100,
         "avg_fit": 0.621,
-        "recent_fit": 0.635,
+        "recent_fit": 0.63,
         "baseline_fit": 0.52,
-        "bias": 0.1415
+        "bias": 0.1399
       },
       "skip": {
         "type": "number",
@@ -231,18 +231,18 @@
       "low_high": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.723,
-        "recent_fit": 0.755,
+        "avg_fit": 0.724,
+        "recent_fit": 0.731,
         "baseline_fit": 0.52,
-        "bias": 0.2866
+        "bias": 0.278
       },
       "odd_even": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.686,
-        "recent_fit": 0.662,
+        "avg_fit": 0.685,
+        "recent_fit": 0.663,
         "baseline_fit": 0.52,
-        "bias": 0.2145
+        "bias": 0.2141
       },
       "pair": {
         "type": "combo",
@@ -255,18 +255,18 @@
       "recent_hot": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.32,
+        "avg_fit": 0.315,
         "recent_fit": 0.25,
         "baseline_fit": 0.52,
-        "bias": -0.2972
+        "bias": -0.302
       },
       "sum": {
         "type": "combo",
         "samples": 100,
-        "avg_fit": 0.656,
-        "recent_fit": 0.67,
+        "avg_fit": 0.653,
+        "recent_fit": 0.638,
         "baseline_fit": 0.52,
-        "bias": 0.189
+        "bias": 0.1735
       }
     }
   },
