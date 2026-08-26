@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-19
-updated: 2026-08-19
+created: 2026-08-26
+updated: 2026-08-26
 sources: ["data/lotto.csv"]
 aliases: ["연속수 1개"]
 ---
@@ -9,7 +9,7 @@ aliases: ["연속수 1개"]
 # 연속수 1개
 
 - 전체 출현: 484회
-- 최근 출현: 8회
+- 최근 출현: 7회
 
 ## 강하게 연결된 번호
 - [[number-03|03번]] — 76회

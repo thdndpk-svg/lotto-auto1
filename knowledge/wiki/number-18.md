@@ -1,23 +1,23 @@
 ---
 type: entity
-created: 2026-08-19
-updated: 2026-08-19
+created: 2026-08-26
+updated: 2026-08-26
 sources: ["data/lotto.csv"]
 aliases: ["18", "18번"]
 ---
 
 # 18번
 
-- 전체 출현: 177회
-- 최근 출현: 5회
-- 지식그물 점수: 65.61
+- 전체 출현: 178회
+- 최근 출현: 6회
+- 지식그물 점수: 68.38
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 89회
-- [[pattern-consecutive-0|연속수 0개]] — 82회
+- [[pattern-consecutive-0|연속수 0개]] — 83회
 - [[pattern-consecutive-1|연속수 1개]] — 75회
-- [[pattern-sum-120-149|번호합 120-149]] — 69회
-- [[pattern-low-high-3-3|저고 3:3]] — 61회
+- [[pattern-sum-120-149|번호합 120-149]] — 70회
+- [[pattern-low-high-3-3|저고 3:3]] — 62회
 - [[pattern-odd-even-2-4|홀짝 2:4]] — 57회
 - [[pattern-low-high-4-2|저고 4:2]] — 56회
 - [[pattern-odd-even-3-3|홀짝 3:3]] — 52회
@@ -26,13 +26,13 @@ aliases: ["18", "18번"]
 
 ## 자주 같이 나온 번호
 - [[number-31]] — 28회
+- [[number-13]] — 27회
 - [[number-07]] — 27회
 - [[number-45]] — 27회
-- [[number-13]] — 26회
 - [[number-34]] — 26회
+- [[number-32]] — 25회
 - [[number-21]] — 25회
-- [[number-23]] — 24회
-- [[number-06]] — 24회
+- [[number-38]] — 25회
 
 ## 관련
 - [[lotto-history-knowledge-summary]]

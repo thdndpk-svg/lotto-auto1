@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-19
-updated: 2026-08-19
+created: 2026-08-26
+updated: 2026-08-26
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 13번"]
 ---

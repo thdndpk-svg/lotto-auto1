@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-19
-updated: 2026-08-19
+created: 2026-08-26
+updated: 2026-08-26
 sources: ["data/lotto.csv"]
 aliases: ["저고 1:5"]
 ---
@@ -9,7 +9,7 @@ aliases: ["저고 1:5"]
 # 저고 1:5
 
 - 전체 출현: 113회
-- 최근 출현: 1회
+- 최근 출현: 0회
 
 ## 강하게 연결된 번호
 - [[number-40|40번]] — 35회

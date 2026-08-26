@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-19
-updated: 2026-08-19
+created: 2026-08-26
+updated: 2026-08-26
 sources: ["data/lotto.csv"]
 aliases: ["선패턴 LD3 > LD2 > RS4 > LD4 > RS3"]
 ---
