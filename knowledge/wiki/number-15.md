@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-08-26
-updated: 2026-08-26
+created: 2026-09-02
+updated: 2026-09-02
 sources: ["data/lotto.csv"]
 aliases: ["15", "15번"]
 ---
@@ -9,8 +9,8 @@ aliases: ["15", "15번"]
 # 15번
 
 - 전체 출현: 170회
-- 최근 출현: 4회
-- 지식그물 점수: 58.48
+- 최근 출현: 3회
+- 지식그물 점수: 55.37
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 81회

@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-08-26
-updated: 2026-08-26
+created: 2026-09-02
+updated: 2026-09-02
 sources: ["data/lotto.csv"]
 aliases: ["홀짝 4:2"]
 ---
@@ -9,7 +9,7 @@ aliases: ["홀짝 4:2"]
 # 홀짝 4:2
 
 - 전체 출현: 328회
-- 최근 출현: 3회
+- 최근 출현: 2회
 
 ## 강하게 연결된 번호
 - [[number-27|27번]] — 69회

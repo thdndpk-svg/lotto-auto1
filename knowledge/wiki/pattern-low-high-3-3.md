@@ -1,19 +1,19 @@
 ---
 type: concept
-created: 2026-08-26
-updated: 2026-08-26
+created: 2026-09-02
+updated: 2026-09-02
 sources: ["data/lotto.csv"]
 aliases: ["저고 3:3"]
 ---
 
 # 저고 3:3
 
-- 전체 출현: 408회
+- 전체 출현: 409회
 - 최근 출현: 10회
 
 ## 강하게 연결된 번호
+- [[number-13|13번]] — 67회
 - [[number-15|15번]] — 67회
-- [[number-13|13번]] — 66회
 - [[number-34|34번]] — 66회
 - [[number-45|45번]] — 64회
 - [[number-07|07번]] — 64회

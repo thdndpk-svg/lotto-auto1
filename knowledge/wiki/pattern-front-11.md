@@ -1,18 +1,18 @@
 ---
 type: concept
-created: 2026-08-26
-updated: 2026-08-26
+created: 2026-09-02
+updated: 2026-09-02
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 11번"]
 ---
 
 # 앞번호 11번
 
-- 전체 출현: 39회
-- 최근 출현: 0회
+- 전체 출현: 40회
+- 최근 출현: 1회
 
 ## 강하게 연결된 번호
-- [[number-11|11번]] — 39회
+- [[number-11|11번]] — 40회
 - [[number-21|21번]] — 11회
 - [[number-26|26번]] — 11회
 - [[number-44|44번]] — 9회
@@ -23,7 +23,7 @@ aliases: ["앞번호 11번"]
 - [[number-15|15번]] — 7회
 - [[number-24|24번]] — 7회
 - [[number-39|39번]] — 7회
-- [[number-12|12번]] — 6회
+- [[number-36|36번]] — 7회
 
 ## 관련
 - [[lotto-history-knowledge-summary]]
