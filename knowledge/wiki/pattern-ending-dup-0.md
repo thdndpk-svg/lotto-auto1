@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-02
-updated: 2026-09-02
+created: 2026-09-09
+updated: 2026-09-09
 sources: ["data/lotto.csv"]
 aliases: ["끝수 중복 0개"]
 ---

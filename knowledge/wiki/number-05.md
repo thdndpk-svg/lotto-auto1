@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-09-02
-updated: 2026-09-02
+created: 2026-09-09
+updated: 2026-09-09
 sources: ["data/lotto.csv"]
 aliases: ["05", "5번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["05", "5번"]
 
 - 전체 출현: 153회
 - 최근 출현: 0회
-- 지식그물 점수: 41.01
+- 지식그물 점수: 42.18
 
 ## 자주 연결된 패턴
 - [[pattern-front-05|앞번호 05번]] — 97회

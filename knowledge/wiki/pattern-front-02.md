@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-02
-updated: 2026-09-02
+created: 2026-09-09
+updated: 2026-09-09
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 02번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 02번"]
 # 앞번호 02번
 
 - 전체 출현: 132회
-- 최근 출현: 3회
+- 최근 출현: 2회
 
 ## 강하게 연결된 번호
 - [[number-02|02번]] — 132회
