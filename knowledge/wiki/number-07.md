@@ -1,32 +1,32 @@
 ---
 type: entity
-created: 2026-09-09
-updated: 2026-09-09
+created: 2026-09-16
+updated: 2026-09-16
 sources: ["data/lotto.csv"]
 aliases: ["07", "7번"]
 ---
 
 # 07번
 
-- 전체 출현: 170회
-- 최근 출현: 2회
-- 지식그물 점수: 51.29
+- 전체 출현: 171회
+- 최근 출현: 3회
+- 지식그물 점수: 55.13
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 91회
 - [[pattern-consecutive-0|연속수 0개]] — 84회
-- [[pattern-front-07|앞번호 07번]] — 79회
-- [[pattern-sum-120-149|번호합 120-149]] — 73회
-- [[pattern-consecutive-1|연속수 1개]] — 64회
-- [[pattern-low-high-3-3|저고 3:3]] — 64회
+- [[pattern-front-07|앞번호 07번]] — 80회
+- [[pattern-sum-120-149|번호합 120-149]] — 74회
+- [[pattern-consecutive-1|연속수 1개]] — 65회
+- [[pattern-low-high-3-3|저고 3:3]] — 65회
 - [[pattern-odd-even-3-3|홀짝 3:3]] — 58회
-- [[pattern-odd-even-4-2|홀짝 4:2]] — 54회
+- [[pattern-odd-even-4-2|홀짝 4:2]] — 55회
 - [[pattern-sum-090-119|번호합 090-119]] — 53회
 - [[pattern-low-high-4-2|저고 4:2]] — 48회
 
 ## 자주 같이 나온 번호
+- [[number-24]] — 27회
 - [[number-18]] — 27회
-- [[number-24]] — 26회
 - [[number-19]] — 26회
 - [[number-38]] — 25회
 - [[number-33]] — 25회

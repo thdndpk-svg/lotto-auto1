@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-09
-updated: 2026-09-09
+created: 2026-09-16
+updated: 2026-09-16
 sources: ["data/lotto.csv"]
 aliases: ["연속수 0개"]
 ---
@@ -9,7 +9,7 @@ aliases: ["연속수 0개"]
 # 연속수 0개
 
 - 전체 출현: 599회
-- 최근 출현: 10회
+- 최근 출현: 9회
 
 ## 강하게 연결된 번호
 - [[number-45|45번]] — 109회

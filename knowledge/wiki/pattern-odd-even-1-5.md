@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-09
-updated: 2026-09-09
+created: 2026-09-16
+updated: 2026-09-16
 sources: ["data/lotto.csv"]
 aliases: ["홀짝 1:5"]
 ---
@@ -9,7 +9,7 @@ aliases: ["홀짝 1:5"]
 # 홀짝 1:5
 
 - 전체 출현: 83회
-- 최근 출현: 2회
+- 최근 출현: 1회
 
 ## 강하게 연결된 번호
 - [[number-14|14번]] — 24회
