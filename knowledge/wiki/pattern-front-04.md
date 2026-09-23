@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-16
-updated: 2026-09-16
+created: 2026-09-23
+updated: 2026-09-23
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 04번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 04번"]
 # 앞번호 04번
 
 - 전체 출현: 106회
-- 최근 출현: 3회
+- 최근 출현: 2회
 
 ## 강하게 연결된 번호
 - [[number-04|04번]] — 106회

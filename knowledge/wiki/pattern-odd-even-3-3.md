@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-16
-updated: 2026-09-16
+created: 2026-09-23
+updated: 2026-09-23
 sources: ["data/lotto.csv"]
 aliases: ["홀짝 3:3"]
 ---
@@ -9,7 +9,7 @@ aliases: ["홀짝 3:3"]
 # 홀짝 3:3
 
 - 전체 출현: 414회
-- 최근 출현: 5회
+- 최근 출현: 4회
 
 ## 강하게 연결된 번호
 - [[number-01|01번]] — 68회

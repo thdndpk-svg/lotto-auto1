@@ -1,14 +1,14 @@
 ---
 type: concept
-created: 2026-09-16
-updated: 2026-09-16
+created: 2026-09-23
+updated: 2026-09-23
 sources: ["data/lotto.csv"]
 aliases: ["연속수 0개"]
 ---
 
 # 연속수 0개
 
-- 전체 출현: 599회
+- 전체 출현: 600회
 - 최근 출현: 9회
 
 ## 강하게 연결된 번호
@@ -22,8 +22,8 @@ aliases: ["연속수 0개"]
 - [[number-37|37번]] — 87회
 - [[number-33|33번]] — 86회
 - [[number-27|27번]] — 86회
+- [[number-31|31번]] — 86회
 - [[number-08|08번]] — 86회
-- [[number-20|20번]] — 86회
 
 ## 관련
 - [[lotto-history-knowledge-summary]]
