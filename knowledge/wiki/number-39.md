@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-09-23
-updated: 2026-09-23
+created: 2026-09-30
+updated: 2026-09-30
 sources: ["data/lotto.csv"]
 aliases: ["39", "39번"]
 ---
@@ -9,8 +9,8 @@ aliases: ["39", "39번"]
 # 39번
 
 - 전체 출현: 168회
-- 최근 출현: 2회
-- 지식그물 점수: 49.44
+- 최근 출현: 1회
+- 지식그물 점수: 47.04
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 85회

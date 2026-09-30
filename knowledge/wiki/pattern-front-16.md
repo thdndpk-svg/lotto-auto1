@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-23
-updated: 2026-09-23
+created: 2026-09-30
+updated: 2026-09-30
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 16번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 16번"]
 # 앞번호 16번
 
 - 전체 출현: 25회
-- 최근 출현: 1회
+- 최근 출현: 0회
 
 ## 강하게 연결된 번호
 - [[number-16|16번]] — 25회

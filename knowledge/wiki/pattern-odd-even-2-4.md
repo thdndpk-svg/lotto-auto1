@@ -1,21 +1,21 @@
 ---
 type: concept
-created: 2026-09-23
-updated: 2026-09-23
+created: 2026-09-30
+updated: 2026-09-30
 sources: ["data/lotto.csv"]
 aliases: ["홀짝 2:4"]
 ---
 
 # 홀짝 2:4
 
-- 전체 출현: 280회
+- 전체 출현: 281회
 - 최근 출현: 9회
 
 ## 강하게 연결된 번호
 - [[number-34|34번]] — 63회
 - [[number-06|06번]] — 62회
 - [[number-40|40번]] — 61회
-- [[number-18|18번]] — 57회
+- [[number-18|18번]] — 58회
 - [[number-16|16번]] — 56회
 - [[number-02|02번]] — 56회
 - [[number-10|10번]] — 56회
@@ -23,7 +23,7 @@ aliases: ["홀짝 2:4"]
 - [[number-42|42번]] — 52회
 - [[number-22|22번]] — 52회
 - [[number-04|04번]] — 51회
-- [[number-38|38번]] — 49회
+- [[number-38|38번]] — 50회
 
 ## 관련
 - [[lotto-history-knowledge-summary]]
