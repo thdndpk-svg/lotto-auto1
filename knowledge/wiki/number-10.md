@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-09-30
-updated: 2026-09-30
+created: 2026-10-07
+updated: 2026-10-07
 sources: ["data/lotto.csv"]
 aliases: ["10", "10번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["10", "10번"]
 
 - 전체 출현: 163회
 - 최근 출현: 2회
-- 지식그물 점수: 52.33
+- 지식그물 점수: 51.08
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 87회

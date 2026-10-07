@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-30
-updated: 2026-09-30
+created: 2026-10-07
+updated: 2026-10-07
 sources: ["data/lotto.csv"]
 aliases: ["끝수 중복 0개"]
 ---
@@ -9,7 +9,7 @@ aliases: ["끝수 중복 0개"]
 # 끝수 중복 0개
 
 - 전체 출현: 272회
-- 최근 출현: 2회
+- 최근 출현: 1회
 
 ## 강하게 연결된 번호
 - [[number-26|26번]] — 49회

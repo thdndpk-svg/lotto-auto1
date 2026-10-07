@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-09-30
-updated: 2026-09-30
+created: 2026-10-07
+updated: 2026-10-07
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 09번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 09번"]
 # 앞번호 09번
 
 - 전체 출현: 43회
-- 최근 출현: 2회
+- 최근 출현: 1회
 
 ## 강하게 연결된 번호
 - [[number-09|09번]] — 43회
