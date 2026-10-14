@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-10-07
-updated: 2026-10-07
+created: 2026-10-14
+updated: 2026-10-14
 sources: ["data/lotto.csv"]
 aliases: ["02", "2번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["02", "2번"]
 
 - 전체 출현: 157회
 - 최근 출현: 3회
-- 지식그물 점수: 50.10
+- 지식그물 점수: 49.59
 
 ## 자주 연결된 패턴
 - [[pattern-front-02|앞번호 02번]] — 133회

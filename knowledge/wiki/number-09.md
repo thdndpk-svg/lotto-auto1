@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-10-07
-updated: 2026-10-07
+created: 2026-10-14
+updated: 2026-10-14
 sources: ["data/lotto.csv"]
 aliases: ["09", "9번"]
 ---
@@ -9,8 +9,8 @@ aliases: ["09", "9번"]
 # 09번
 
 - 전체 출현: 137회
-- 최근 출현: 3회
-- 지식그물 점수: 43.85
+- 최근 출현: 2회
+- 지식그물 점수: 41.18
 
 ## 자주 연결된 패턴
 - [[pattern-consecutive-1|연속수 1개]] — 60회

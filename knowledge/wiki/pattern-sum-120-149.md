@@ -1,14 +1,14 @@
 ---
 type: concept
-created: 2026-10-07
-updated: 2026-10-07
+created: 2026-10-14
+updated: 2026-10-14
 sources: ["data/lotto.csv"]
 aliases: ["번호합 120-149"]
 ---
 
 # 번호합 120-149
 
-- 전체 출현: 461회
+- 전체 출현: 462회
 - 최근 출현: 10회
 
 ## 강하게 연결된 번호

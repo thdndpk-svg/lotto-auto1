@@ -1,15 +1,15 @@
 ---
 type: concept
-created: 2026-10-07
-updated: 2026-10-07
+created: 2026-10-14
+updated: 2026-10-14
 sources: ["data/lotto.csv"]
 aliases: ["끝수 중복 2개"]
 ---
 
 # 끝수 중복 2개
 
-- 전체 출현: 327회
-- 최근 출현: 8회
+- 전체 출현: 328회
+- 최근 출현: 9회
 
 ## 강하게 연결된 번호
 - [[number-13|13번]] — 64회
@@ -23,7 +23,7 @@ aliases: ["끝수 중복 2개"]
 - [[number-21|21번]] — 48회
 - [[number-22|22번]] — 47회
 - [[number-24|24번]] — 47회
-- [[number-14|14번]] — 46회
+- [[number-42|42번]] — 46회
 
 ## 관련
 - [[lotto-history-knowledge-summary]]
