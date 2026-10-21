@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-10-14
-updated: 2026-10-14
+created: 2026-10-21
+updated: 2026-10-21
 sources: ["data/lotto.csv"]
 aliases: ["08", "8번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["08", "8번"]
 
 - 전체 출현: 158회
 - 최근 출현: 1회
-- 지식그물 점수: 45.84
+- 지식그물 점수: 45.27
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 89회

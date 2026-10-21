@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-10-14
-updated: 2026-10-14
+created: 2026-10-21
+updated: 2026-10-21
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 05번"]
 ---

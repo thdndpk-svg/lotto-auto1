@@ -1,23 +1,23 @@
 ---
 type: entity
-created: 2026-10-14
-updated: 2026-10-14
+created: 2026-10-21
+updated: 2026-10-21
 sources: ["data/lotto.csv"]
 aliases: ["22", "22번"]
 ---
 
 # 22번
 
-- 전체 출현: 146회
-- 최근 출현: 3회
-- 지식그물 점수: 47.46
+- 전체 출현: 147회
+- 최근 출현: 4회
+- 지식그물 점수: 51.77
 
 ## 자주 연결된 패턴
 - [[pattern-consecutive-0|연속수 0개]] — 68회
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 63회
 - [[pattern-consecutive-1|연속수 1개]] — 58회
-- [[pattern-sum-120-149|번호합 120-149]] — 53회
-- [[pattern-odd-even-2-4|홀짝 2:4]] — 52회
+- [[pattern-sum-120-149|번호합 120-149]] — 54회
+- [[pattern-odd-even-2-4|홀짝 2:4]] — 53회
 - [[pattern-low-high-3-3|저고 3:3]] — 51회
 - [[pattern-odd-even-3-3|홀짝 3:3]] — 49회
 - [[pattern-ending-dup-2|끝수 중복 2개]] — 47회
