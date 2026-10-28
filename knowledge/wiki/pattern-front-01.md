@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-10-21
-updated: 2026-10-21
+created: 2026-10-28
+updated: 2026-10-28
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 01번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 01번"]
 # 앞번호 01번
 
 - 전체 출현: 171회
-- 최근 출현: 3회
+- 최근 출현: 2회
 
 ## 강하게 연결된 번호
 - [[number-01|01번]] — 171회

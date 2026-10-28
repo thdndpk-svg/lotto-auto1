@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-10-21
-updated: 2026-10-21
+created: 2026-10-28
+updated: 2026-10-28
 sources: ["data/lotto.csv"]
 aliases: ["끝수 중복 3개"]
 ---
@@ -9,7 +9,7 @@ aliases: ["끝수 중복 3개"]
 # 끝수 중복 3개
 
 - 전체 출현: 49회
-- 최근 출현: 2회
+- 최근 출현: 1회
 
 ## 강하게 연결된 번호
 - [[number-21|21번]] — 12회

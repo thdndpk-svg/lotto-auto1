@@ -1,20 +1,20 @@
 ---
 type: concept
-created: 2026-10-21
-updated: 2026-10-21
+created: 2026-10-28
+updated: 2026-10-28
 sources: ["data/lotto.csv"]
 aliases: ["저고 4:2"]
 ---
 
 # 저고 4:2
 
-- 전체 출현: 282회
-- 최근 출현: 6회
+- 전체 출현: 283회
+- 최근 출현: 7회
 
 ## 강하게 연결된 번호
 - [[number-11|11번]] — 65회
+- [[number-14|14번]] — 59회
 - [[number-16|16번]] — 58회
-- [[number-14|14번]] — 58회
 - [[number-17|17번]] — 57회
 - [[number-12|12번]] — 57회
 - [[number-13|13번]] — 57회
@@ -23,7 +23,7 @@ aliases: ["저고 4:2"]
 - [[number-19|19번]] — 54회
 - [[number-03|03번]] — 53회
 - [[number-15|15번]] — 53회
-- [[number-06|06번]] — 50회
+- [[number-21|21번]] — 50회
 
 ## 관련
 - [[lotto-history-knowledge-summary]]

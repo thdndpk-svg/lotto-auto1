@@ -1,26 +1,26 @@
 ---
 type: entity
-created: 2026-10-21
-updated: 2026-10-21
+created: 2026-10-28
+updated: 2026-10-28
 sources: ["data/lotto.csv"]
 aliases: ["14", "14번"]
 ---
 
 # 14번
 
-- 전체 출현: 172회
+- 전체 출현: 173회
 - 최근 출현: 2회
-- 지식그물 점수: 51.27
+- 지식그물 점수: 51.68
 
 ## 자주 연결된 패턴
+- [[pattern-ending-dup-1|끝수 중복 1개]] — 75회
 - [[pattern-consecutive-0|연속수 0개]] — 75회
-- [[pattern-ending-dup-1|끝수 중복 1개]] — 74회
-- [[pattern-consecutive-1|연속수 1개]] — 69회
+- [[pattern-consecutive-1|연속수 1개]] — 70회
 - [[pattern-odd-even-3-3|홀짝 3:3]] — 67회
 - [[pattern-sum-120-149|번호합 120-149]] — 62회
-- [[pattern-low-high-4-2|저고 4:2]] — 58회
+- [[pattern-low-high-4-2|저고 4:2]] — 59회
 - [[pattern-low-high-3-3|저고 3:3]] — 49회
-- [[pattern-odd-even-2-4|홀짝 2:4]] — 47회
+- [[pattern-odd-even-2-4|홀짝 2:4]] — 48회
 - [[pattern-sum-090-119|번호합 090-119]] — 47회
 - [[pattern-ending-dup-2|끝수 중복 2개]] — 46회
 
