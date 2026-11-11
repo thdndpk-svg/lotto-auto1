@@ -1,29 +1,29 @@
 ---
 type: concept
-created: 2026-10-28
-updated: 2026-10-28
+created: 2026-11-11
+updated: 2026-11-11
 sources: ["data/lotto.csv"]
 aliases: ["저고 2:4"]
 ---
 
 # 저고 2:4
 
-- 전체 출현: 313회
+- 전체 출현: 314회
 - 최근 출현: 5회
 
 ## 강하게 연결된 번호
+- [[number-36|36번]] — 67회
 - [[number-37|37번]] — 66회
-- [[number-36|36번]] — 66회
 - [[number-39|39번]] — 64회
+- [[number-27|27번]] — 62회
 - [[number-44|44번]] — 62회
-- [[number-27|27번]] — 61회
 - [[number-24|24번]] — 60회
 - [[number-45|45번]] — 60회
 - [[number-34|34번]] — 59회
 - [[number-40|40번]] — 57회
 - [[number-31|31번]] — 57회
+- [[number-38|38번]] — 55회
 - [[number-28|28번]] — 55회
-- [[number-38|38번]] — 54회
 
 ## 관련
 - [[lotto-history-knowledge-summary]]

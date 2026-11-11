@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-10-28
-updated: 2026-10-28
+created: 2026-11-11
+updated: 2026-11-11
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 24번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 24번"]
 # 앞번호 24번
 
 - 전체 출현: 3회
-- 최근 출현: 1회
+- 최근 출현: 0회
 
 ## 강하게 연결된 번호
 - [[number-24|24번]] — 3회
