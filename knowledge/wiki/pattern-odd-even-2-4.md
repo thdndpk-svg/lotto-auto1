@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-11-11
-updated: 2026-11-11
+created: 2026-11-18
+updated: 2026-11-18
 sources: ["data/lotto.csv"]
 aliases: ["홀짝 2:4"]
 ---
@@ -9,7 +9,7 @@ aliases: ["홀짝 2:4"]
 # 홀짝 2:4
 
 - 전체 출현: 285회
-- 최근 출현: 11회
+- 최근 출현: 10회
 
 ## 강하게 연결된 번호
 - [[number-34|34번]] — 64회

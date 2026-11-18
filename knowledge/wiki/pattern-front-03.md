@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-11-11
-updated: 2026-11-11
+created: 2026-11-18
+updated: 2026-11-18
 sources: ["data/lotto.csv"]
 aliases: ["앞번호 03번"]
 ---
@@ -9,7 +9,7 @@ aliases: ["앞번호 03번"]
 # 앞번호 03번
 
 - 전체 출현: 132회
-- 최근 출현: 1회
+- 최근 출현: 0회
 
 ## 강하게 연결된 번호
 - [[number-03|03번]] — 132회

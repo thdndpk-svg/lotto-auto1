@@ -1,56 +1,56 @@
 {
-  "generatedAt": "2026-11-11T10:27:23",
-  "drawCount": 1249,
+  "generatedAt": "2026-11-18T11:15:31",
+  "drawCount": 1250,
   "pageCount": 109,
   "changedCount": 108,
   "insights": {
-    "drawCount": 1249,
+    "drawCount": 1250,
     "topNumbers": [
       {
         "number": 18,
-        "score": 69.95,
-        "count": 181,
-        "recentCount": 6
+        "score": 70.36,
+        "count": 182,
+        "recentCount": 7
       },
       {
         "number": 13,
-        "score": 68.63,
+        "score": 66.24,
         "count": 184,
         "recentCount": 6
       },
       {
         "number": 38,
-        "score": 67.24,
+        "score": 64.33,
         "count": 175,
         "recentCount": 6
       },
       {
         "number": 34,
-        "score": 64.91,
+        "score": 62.4,
         "count": 188,
         "recentCount": 4
       },
       {
         "number": 16,
-        "score": 64.61,
+        "score": 62.35,
         "count": 173,
         "recentCount": 5
       },
       {
-        "number": 42,
-        "score": 60.29,
-        "count": 161,
-        "recentCount": 5
+        "number": 27,
+        "score": 57.76,
+        "count": 184,
+        "recentCount": 3
       },
       {
         "number": 31,
-        "score": 58.53,
+        "score": 57.19,
         "count": 171,
         "recentCount": 4
       },
       {
         "number": 24,
-        "score": 57.79,
+        "score": 56.12,
         "count": 169,
         "recentCount": 4
       }
@@ -67,14 +67,14 @@
         "key": "ending-dup-1",
         "slug": "pattern-ending-dup-1",
         "label": "끝수 중복 1개",
-        "count": 598,
-        "recentCount": 7
+        "count": 599,
+        "recentCount": 8
       },
       {
         "key": "consecutive-1",
         "slug": "pattern-consecutive-1",
         "label": "연속수 1개",
-        "count": 491,
+        "count": 492,
         "recentCount": 10
       },
       {
@@ -95,8 +95,8 @@
         "key": "low-high-3-3",
         "slug": "pattern-low-high-3-3",
         "label": "저고 3:3",
-        "count": 412,
-        "recentCount": 8
+        "count": 413,
+        "recentCount": 9
       },
       {
         "key": "sum-150-179",
@@ -109,8 +109,8 @@
         "key": "odd-even-4-2",
         "slug": "pattern-odd-even-4-2",
         "label": "홀짝 4:2",
-        "count": 330,
-        "recentCount": 2
+        "count": 331,
+        "recentCount": 3
       }
     ],
     "topPairs": [
@@ -144,6 +144,13 @@
       },
       {
         "numbers": [
+          1,
+          28
+        ],
+        "count": 31
+      },
+      {
+        "numbers": [
           10,
           31
         ],
@@ -155,13 +162,6 @@
           24
         ],
         "count": 31
-      },
-      {
-        "numbers": [
-          1,
-          28
-        ],
-        "count": 30
       },
       {
         "numbers": [
@@ -183,22 +183,22 @@
         "key": "odd-even-2-4",
         "slug": "pattern-odd-even-2-4",
         "label": "홀짝 2:4",
-        "count": 11,
-        "allCount": 285
-      },
-      {
-        "key": "ending-dup-2",
-        "slug": "pattern-ending-dup-2",
-        "label": "끝수 중복 2개",
         "count": 10,
-        "allCount": 329
+        "allCount": 285
       },
       {
         "key": "consecutive-1",
         "slug": "pattern-consecutive-1",
         "label": "연속수 1개",
         "count": 10,
-        "allCount": 491
+        "allCount": 492
+      },
+      {
+        "key": "ending-dup-2",
+        "slug": "pattern-ending-dup-2",
+        "label": "끝수 중복 2개",
+        "count": 9,
+        "allCount": 329
       },
       {
         "key": "consecutive-0",
@@ -211,22 +211,22 @@
         "key": "low-high-3-3",
         "slug": "pattern-low-high-3-3",
         "label": "저고 3:3",
-        "count": 8,
-        "allCount": 412
-      },
-      {
-        "key": "low-high-4-2",
-        "slug": "pattern-low-high-4-2",
-        "label": "저고 4:2",
-        "count": 7,
-        "allCount": 283
+        "count": 9,
+        "allCount": 413
       },
       {
         "key": "ending-dup-1",
         "slug": "pattern-ending-dup-1",
         "label": "끝수 중복 1개",
-        "count": 7,
-        "allCount": 598
+        "count": 8,
+        "allCount": 599
+      },
+      {
+        "key": "low-high-4-2",
+        "slug": "pattern-low-high-4-2",
+        "label": "저고 4:2",
+        "count": 6,
+        "allCount": 283
       }
     ]
   }

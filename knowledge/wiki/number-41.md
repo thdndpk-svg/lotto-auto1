@@ -1,7 +1,7 @@
 ---
 type: entity
-created: 2026-11-11
-updated: 2026-11-11
+created: 2026-11-18
+updated: 2026-11-18
 sources: ["data/lotto.csv"]
 aliases: ["41", "41번"]
 ---
@@ -10,7 +10,7 @@ aliases: ["41", "41번"]
 
 - 전체 출현: 151회
 - 최근 출현: 1회
-- 지식그물 점수: 42.31
+- 지식그물 점수: 42.09
 
 ## 자주 연결된 패턴
 - [[pattern-ending-dup-1|끝수 중복 1개]] — 75회

@@ -1,25 +1,25 @@
 ---
 type: entity
-created: 2026-11-11
-updated: 2026-11-11
+created: 2026-11-18
+updated: 2026-11-18
 sources: ["data/lotto.csv"]
 aliases: ["27", "27번"]
 ---
 
 # 27번
 
-- 전체 출현: 183회
-- 최근 출현: 2회
-- 지식그물 점수: 55.31
+- 전체 출현: 184회
+- 최근 출현: 3회
+- 지식그물 점수: 57.76
 
 ## 자주 연결된 패턴
-- [[pattern-ending-dup-1|끝수 중복 1개]] — 89회
+- [[pattern-ending-dup-1|끝수 중복 1개]] — 90회
 - [[pattern-consecutive-0|연속수 0개]] — 87회
 - [[pattern-sum-120-149|번호합 120-149]] — 75회
-- [[pattern-consecutive-1|연속수 1개]] — 73회
-- [[pattern-odd-even-4-2|홀짝 4:2]] — 69회
+- [[pattern-consecutive-1|연속수 1개]] — 74회
+- [[pattern-odd-even-4-2|홀짝 4:2]] — 70회
 - [[pattern-low-high-2-4|저고 2:4]] — 62회
-- [[pattern-low-high-3-3|저고 3:3]] — 60회
+- [[pattern-low-high-3-3|저고 3:3]] — 61회
 - [[pattern-sum-150-179|번호합 150-179]] — 51회
 - [[pattern-ending-dup-0|끝수 중복 0개]] — 47회
 - [[pattern-odd-even-3-3|홀짝 3:3]] — 46회

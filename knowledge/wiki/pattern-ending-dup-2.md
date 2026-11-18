@@ -1,7 +1,7 @@
 ---
 type: concept
-created: 2026-11-11
-updated: 2026-11-11
+created: 2026-11-18
+updated: 2026-11-18
 sources: ["data/lotto.csv"]
 aliases: ["끝수 중복 2개"]
 ---
@@ -9,7 +9,7 @@ aliases: ["끝수 중복 2개"]
 # 끝수 중복 2개
 
 - 전체 출현: 329회
-- 최근 출현: 10회
+- 최근 출현: 9회
 
 ## 강하게 연결된 번호
 - [[number-13|13번]] — 64회
